@@ -1,0 +1,326 @@
+:root {
+    --primary-color: #013b8d;
+    --primary-dark: #00255e;
+    --text-white: #ffffff;
+    --text-gray: #e0e0e0;
+    --transition-speed: 1.2s;
+    /* 기존 0.6s에서 1.2s로 조절하여 더 부드러운 전환 효과 부여 */
+    --font-main: 'Noto Sans KR', sans-serif;
+    --font-heading: 'Outfit', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body,
+html {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    /* Gate page usually hides scroll */
+    font-family: var(--font-main);
+}
+
+.wrapper {
+    height: 100%;
+    width: 100%;
+}
+
+.gate-container {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+}
+
+/* 중앙 영상 배치 (원형 레이아웃) */
+.center-logo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    pointer-events: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 280px;
+    /* 고정 너비 */
+    height: 280px;
+    /* 고정 높이 */
+    border-radius: 50%;
+    /* 원형 */
+    overflow: hidden;
+    /* 원 밖 영상 숨김 */
+    border: 4px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+}
+
+.center-logo video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* 영상을 원형 안에 꽉 채움 */
+    transition: all var(--transition-speed);
+}
+
+.gate-container:hover .center-logo video {
+    transform: scale(0.9);
+    opacity: 0.5;
+}
+
+.gate-section {
+    position: relative;
+    flex: 1;
+    /* Default 1:1, can be adjusted for 2:1 if needed */
+    height: 100%;
+    overflow: hidden;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: flex var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 2/1 split effect on hover or naturally */
+.gate-section:hover {
+    flex: 1.5;
+    z-index: 15;
+    /* 호버 시 중앙 로고(z-index: 10)를 가릴 수 있도록 우선순위 상향 */
+}
+
+.gate-section:not(:hover):has(~ .gate-section:hover),
+.gate-section:hover~.gate-section {
+    flex: 0.5;
+}
+
+/* Background Images */
+.gate-section.brand {
+    background: url('/images/brand_bg.webp') center/cover no-repeat;
+}
+
+.gate-section.franchise {
+    background: url('/images/franchise_bg.webp') center/cover no-repeat;
+}
+
+/* Overlays */
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.7));
+    transition: background var(--transition-speed);
+}
+
+.gate-section.brand .overlay {
+    background: linear-gradient(135deg, rgba(1, 59, 141, 0.4), rgba(0, 0, 0, 0.8));
+}
+
+.gate-section:hover .overlay {
+    background: rgba(0, 0, 0, 0.75);
+    /* 호버 시 배경을 더 어둡게 변경 */
+}
+
+/* Content Styling */
+.content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: var(--text-white);
+    padding: 2rem;
+    max-width: 600px;
+    opacity: 1;
+    transition: transform var(--transition-speed) ease;
+}
+
+.label {
+    display: block;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    letter-spacing: 0.2rem;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    color: var(--text-gray);
+    opacity: 0.8;
+}
+
+.title {
+    font-family: var(--font-heading);
+    font-size: 4rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    line-height: 1.1;
+    text-transform: uppercase;
+}
+
+.description {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    margin-bottom: 2.5rem;
+    font-weight: 300;
+    word-break: keep-all;
+}
+
+.btn-more {
+    display: inline-block;
+    padding: 1rem 3rem;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    font-size: 1rem;
+    letter-spacing: 0.1rem;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+}
+
+.gate-section:hover .btn-more {
+    background: var(--text-white);
+    color: var(--primary-color);
+    border-color: var(--text-white);
+    transform: translateY(-5px);
+}
+
+/* BRAND 섹션 호버 시 타이틀 색상 변경 */
+.gate-section.brand:hover .title {
+    color: rgb(200, 123, 49);
+    transition: color var(--transition-speed);
+}
+
+/* FRANCHISE 섹션 호버 시 타이틀 색상 변경 */
+.gate-section.franchise:hover .title {
+    color: rgb(60, 130, 250);
+    /* 기존보다 더 밝고 선명한 블루로 변경 */
+    transition: color var(--transition-speed);
+}
+
+/* Footer (Hidden or absolute bottom) */
+.footer {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    z-index: 10;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.8rem;
+    pointer-events: none;
+}
+
+/* Subpage Styles */
+.sub-nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 1.5rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+}
+
+.sub-nav .logo {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-white);
+    text-decoration: none;
+    letter-spacing: 2px;
+}
+
+.nav-links a {
+    color: var(--text-white);
+    text-decoration: none;
+    margin-left: 2rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: opacity 0.3s;
+}
+
+.nav-links a.active {
+    border-bottom: 2px solid var(--primary-color);
+}
+
+.hero-section {
+    height: 60vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-white);
+    text-align: center;
+    background-size: cover;
+    background-position: center;
+}
+
+.brand-hero {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/images/brand_bg.webp');
+}
+
+.franchise-hero {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/images/franchise_bg.webp');
+}
+
+.content-section {
+    padding: 5rem 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.content-section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    color: var(--primary-color);
+}
+
+/* Animations */
+.fade-up {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeUp 0.8s forwards ease-out;
+}
+
+.delay-1 {
+    animation-delay: 0.3s;
+}
+
+@keyframes fadeUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive adjustment */
+@media (max-width: 768px) {
+    .gate-container {
+        flex-direction: column;
+    }
+
+    .gate-section {
+        flex: 1 !important;
+        height: 50vh;
+    }
+
+    .gate-section:not(:hover):has(~ .gate-section:hover),
+    .gate-section:hover~.gate-section,
+    .gate-section:hover {
+        flex: 1 !important;
+    }
+
+    .title {
+        font-size: 2.5rem;
+    }
+
+    .center-logo {
+        width: 180px;
+        height: 180px;
+    }
+
+    .sub-nav {
+        padding: 1rem 2rem;
+    }
+}

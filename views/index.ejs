@@ -1,0 +1,25 @@
+<%- include('layouts/layout', { title: 'Texas Papa' , head: '' , body: ` <main class="gate-container">
+    <div class="center-logo">
+        <video autoplay loop muted playsinline>
+            <source src="/videos/텍사스파파.mp4" type="video/mp4">
+        </video>
+    </div>
+    <section class="gate-section brand" onclick="location.href='/brand'">
+        <div class="overlay"></div>
+        <div class="content">
+            <h2 class="title">BRAND</h2>
+            <p class="description">풍미 가득한 텍사스 정통의 맛,<br>우리가 추구하는 브랜드 진정성</p>
+            <div class="btn-more">자세히 보기</div>
+        </div>
+    </section>
+    <section class="gate-section franchise" onclick="location.href='/franchise'">
+        <div class="overlay"></div>
+        <div class="content">
+            <h2 class="title">FRANCHISE</h2>
+            <p class="description">안정적인 창업, 검증된 수익 모델<br>NO.1 K-크레페 텍사스파파 창업 문의 </p>
+            <div class="btn-more">창업 안내 보기</div>
+        </div>
+    </section>
+    </main>
+    `
+    }) %>
