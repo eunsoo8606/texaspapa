@@ -1,0 +1,167 @@
+<%- include('layouts/layout', { title: 'Company Introduction' , head: '' , activePage: 'brand' , body: ` <main
+    class="sub-page company-page">
+
+
+
+    <!-- 섹션 2: CEO Message -->
+    <section class="ceo-section">
+        <div class="company-container">
+            <div class="ceo-flex">
+                <div class="ceo-image fade-left">
+                    <img src="/images/ceo_profile.png" alt="CEO Profile">
+                    <div class="ceo-info-box">
+                        <span class="ceo-name">HONG GIL DONG</span>
+                        <span class="ceo-title">CEO / FOUNDER</span>
+                    </div>
+                </div>
+                <div class="ceo-content fade-right">
+                    <div class="ceo-header">
+                        <div class="corporate-logo">
+                            <img src="/images/company_logo.webp" alt="Corporate Logo">
+                        </div>
+                        <span class="sub-title">CEO MESSAGE</span>
+                        <h2 class="main-title">텍사스 파파의 약속</h2>
+                    </div>
+                    <div class="ceo-text">
+                        <p class="quote">“크레페는 핑계입니다.”</p>
+                        <p>우리가 진짜 만들고 싶은 것은, <strong>‘힙한 무드’의 유통</strong>입니다. 손 안에서 즐기고, 스토리에 남기고, 바이브로 퍼지는 브랜드. 그게
+                            텍사스파파의 방식입니다.</p>
+                        <p>우리는 단순히 소비되는 브랜드가 아니라, 자연스럽게 확산되는 브랜드를 지향합니다. <strong>맛은 기본입니다.</strong></p>
+                        <p>지금은 마케팅과 콘텐츠의 시대. 텍사스파파 크레페는 외식 산업의 새로운 흐름을 만들어갑니다.</p>
+                    </div>
+                    <div class="ceo-signature">
+                        <span class="sign-text">Texas Papa CEO</span>
+                        <span class="name-kr">홍길동 드림</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 섹션 3: MVC (Mission, Vision, Core Value) -->
+    <section class="mvc-section">
+        <div class="company-container">
+            <div class="section-header fade-up">
+                <div class="corporate-logo-center">
+                    <img src="/images/company_logo.webp" alt="Corporate Logo">
+                </div>
+                <span class="sub-title">OUR PHILOSOPHY</span>
+                <h2 class="main-title">미션과 비전</h2>
+            </div>
+
+            <div class="mvc-grid">
+                <div class="mvc-card fade-up">
+                    <div class="mvc-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3>MISSION</h3>
+                    <p>우리는 고객들이 우리가 제공하는 모든 제품과 서비스를 발을 동동 구를 만큼 간절히 원하게 만드는 ‘달콤한 가치’를 선사합니다.</p>
+                </div>
+                <div class="mvc-card fade-up" style="animation-delay: 0.2s;">
+                    <div class="mvc-icon">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <h3>VISION</h3>
+                    <p>전 세계 누구나 손쉽게 즐길 수 있는 상품을 제공하며, 혁신적이고 독창적인 접근을 통해 글로벌 디저트 기업으로 성장합니다.</p>
+                </div>
+            </div>
+
+            <div class="core-value-header fade-up">
+                <h3>CORE VALUE | ‘4동(四動)’</h3>
+            </div>
+
+            <div class="core-grid">
+                <div class="core-card fade-up">
+                    <div class="core-num">01</div>
+                    <div class="core-info">
+                        <h4>동심(童心)</h4>
+                        <p>고객 중심의 순수한 마음으로 진정성 있는 상품과 서비스를 제공합니다.</p>
+                    </div>
+                </div>
+                <div class="core-card fade-up">
+                    <div class="core-num">02</div>
+                    <div class="core-info">
+                        <h4>동력(動力)</h4>
+                        <p>끊임없는 혁신과 도전을 통해 완벽을 추구하는 정신으로 혁신을 이끕니다.</p>
+                    </div>
+                </div>
+                <div class="core-card fade-up">
+                    <div class="core-num">03</div>
+                    <div class="core-info">
+                        <h4>동반(同伴)</h4>
+                        <p>가맹점, 협력사, 임직원과 함께 성장하는 상생의 파트너십 경영을 실천합니다.</p>
+                    </div>
+                </div>
+                <div class="core-card fade-up">
+                    <div class="core-num">04</div>
+                    <div class="core-info">
+                        <h4>동행(同行)</h4>
+                        <p>환경과 사회적 책임을 고려한 경영을 통해 지속 가능한 가치를 창출합니다.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    </main>
+
+    <script>
+        // 컴퍼니 페이지 전용 애니메이션 (GSAP)
+        document.addEventListener('DOMContentLoaded', () => {
+            gsap.registerPlugin(ScrollTrigger);
+
+            // 공통 페이드업 애니메이션
+            gsap.utils.toArray('.fade-up').forEach(element => {
+                gsap.from(element, {
+                    y: 60,
+                    opacity: 0,
+                    duration: 1.2,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: element,
+                        start: "top 85%",
+                        toggleActions: "play none none none"
+                    }
+                });
+            });
+
+            // CEO 이미지 페이드인 (왼쪽에서)
+            gsap.from('.fade-left', {
+                x: -100,
+                opacity: 0,
+                duration: 1.5,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: '.ceo-section',
+                    start: "top 70%"
+                }
+            });
+
+            // CEO 텍스트 페이드인 (오른쪽에서)
+            gsap.from('.fade-right', {
+                x: 100,
+                opacity: 0,
+                duration: 1.5,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: '.ceo-section',
+                    start: "top 70%"
+                }
+            });
+
+            // 코어 밸류 카드 순차 등장
+            gsap.from('.core-card', {
+                y: 50,
+                opacity: 0,
+                duration: 1,
+                stagger: 0.2,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: '.core-grid',
+                    start: "top 80%"
+                }
+            });
+        });
+    </script>
+    `
+    }) %>

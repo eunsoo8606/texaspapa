@@ -1,0 +1,74 @@
+<nav class="sub-nav">
+    <div class="nav-container">
+        <a href="/" class="logo">TEXAS PAPA</a>
+        <div class="nav-links">
+            <div class="nav-item">
+                <a href="/company" class="<%= activePage === 'brand' ? 'active' : '' %>">브랜드소개</a>
+                <ul class="sub-menu">
+                    <li><a href="/company">COMPANY</a></li>
+                    <li><a href="#">Brand</a></li>
+                    <li><a href="#">가맹점현황</a></li>
+                    <li><a href="#">오시는길</a></li>
+                </ul>
+            </div>
+            <div class="nav-item">
+                <a href="#" class="<%= activePage === 'menu' ? 'active' : '' %>">메뉴</a>
+                <ul class="sub-menu">
+                    <li><a href="#">크레페</a></li>
+                    <li><a href="#">커피 & 음료</a></li>
+                </ul>
+            </div>
+            <div class="nav-item">
+                <a href="/franchise" class="<%= activePage === 'franchise' ? 'active' : '' %>">가맹</a>
+                <ul class="sub-menu">
+                    <li><a href="/franchise#competence">창업경쟁력</a></li>
+                    <li><a href="/franchise#startup-cost">창업비용</a></li>
+                    <li><a href="/franchise#inquiry">가맹문의</a></li>
+                </ul>
+            </div>
+            <div class="nav-item">
+                <a href="#" class="<%= activePage === 'notice' ? 'active' : '' %>">공지사항</a>
+                <ul class="sub-menu">
+                    <li><a href="#">NEWS</a></li>
+                    <li><a href="#">사회공헌</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="nav-right">
+            <a href="https://www.instagram.com/" target="_blank" class="icon-link"><i class="fab fa-instagram"></i></a>
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </div>
+</nav>
+
+<script>
+    const menuToggle = document.getElementById('menuToggle');
+    const subNav = document.querySelector('.sub-nav');
+
+    menuToggle.addEventListener('click', () => {
+        subNav.classList.toggle('menu-active');
+        // 메뉴 닫힐 때 모든 서브메뉴도 초기화
+        if (!subNav.classList.contains('menu-active')) {
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('sub-open');
+            });
+        }
+    });
+
+    // 모바일 서브메뉴 아코디언 토글
+    document.querySelectorAll('.nav-item > a').forEach(anchor => {
+        anchor.addEventListener('click', (e) => {
+            if (window.innerWidth <= 768) {
+                const parent = anchor.parentElement;
+                const hasSub = parent.querySelector('.sub-menu');
+
+                if (hasSub) {
+                    e.preventDefault();
+                    parent.classList.toggle('sub-open');
+                }
+            }
+        });
+    });
+</script>

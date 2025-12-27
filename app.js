@@ -19,6 +19,10 @@ app.get('/brand', (req, res) => {
     res.render('brand', { title: 'Texas Papa - Brand' });
 });
 
+app.get('/company', (req, res) => {
+    res.render('company', { title: 'Texas Papa - Company' });
+});
+
 app.get('/franchise', (req, res) => {
     res.render('franchise', { title: 'Texas Papa - Franchise' });
 });
