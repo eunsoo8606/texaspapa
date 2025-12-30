@@ -23,8 +23,16 @@ app.get('/company', (req, res) => {
     res.render('company', { title: 'Texas Papa - Company' });
 });
 
+app.get('/menu', (req, res) => {
+    res.render('menu', { title: 'Texas Papa - Menu' });
+});
+
 app.get('/franchise', (req, res) => {
     res.render('franchise', { title: 'Texas Papa - Franchise' });
+});
+
+app.get('/location', (req, res) => {
+    res.render('location', { title: 'Texas Papa - Location' });
 });
 
 if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {

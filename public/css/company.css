@@ -1,0 +1,259 @@
+/* =========================================
+   Company Page Styles
+   ========================================= */
+.ceo-section {
+    padding-top: 220px;
+    padding-bottom: 120px;
+    background: #fff;
+}
+
+.ceo-flex {
+    display: flex;
+    align-items: center;
+    gap: 80px;
+}
+
+.ceo-image {
+    flex: 1;
+    position: relative;
+}
+
+.ceo-image img {
+    width: 100%;
+    border-radius: 30px;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1);
+}
+
+.ceo-info-box {
+    position: absolute;
+    bottom: 40px;
+    right: -40px;
+    background: #013b8d;
+    color: #fff;
+    padding: 30px 50px;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(1, 59, 141, 0.3);
+}
+
+.ceo-info-box .name {
+    display: block;
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin-bottom: 5px;
+}
+
+.ceo-info-box .role {
+    font-size: 1rem;
+    opacity: 0.8;
+}
+
+.ceo-content {
+    flex: 1.2;
+}
+
+.corporate-logo {
+    margin-bottom: 20px;
+}
+
+.corporate-logo img {
+    height: 60px;
+    width: auto;
+    object-fit: contain;
+}
+
+.sub-title {
+    display: block;
+    color: #013b8d;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    letter-spacing: 3px;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+}
+
+.main-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: #111;
+    line-height: 1.2;
+    margin-bottom: 40px;
+}
+
+.ceo-text .quote {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #111;
+    line-height: 1.5;
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.ceo-text .desc {
+    font-size: 1.15rem;
+    line-height: 1.9;
+    color: #444;
+    margin-bottom: 40px;
+    word-break: keep-all;
+}
+
+.ceo-signature {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    font-style: italic;
+    color: #888;
+}
+
+/* MVC Section */
+.mvc-section {
+    padding: 150px 0;
+    background: #f8fafc;
+}
+
+.corporate-logo-center {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.corporate-logo-center img {
+    height: 80px;
+    width: auto;
+    object-fit: contain;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 100px;
+}
+
+.mvc-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+    margin-bottom: 100px;
+}
+
+.mvc-card {
+    background: #fff;
+    padding: 60px;
+    border-radius: 30px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.05);
+}
+
+.mvc-card h3 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #111;
+    margin-bottom: 25px;
+}
+
+.mvc-card p {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: #555;
+    word-break: keep-all;
+}
+
+.core-value-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.core-value-header h3 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #111;
+}
+
+.core-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+}
+
+.core-card {
+    background: #fff;
+    padding: 50px 30px;
+    border-radius: 30px;
+    text-align: center;
+    border: 1px solid rgba(1, 59, 141, 0.08);
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.core-card:hover {
+    background: #013b8d;
+    transform: translateY(-15px);
+    box-shadow: 0 30px 60px rgba(1, 59, 141, 0.2);
+}
+
+.core-icon {
+    font-size: 3rem;
+    margin-bottom: 25px;
+    display: block;
+}
+
+.core-info h4 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-bottom: 15px;
+    color: #111;
+    transition: color 0.3s ease;
+}
+
+.core-info p {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #666;
+    transition: color 0.3s ease;
+}
+
+.core-card:hover h4,
+.core-card:hover p {
+    color: #fff;
+}
+
+@media (max-width: 1200px) {
+    .ceo-flex {
+        gap: 50px;
+    }
+
+    .core-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 992px) {
+    .ceo-flex {
+        flex-direction: column;
+    }
+
+    .ceo-image {
+        width: 100%;
+        max-width: 600px;
+    }
+
+    .mvc-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .company-container {
+        padding: 0 2rem;
+    }
+
+    .main-title {
+        font-size: 2.2rem;
+    }
+
+    .core-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .ceo-info-box {
+        position: relative;
+        padding: 20px 30px;
+        bottom: 0;
+        right: 0;
+        margin-top: 20px;
+    }
+}

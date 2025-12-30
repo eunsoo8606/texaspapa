@@ -1,0 +1,217 @@
+<%- include('layouts/layout', { title: 'Menu Guide' , head: '' , activePage: 'menu' , body: ` <main
+    class="sub-page menu-page">
+
+    <section class="menu-intro">
+        <div class="menu-container">
+            <div class="menu-header fade-up">
+                <span class="sub-title">MENU</span>
+                <h1 class="main-title">메뉴</h1>
+                <div class="crepe-decoration">
+                    <img src="/images/banana_crepe_sample.png" alt="Decoration" class="floating-crepe">
+                </div>
+            </div>
+
+            <!-- 카테고리 탭 -->
+            <div class="menu-tabs fade-up">
+                <button class="tab-btn active" data-category="crepe">크레페</button>
+                <button class="tab-btn" data-category="coffee">커피&음료</button>
+                <button class="tab-btn" data-category="side">사이드</button>
+                <button class="tab-btn" data-category="goods">굿즈</button>
+            </div>
+
+            <!-- 메뉴 그리드 -->
+            <div class="menu-grid" id="menuGrid">
+                <!-- 크레페 아이템들 -->
+                <div class="menu-item crepe fade-up">
+                    <div class="item-img">
+                        <img src="/images/banana_crepe_sample.png" alt="바나나 크레페">
+                    </div>
+                    <div class="item-info">
+                        <h3>바나나 크레페</h3>
+                        <span class="en">banana crepe</span>
+                    </div>
+                </div>
+                <div class="menu-item crepe fade-up">
+                    <div class="item-img">
+                        <img src="/images/strawberry_crepe_sample.png" alt="딸기 크레페">
+                    </div>
+                    <div class="item-info">
+                        <h3>딸기 크레페</h3>
+                        <span class="en">strawberry crepe</span>
+                    </div>
+                </div>
+                <div class="menu-item crepe fade-up">
+                    <div class="item-img">
+                        <img src="/images/banana_crepe_sample.png" alt="바나나 크레페">
+                    </div>
+                    <div class="item-info">
+                        <h3>바나나 크레페</h3>
+                        <span class="en">banana crepe</span>
+                    </div>
+                </div>
+                <div class="menu-item crepe fade-up">
+                    <div class="item-img">
+                        <img src="/images/strawberry_crepe_sample.png" alt="딸기 크레페">
+                    </div>
+                    <div class="item-info">
+                        <h3>딸기 크레페</h3>
+                        <span class="en">strawberry crepe</span>
+                    </div>
+                </div>
+
+                <!-- 커피 & 음료 아이템들 -->
+                <div class="menu-item coffee fade-up" style="display: none;">
+                    <div class="item-img">
+                        <img src="/images/iced_americano.png" alt="아메리카노 (ICE)">
+                    </div>
+                    <div class="item-info">
+                        <h3>아메리카노 (ICE)</h3>
+                        <span class="en">iced americano</span>
+                    </div>
+                </div>
+                <div class="menu-item coffee fade-up" style="display: none;">
+                    <div class="item-img">
+                        <img src="/images/cafe_latte_ice.png" alt="카페라떼 (ICE)">
+                    </div>
+                    <div class="item-info">
+                        <h3>카페라떼 (ICE)</h3>
+                        <span class="en">cafe latte</span>
+                    </div>
+                </div>
+                <div class="menu-item coffee fade-up" style="display: none;">
+                    <div class="item-img">
+                        <img src="/images/vanilla_latte_ice.png" alt="바닐라라떼 (ICE)">
+                    </div>
+                    <div class="item-info">
+                        <h3>바닐라라떼 (ICE)</h3>
+                        <span class="en">vanilla latte</span>
+                    </div>
+                </div>
+                <div class="menu-item coffee fade-up" style="display: none;">
+                    <div class="item-img">
+                        <img src="/images/green_grape_ade.png" alt="청포도에이드">
+                    </div>
+                    <div class="item-info">
+                        <h3>청포도에이드</h3>
+                        <span class="en">green grape ade</span>
+                    </div>
+                </div>
+                <div class="menu-item coffee fade-up" style="display: none;">
+                    <div class="item-img">
+                        <img src="/images/lemon_ade.png" alt="레몬에이드">
+                    </div>
+                    <div class="item-info">
+                        <h3>레몬에이드</h3>
+                        <span class="en">lemon ade</span>
+                    </div>
+                </div>
+                <div class="menu-item coffee fade-up" style="display: none;">
+                    <div class="item-img">
+                        <img src="/images/grapefruit_ade.png" alt="자몽에이드">
+                    </div>
+                    <div class="item-info">
+                        <h3>자몽에이드</h3>
+                        <span class="en">grapefruit ade</span>
+                    </div>
+                </div>
+                <!-- 사이드 아이템들 -->
+                <div class="menu-item side fade-up" style="display: none;">
+                    <div class="item-img">
+                        <img src="/images/vanilla_ice_cream.png" alt="바닐라 아이스크림">
+                    </div>
+                    <div class="item-info">
+                        <h3>바닐라 아이스크림</h3>
+                        <span class="en">vanilla ice cream</span>
+                    </div>
+                </div>
+                <div class="menu-item side fade-up" style="display: none;">
+                    <div class="item-img">
+                        <img src="/images/strawberry_ice_cream.png" alt="딸기 아이스크림">
+                    </div>
+                    <div class="item-info">
+                        <h3>딸기 아이스크림</h3>
+                        <span class="en">strawberry ice cream</span>
+                    </div>
+                </div>
+                <div class="menu-item side fade-up" style="display: none;">
+                    <div class="item-img">
+                        <img src="/images/vanilla_ice_cream.png" alt="초코 아이스크림">
+                    </div>
+                    <div class="item-info">
+                        <h3>초코 아이스크림</h3>
+                        <span class="en">choco ice cream</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabs = document.querySelectorAll('.tab-btn');
+            const items = document.querySelectorAll('.menu-item');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const category = tab.dataset.category;
+
+                    // 활성 탭 표시
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+
+                    // 메뉴 필터링 애니메이션 (GSAP)
+                    gsap.to(items, {
+                        opacity: 0,
+                        y: 20,
+                        duration: 0.3,
+                        onComplete: () => {
+                            items.forEach(item => {
+                                if (item.classList.contains(category)) {
+                                    item.style.display = 'block';
+                                } else {
+                                    item.style.display = 'none';
+                                }
+                            });
+
+                            gsap.to('.menu-item.' + category, {
+                                opacity: 1,
+                                y: 0,
+                                duration: 0.5,
+                                stagger: 0.1,
+                                ease: "power2.out"
+                            });
+                        }
+                    });
+                });
+            });
+
+            // URL 파라미터를 통한 탭 활성화 로직
+            const urlParams = new URLSearchParams(window.location.search);
+            const initialCat = urlParams.get('cat');
+
+            if (initialCat) {
+                const targetTab = document.querySelector('.tab-btn[data-category="' + initialCat + '"]');
+                if (targetTab) {
+                    // GSAP 초기 애니메이션 전에 탭 전환 실행
+                    targetTab.click();
+                }
+            } else {
+                // 파라미터가 없는 경우 초기 애니메이션
+                gsap.from('.menu-item.crepe', {
+                    opacity: 0,
+                    y: 30,
+                    duration: 1,
+                    stagger: 0.1,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: '.menu-grid',
+                        start: "top 80%"
+                    }
+                });
+            }
+        });
+    </script>
+    `
+    }) %>
