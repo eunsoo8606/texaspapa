@@ -63,171 +63,161 @@
             </div>
         </div>
     </section>
-    <!-- 섹션 2: 인터랙티브 스크롤 섹션 -->
-    <section class="scroll-sequence-section">
-        <div class="sticky-wrapper">
-            <div class="sequence-container">
-                <!-- 메인 애니메이션 이미지 -->
-                <div class="main-shrink-box" id="mainShrinkBox">
-                    <img src="/images/section2.webp" alt="Texas Papa Vibe" class="shrink-image">
-                    <div class="shrink-overlay">
-                        <h2 class="shrink-text">디저트로도 한 끼로도,<br>완벽한 캐주얼 푸드</h2>
+    <!-- 섹션 2.5: 수익의 진화 (Profit Evolution) - 3단계 시네마틱 시나리오 -->
+    <section class="profit-evolution-section">
+        <div class="evo-sticky-wrapper">
+            <!-- STEP 01: 타 저가 커피 -->
+            <div class="evo-layer layer-step-1">
+                <div class="eco-content-box">
+                    <span class="evo-step-badge">Step 01</span>
+                    <span class="evo-tag">Other Brand</span>
+                    <h2 class="evo-main-title">많은 노동,<br>현저히 낮은 순수익...</h2>
+                    <div class="evo-metrics-grid">
+                        <div class="evo-metric">
+                            <span class="m-label">평균 순익</span>
+                            <span class="m-value">150,000원</span>
+                        </div>
+                        <div class="evo-metric">
+                            <span class="m-label">노동 강도</span>
+                            <span class="m-value">매우 높음</span>
+                        </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- 주변 그리드 아이템 (스크롤 시 등장) -->
-                <div class="sequence-grid" id="sequenceGrid">
-                    <div class="grid-card c1">
-                        <div class="card-bg" style="background-color: #923623;">
-                            <p>텍사스파파는<br>맛과 경험 이상의 가치를<br>제공합니다.</p>
+            <!-- STEP 02: 타 크레페 브랜드 -->
+            <div class="evo-layer layer-step-2">
+                <div class="eco-content-box">
+                    <span class="evo-step-badge">Step 02</span>
+                    <span class="evo-tag">Other Crepe Brand</span>
+                    <h2 class="evo-main-title">높은 원가율과<br>과도한 초기 투자비</h2>
+                    <div class="evo-metrics-grid">
+                        <div class="evo-metric">
+                            <span class="m-label">예상 원가율</span>
+                            <span class="m-value">35% ~ 40%</span>
+                        </div>
+                        <div class="evo-metric">
+                            <span class="m-label">창업 비용</span>
+                            <span class="m-value">6,000만원+</span>
                         </div>
                     </div>
-                    <div class="grid-card c2">
-                        <img src="/images/img1.webp" alt="Poster 1">
-                    </div>
-                    <div class="grid-card c3">
-                        <div class="card-bg" style="background-color: #88a543;">
-                            <p>고객들을 매료시키는<br>다양한 매력을 가진<br>텍사스파파</p>
+                </div>
+            </div>
+
+            <!-- STEP 03: 텍사스파파 (The Winner) -->
+            <div class="evo-layer layer-step-3">
+                <div class="winner-stamp-evo" id="winnerStampEvo"></div>
+                <div class="eco-content-box">
+                    <span class="evo-step-badge">Final Step</span>
+                    <span class="evo-tag">The Texas Papa Solution</span>
+                    <h2 class="evo-main-title">매출 보단 순수익!<br>적게 투자하고 많이 버세요.</h2>
+                    <div class="evo-metrics-grid">
+                        <div class="evo-metric">
+                            <span class="m-label">혁신적 원가율</span>
+                            <span class="m-value">20%</span>
+                        </div>
+                        <div class="evo-metric">
+                            <span class="m-label">소자본 창업</span>
+                            <span class="m-value">2,000만원</span>
                         </div>
                     </div>
-                    <div class="grid-card c4">
-                        <img src="/images/img2.webp" alt="Poster 2">
-                    </div>
+                </div>
+            </div>
+
+            <!-- 중앙 분할선 (수평 슬라이드 효과용) -->
+            <div class="evo-divider" id="evoDivider">
+                <div class="divider-handle">
+                    <i class="fas fa-arrows-alt-h"></i>
                 </div>
             </div>
         </div>
     </section>
-    <!-- 섹션 3: 순수익 분석 대시보드 (시안 정밀 반영) -->
-    <section class="revenue-dashboard">
-        <div class="revenue-container unified-layout">
-            <!-- 좌측 컬럼: 텍스트 & 차트 -->
-            <div class="revenue-col-left">
-                <div class="revenue-info-text">
-                    <span class="sub-label fade-up">매출보다</span>
-                    <h2 class="main-label fade-up delay-1">핵심은 <span class="brush-font text-yellow">순익!</span></h2>
-                    <div class="desc-box fade-up delay-2">
-                        <p class="desc-highlight">규모대비 순수익 공개!</p>
-                        <p class="store-info">소규모매장 18평(18석)에서</p>
-                    </div>
-                    <div class="profit-summary-visual fade-up delay-3">
-                        <div class="v-item">
-                            <span class="v-label">월 매출</span>
-                            <span class="v-val">60,000,000원</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="chart-area-visual fade-up">
-                    <div class="waterwheel-container">
-                        <svg class="waterwheel-chart" viewBox="-15 -15 130 130">
-                            <circle class="chart-track" cx="50" cy="50" r="35" fill="none"
-                                stroke="rgba(255,255,255,0.05)" stroke-width="12" />
-                            <!-- 궤도 가이드 라인 -->
-                            <circle class="orbit-line" cx="50" cy="50" r="35" fill="none" stroke="rgba(255,255,255,0.1)"
-                                stroke-width="0.5" stroke-dasharray="2 2" />
-
-                            <g class="rotating-group">
-                                <!-- 매출원가 38% -->
-                                <g class="satellite-node s-raw" transform="translate(85, 50)">
-                                    <g class="node-anim-layer">
-                                        <g class="node-floating-wrapper">
-                                            <circle r="6" class="node-bg" fill="#4a3728" />
-                                            <text class="node-text" text-anchor="middle">원가 38%</text>
-                                        </g>
-                                    </g>
-                                </g>
-
-                                <!-- 인건비 18% -->
-                                <g class="satellite-node s-labor" transform="translate(67.5, 80.3)">
-                                    <g class="node-anim-layer">
-                                        <g class="node-floating-wrapper">
-                                            <circle r="5" class="node-bg" fill="#c1775d" />
-                                            <text class="node-text" text-anchor="middle">인건비 18%</text>
-                                        </g>
-                                    </g>
-                                </g>
-
-                                <!-- 임대료 5% -->
-                                <g class="satellite-node s-rent" transform="translate(32.5, 80.3)">
-                                    <g class="node-anim-layer">
-                                        <g class="node-floating-wrapper">
-                                            <circle r="4.5" class="node-bg" fill="#7a8a94" />
-                                            <text class="node-text" text-anchor="middle">임대료 5%</text>
-                                        </g>
-                                    </g>
-                                </g>
-
-                                <!-- 공과금 1.5% -->
-                                <g class="satellite-node s-util" transform="translate(15, 50)">
-                                    <g class="node-anim-layer">
-                                        <g class="node-floating-wrapper">
-                                            <circle r="4" class="node-bg" fill="#82937a" />
-                                            <text class="node-text" text-anchor="middle">공과금 1.5%</text>
-                                        </g>
-                                    </g>
-                                </g>
-
-                                <!-- 카드수수료 1.5% -->
-                                <g class="satellite-node s-fee" transform="translate(32.5, 19.7)">
-                                    <g class="node-anim-layer">
-                                        <g class="node-floating-wrapper">
-                                            <circle r="4" class="node-bg" fill="#9a8c98" />
-                                            <text class="node-text" text-anchor="middle">카드 1.5%</text>
-                                        </g>
-                                    </g>
-                                </g>
-
-                                <!-- 기타운영 2% -->
-                                <g class="satellite-node s-other" transform="translate(67.5, 19.7)">
-                                    <g class="node-anim-layer">
-                                        <g class="node-floating-wrapper">
-                                            <circle r="4.2" class="node-bg" fill="#b0a498" />
-                                            <text class="node-text" text-anchor="middle">기타 2%</text>
-                                        </g>
-                                    </g>
-                                </g>
-                            </g>
-                        </svg>
-
-
-                        <div class="chart-center-text">
-                            <span class="c-label">월 매출</span>
-                            <span class="c-main">6,000</span>
-                            <span class="c-unit">만원</span>
-                        </div>
-                    </div>
-                </div>
+    <!-- 섹션 3: 스마트 창업 타입 (New Smart Model) -->
+    <section class="startup-types-section">
+        <div class="types-container">
+            <div class="types-header">
+                <span class="types-sub-label">각자의 여건에 맞게. 매장마다 상황에 맞게.</span>
+                <h2 class="types-main-title">"이젠 창업도 스마트하게."</h2>
             </div>
 
-            <!-- 우측 컬럼: Meat + (Store + Table) -->
-            <div class="revenue-col-right">
-                <div class="visual-stack">
-                    <!-- 상단 원육 이미지 -->
-                    <div class="top-visual" id="revenueMeatImg">
-                        <img src="/images/img3.webp" alt="Meat Visual" class="meat-img">
+            <div class="types-grid">
+                <!-- TRANS 모델 (Highlight) -->
+                <div class="type-card trans highlight">
+                    <div class="type-top">
+                        <span class="type-tag">가성비 타입</span>
+                        <div class="type-title-group">
+                            <span class="type-title">TRANS</span>
+                            <span class="type-name">트랜스</span>
+                        </div>
+                        <p class="type-desc">업종 변경을 원하는 점주님을 위한 타입</p>
+                        <ul class="feature-list">
+                            <li class="feature-item">기존 매장 설비 최대 활용</li>
+                            <li class="feature-item">추가 투자 최소화</li>
+                            <li class="feature-item">빠른 전환 · 빠른 운영 가능</li>
+                        </ul>
                     </div>
+                    <div class="type-bottom">
+                        <span class="type-price">₩1,300~</span>
+                    </div>
+                </div>
 
+                <!-- BASIC 모델 -->
+                <div class="type-card basic">
+                    <div class="type-top">
+                        <span class="type-tag">배달 전문 타입</span>
+                        <div class="type-title-group">
+                            <span class="type-title">BASIC</span>
+                            <span class="type-name">베이직</span>
+                        </div>
+                        <p class="type-desc">2천만 원대 소자본 창업 가능 모델</p>
+                        <ul class="feature-list">
+                            <li class="feature-item">배달 운영에 최적화된 구조</li>
+                            <li class="feature-item">인건비·운영비 부담 최소화</li>
+                            <li class="feature-item">1인 또는 소수 인력 운영 가능</li>
+                        </ul>
+                    </div>
+                    <div class="type-bottom">
+                        <span class="type-price">₩2,250~</span>
+                    </div>
+                </div>
 
-                    <!-- 매장 + 테이블 유닛 -->
-                    <div class="bottom-integrated-unit" id="revenueDataUnit">
-                        <div class="store-box">
-                            <img src="/images/img4.webp" alt="Store View">
-                            <span class="store-tag">텍사스파파 청량리점</span>
+                <!-- STANDARD 모델 -->
+                <div class="type-card standard">
+                    <div class="type-top">
+                        <span class="type-tag">실전형 매장 타입</span>
+                        <div class="type-title-group">
+                            <span class="type-title">STANDARD</span>
+                            <span class="type-name">스탠다드</span>
                         </div>
-                        <div class="data-table-box">
-                            <div class="t-header">
-                                <span>월 매출 <small>(단위: 만원)</small></span>
-                                <strong>60,000,000원</strong>
-                            </div>
-                            <div class="t-body">
-                                <div class="t-row"><span>매출원가</span> <span>2,400</span> <span>38%</span></div>
-                                <div class="t-row"><span>인건비</span> <span>900</span> <span>18%</span></div>
-                                <div class="t-row"><span>임대료</span> <span>300</span> <span>5%</span></div>
-                                <div class="t-row"><span>공과금</span> <span>90</span> <span>1.5%</span></div>
-                                <div class="t-row"><span>카드수수료</span> <span>100</span> <span>1.5%</span></div>
-                                <div class="t-row"><span>기타운영비</span> <span>135</span> <span>2%</span></div>
-                            </div>
+                        <p class="type-desc">10평 기준, 배달·포장·홀 3WAY 운영</p>
+                        <ul class="feature-list">
+                            <li class="feature-item">테이크아웃 중심 효율적 동선</li>
+                            <li class="feature-item">매출 대비 순마진율 향상에 유리</li>
+                            <li class="feature-item">상권 대응력 높은 실전형 매장</li>
+                        </ul>
+                    </div>
+                    <div class="type-bottom">
+                        <span class="type-price">₩3,820~</span>
+                    </div>
+                </div>
+
+                <!-- PREMIUM 모델 -->
+                <div class="type-card premium">
+                    <div class="type-top">
+                        <span class="type-tag">카페형 홀 매장 타입</span>
+                        <div class="type-title-group">
+                            <span class="type-title">PREMIUM</span>
+                            <span class="type-name">프리미엄</span>
                         </div>
+                        <p class="type-desc">20평 기준 카페형 프리미엄 모델</p>
+                        <ul class="feature-list">
+                            <li class="feature-item">체류형 고객을 위한 공간 설계</li>
+                            <li class="feature-item">브랜드 경험 극대화</li>
+                            <li class="feature-item">안정적인 홀 매출 기반 구축</li>
+                        </ul>
+                    </div>
+                    <div class="type-bottom">
+                        <span class="type-price">₩6,480~</span>
                     </div>
                 </div>
             </div>
@@ -293,6 +283,40 @@
                             대표가 직접 <strong>창업의 모든 과정을 지원</strong>합니다. 인테리어부터 운영 노하우까지 누구나 <strong>쉽고 빠르게 가맹점
                                 오픈</strong>을 할 수 있습니다. 크레페에 대한 모든 전문 지식과 노하우를 전달드립니다.
                         </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- 섹션 2: 인터랙티브 스크롤 섹션 (Relocated to after Check Point) -->
+    <section class="scroll-sequence-section">
+        <div class="sticky-wrapper">
+            <div class="sequence-container">
+                <!-- 메인 애니메이션 이미지 -->
+                <div class="main-shrink-box" id="mainShrinkBox">
+                    <img src="/images/section2.webp" alt="Texas Papa Vibe" class="shrink-image">
+                    <div class="shrink-overlay">
+                        <h2 class="shrink-text">디저트로도 한 끼로도,<br>완벽한 캐주얼 푸드</h2>
+                    </div>
+                </div>
+
+                <!-- 주변 그리드 아이템 (스크롤 시 등장) -->
+                <div class="sequence-grid" id="sequenceGrid">
+                    <div class="grid-card c1">
+                        <div class="card-bg">
+                            <p>텍사스파파는<br>맛과 경험 이상의 가치를<br>제공합니다.</p>
+                        </div>
+                    </div>
+                    <div class="grid-card c2">
+                        <img src="/images/img1.webp" alt="Poster 1">
+                    </div>
+                    <div class="grid-card c3">
+                        <div class="card-bg">
+                            <p>고객들을 매료시키는<br>다양한 매력을 가진<br>텍사스파파</p>
+                        </div>
+                    </div>
+                    <div class="grid-card c4">
+                        <img src="/images/img2.webp" alt="Poster 2">
                     </div>
                 </div>
             </div>
@@ -395,6 +419,129 @@
             </div>
         </div>
     </section>
+    <!-- 섹션 6: 창업 절차 (Startup Procedure) -->
+    <section id="procedure" class="procedure-section">
+        <div class="procedure-container">
+            <div class="procedure-header fade-up">
+                <h2 class="procedure-main-title">창업 절차</h2>
+                <p class="procedure-sub-title">텍사스 파파와 함께하는 성공 창업의 단계별 안내</p>
+            </div>
+
+            <div class="procedure-grid">
+                <!-- Step 1 -->
+                <div class="procedure-item">
+                    <div class="step-num-box">
+                        <span class="step-num">STEP 01</span>
+                        <div class="step-dot">
+                            <img src="/images/crepe_icon.png" alt="Crepe Icon" class="crepe-icon">
+                        </div>
+                    </div>
+                    <div class="step-content">
+                        <h3 class="step-title">가맹상담</h3>
+                        <p class="step-desc">브랜드 소개 및 창업 문의</p>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="procedure-item">
+                    <div class="step-num-box">
+                        <span class="step-num">STEP 02</span>
+                        <div class="step-dot">
+                            <img src="/images/crepe_icon.png" alt="Crepe Icon" class="crepe-icon">
+                        </div>
+                    </div>
+                    <div class="step-content">
+                        <h3 class="step-title">상권분석</h3>
+                        <p class="step-desc">입지 선정 및 타당성 분석</p>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="procedure-item">
+                    <div class="step-num-box">
+                        <span class="step-num">STEP 03</span>
+                        <div class="step-dot">
+                            <img src="/images/crepe_icon.png" alt="Crepe Icon" class="crepe-icon">
+                        </div>
+                    </div>
+                    <div class="step-content">
+                        <h3 class="step-title">가맹계약</h3>
+                        <p class="step-desc">정보공개서 확인 및 계약 체결</p>
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="procedure-item">
+                    <div class="step-num-box">
+                        <span class="step-num">STEP 04</span>
+                        <div class="step-dot">
+                            <img src="/images/crepe_icon.png" alt="Crepe Icon" class="crepe-icon">
+                        </div>
+                    </div>
+                    <div class="step-content">
+                        <h3 class="step-title">인테리어</h3>
+                        <p class="step-desc">도면 설계 및 현장 시공</p>
+                    </div>
+                </div>
+
+                <!-- Step 5 -->
+                <div class="procedure-item">
+                    <div class="step-num-box">
+                        <span class="step-num">STEP 05</span>
+                        <div class="step-dot">
+                            <img src="/images/crepe_icon.png" alt="Crepe Icon" class="crepe-icon">
+                        </div>
+                    </div>
+                    <div class="step-content">
+                        <h3 class="step-title">교육이수</h3>
+                        <p class="step-desc">조리, 서비스 및 운영 교육</p>
+                    </div>
+                </div>
+
+                <!-- Step 6 -->
+                <div class="procedure-item">
+                    <div class="step-num-box">
+                        <span class="step-num">STEP 06</span>
+                        <div class="step-dot">
+                            <img src="/images/crepe_icon.png" alt="Crepe Icon" class="crepe-icon">
+                        </div>
+                    </div>
+                    <div class="step-content">
+                        <h3 class="step-title">시설검수</h3>
+                        <p class="step-desc">시설 최종 점검 및 물류 입고</p>
+                    </div>
+                </div>
+
+                <!-- Step 7 -->
+                <div class="procedure-item">
+                    <div class="step-num-box">
+                        <span class="step-num">STEP 07</span>
+                        <div class="step-dot">
+                            <img src="/images/crepe_icon.png" alt="Crepe Icon" class="crepe-icon">
+                        </div>
+                    </div>
+                    <div class="step-content">
+                        <h3 class="step-title">그랜드오픈</h3>
+                        <p class="step-desc">정식 오픈 및 오픈 이벤트</p>
+                    </div>
+                </div>
+
+                <!-- Step 8 -->
+                <div class="procedure-item">
+                    <div class="step-num-box">
+                        <span class="step-num">STEP 08</span>
+                        <div class="step-dot">
+                            <img src="/images/crepe_icon.png" alt="Crepe Icon" class="crepe-icon">
+                        </div>
+                    </div>
+                    <div class="step-content">
+                        <h3 class="step-title">사후관리</h3>
+                        <p class="step-desc">지속적인 운영 지원 및 경영 지도</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
     <!-- 섹션 7: 문의하기 (Inquiry) -->
     <section id="inquiry" class="inquiry-section">
         <div class="inquiry-bg-overlay"></div>
@@ -404,7 +551,7 @@
                 <p class="inquiry-sub-title">텍사스 파파의 성공 노하우, 지금 바로 상담받으세요</p>
             </div>
 
-            <div class="inquiry-box fade-up">
+            <div class="inquiry-box">
                 <form id="inquiry-form" class="inquiry-form">
                     <div class="form-grid">
                         <!-- 성함 -->
@@ -519,7 +666,6 @@
             </div>
         </div>
     </section>
-
     <!-- 개인정보처리방침 모달 -->
     <div id="privacy-modal" class="privacy-modal">
         <div class="modal-overlay"></div>
@@ -532,11 +678,13 @@
             </div>
             <div class="modal-body">
                 <div class="privacy-text">
-                    <p>텍사스 파파(이하 “회사”)는 「개인정보보호법」, 「정보통신망 이용촉진 및 정보보호 등에 관한 법률」(이하 “정보통신망법”) 등 관련 법령상의 개인정보 보호규정을 준수하며,
+                    <p>텍사스 파파(이하 “회사”)는 「개인정보보호법」, 「정보통신망 이용촉진 및 정보보호 등에 관한 법률」(이하 “정보통신망법”) 등 관련 법령상의 개인정보 보호규정을
+                        준수하며,
                         개인정보보호법에 의거한 개인정보처리방침을 정하여 이용자 권익 보호에 최선을 다하고 있습니다.</p>
 
                     <h4>1. 개인정보 수집 및 이용 현황</h4>
-                    <p>회사는 서비스 제공을 위한 최소한의 범위 내에서 이용자의 동의 하에 개인정보를 수집하며, 수집한 모든 개인정보는 고지한 목적 범위 내에서만 사용됩니다. 창업 상담 신청을 위해
+                    <p>회사는 서비스 제공을 위한 최소한의 범위 내에서 이용자의 동의 하에 개인정보를 수집하며, 수집한 모든 개인정보는 고지한 목적 범위 내에서만 사용됩니다. 창업 상담
+                        신청을 위해
                         수집하는 항목은 다음과 같습니다.</p>
                     <ul>
                         <li>필수항목: 성함, 연락처</li>
@@ -544,19 +692,23 @@
                     </ul>
 
                     <h4>2. 개인정보 제3자 제공</h4>
-                    <p>회사는 고지한 범위 내에서만 개인정보를 이용하며, 원칙적으로 이용자의 개인정보를 제3자에게 제공하지 않습니다. 다만, 법령의 규정에 의거하거나 수사 기관의 요구가 있는 경우
+                    <p>회사는 고지한 범위 내에서만 개인정보를 이용하며, 원칙적으로 이용자의 개인정보를 제3자에게 제공하지 않습니다. 다만, 법령의 규정에 의거하거나 수사 기관의 요구가 있는
+                        경우
                         등 예외적인 상황에 한하여 제공될 수 있습니다.</p>
 
                     <h4>3. 개인정보 처리위탁</h4>
-                    <p>회사는 개인정보의 처리와 관련하여 필요한 경우 업무를 위탁할 수 있으며, 관계법령에 따라 위탁 처리되는 개인정보가 안전하게 관리될 수 있도록 필요한 조치를 취하고 있습니다.
+                    <p>회사는 개인정보의 처리와 관련하여 필요한 경우 업무를 위탁할 수 있으며, 관계법령에 따라 위탁 처리되는 개인정보가 안전하게 관리될 수 있도록 필요한 조치를 취하고
+                        있습니다.
                     </p>
 
                     <h4>4. 개인정보 보유 및 이용기간</h4>
-                    <p>회사는 수집·이용 목적이 달성된 후에는 해당 정보를 지체 없이 파기합니다. 단, 관계 법령의 규정에 의하여 보존할 필요가 있는 경우 회사는 해당 법령에서 정한 일정 기간 동안
+                    <p>회사는 수집·이용 목적이 달성된 후에는 해당 정보를 지체 없이 파기합니다. 단, 관계 법령의 규정에 의하여 보존할 필요가 있는 경우 회사는 해당 법령에서 정한 일정
+                        기간 동안
                         회원 정보를 보관합니다.</p>
 
                     <h4>5. 개인정보 파기절차 및 방법</h4>
-                    <p>이용자의 개인정보는 수집 및 이용목적이 달성되면 지체없이 파기합니다. 전자적 파일 형태의 정보는 복구 및 재생할 수 없는 기술적 방법을 사용하여 삭제하며, 종이에 출력된
+                    <p>이용자의 개인정보는 수집 및 이용목적이 달성되면 지체없이 파기합니다. 전자적 파일 형태의 정보는 복구 및 재생할 수 없는 기술적 방법을 사용하여 삭제하며, 종이에
+                        출력된
                         개인정보는 분쇄하거나 소각하여 파기합니다.</p>
 
                     <h4>6. 이용자의 권리 및 행사방법</h4>
@@ -611,55 +763,90 @@
         // 섹션 2: GSAP 스크롤 인터랙션
         gsap.registerPlugin(ScrollTrigger);
 
-        const tl = gsap.timeline({
-            scrollTrigger: {
-                trigger: ".scroll-sequence-section",
-                start: "top top",
-                end: "+=180%",
-                scrub: 1,
-                pin: true,
-                anticipatePin: 1
-            }
+        // 1. 전역 fade-up 애니메이션 로직
+        gsap.utils.toArray('.fade-up').forEach((el) => {
+            let delay = 0;
+            if (el.classList.contains('delay-1')) delay = 0.2;
+            if (el.classList.contains('delay-2')) delay = 0.4;
+            if (el.classList.contains('delay-3')) delay = 0.6;
+            gsap.to(el, {
+                scrollTrigger: {
+                    trigger: el,
+                    start: "top 85%",
+                    toggleActions: "play none none reverse"
+                },
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                delay: delay,
+                ease: "power2.out"
+            });
         });
 
-        tl.to("#mainShrinkBox", {
-            width: "500px",
-            height: "700px",
-            borderRadius: "20px",
-            duration: 2,
-            ease: "power2.inOut"
-        })
-            .from(".grid-card", {
-                opacity: 0,
-                scale: 0.8,
-                stagger: 0.2,
-                duration: 1
-            }, "-=1");
-
-        // 섹션 3: 수익 대시보드 인터랙티브 시퀀스
-        const revenueTl = gsap.timeline({
+        /* 
+        gsap.from(".type-card", {
             scrollTrigger: {
-                trigger: ".revenue-dashboard",
-                start: "top 70%", // 섹션이 화면의 70% 지점에 도달했을 때 시작
+                trigger: ".startup-types-section",
+                start: "top 70%",
                 toggleActions: "play none none reverse"
+            },
+            y: 50,
+            opacity: 0,
+            duration: 0.8,
+            stagger: 0.2,
+            ease: "back.out(1.2)"
+        });
+        */
+
+        // 3. 수익의 진화 (Profit Evolution) 인터랙션
+        ScrollTrigger.matchMedia({
+            "(min-width: 1025px)": function () {
+                const evoTimeline = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: ".profit-evolution-section",
+                        start: "top top",
+                        end: "+=350%",
+                        scrub: 1,
+                        pin: true,
+                        anticipatePin: 1
+                    }
+                });
+
+                evoTimeline
+                    .to(".layer-step-2", { clipPath: "inset(0 0 0 0)", ease: "none" })
+                    .to("#evoDivider", { left: "0%", ease: "none" }, 0)
+                    .to(".layer-step-1", { x: -100, opacity: 0.5, ease: "none" }, 0)
+                    .from(".layer-step-2 .eco-content-box", { y: 30, opacity: 0, duration: 0.3 }, 0.2)
+                    .set("#evoDivider", { left: "100%" })
+                    .to(".layer-step-3", { clipPath: "inset(0 0 0 0)", ease: "none" }, "+=0.1")
+                    .to("#evoDivider", { left: "0%", ease: "none" }, "<")
+                    .to(".layer-step-2", { x: -100, opacity: 0.5, ease: "none" }, "<")
+                    .from(".layer-step-3 .eco-content-box", { y: 30, opacity: 0, duration: 0.3 }, "<0.2")
+                    .to("#winnerStampEvo", {
+                        scale: 1,
+                        opacity: 1,
+                        rotation: -15,
+                        duration: 0.5,
+                        ease: "bounce.out"
+                    }, "<0.3");
+            },
+            "(max-width: 1024px)": function () {
+                gsap.utils.toArray(".evo-layer").forEach((layer, i) => {
+                    if (i === 0) return;
+                    gsap.fromTo(layer, { opacity: 0, y: 30 }, {
+                        opacity: 1, y: 0, duration: 0.8,
+                        scrollTrigger: { trigger: layer, start: "top 85%", end: "top 50%", scrub: true }
+                    });
+                });
+                gsap.fromTo("#winnerStampEvo", { scale: 2, opacity: 0 }, {
+                    scale: 1, opacity: 1,
+                    scrollTrigger: { trigger: ".layer-step-3", start: "top 70%", toggleActions: "play none none none" }
+                });
             }
         });
 
-        revenueTl.from("#revenueMeatImg", {
-            x: 100,
-            opacity: 0,
-            duration: 1.2,
-            ease: "power3.out"
-        })
-            .from("#revenueDataUnit", {
-                y: 80,
-                opacity: 0,
-                duration: 1.2,
-                ease: "power3.out"
-            }, "-=0.8"); // 이미지 등장 중에 살짝 겹쳐서 시작
-
-        // 섹션 4: 체크포인트 프리미엄 애니메이션 시퀀스
-        gsap.utils.toArray('.checkpoint-item').forEach((item, i) => {
+        // 4. 체크포인트 리빌 애니메이션
+        gsap.utils.toArray('.checkpoint-item').forEach((item) => {
             const image = item.querySelector('.cp-image');
             const content = item.querySelector('.cp-content');
             const isReverse = item.classList.contains('reverse');
@@ -674,7 +861,6 @@
                 }
             });
 
-            // 1. 텍스트 컨텐츠 등장 (약간의 수평 이동 포함)
             itemTl.from(content, {
                 x: isReverse ? -60 : 60,
                 opacity: 0,
@@ -682,126 +868,76 @@
                 ease: "power3.out"
             });
 
-            // 2. 패럴랙스 효과 (스크롤에 따른 미세한 움직임)
             gsap.to(image, {
-                scrollTrigger: {
-                    trigger: item,
-                    start: "top bottom",
-                    end: "bottom top",
-                    scrub: 1
-                },
-                y: -30,
-                ease: "none"
-            });
-
-            gsap.to(content, {
-                scrollTrigger: {
-                    trigger: item,
-                    start: "top bottom",
-                    end: "bottom top",
-                    scrub: 1
-                },
-                y: 30,
-                ease: "none"
+                scrollTrigger: { trigger: item, start: "top bottom", end: "bottom top", scrub: 1 },
+                y: -30, ease: "none"
             });
         });
 
-        // 통합 섹션 5: 창업비용 및 지원 혜택 애니메이션
-        const unifiedTl = gsap.timeline({
+        // 5. 인터랙티브 스크롤 시퀀스 (MainShrinkBox)
+        const tl = gsap.timeline({
             scrollTrigger: {
-                trigger: ".startup-cost-section.unified",
-                start: "top 70%",
-                toggleActions: "play none none reverse"
+                trigger: ".scroll-sequence-section",
+                start: "top top",
+                end: "bottom top",
+                scrub: 1, pin: true, anticipatePin: 1
             }
         });
+        tl.to("#mainShrinkBox", { width: "500px", height: "700px", borderRadius: "20px", duration: 2, ease: "power2.inOut" })
+            .from(".grid-card", { opacity: 0, scale: 0.8, stagger: 0.2, duration: 1 }, "-=1");
 
-        unifiedTl.from(".cost-row", {
-            y: 30,
-            opacity: 0,
-            duration: 0.8,
-            stagger: 0.1,
-            ease: "power2.out"
-        })
-            .from(".support-badge", {
-                scale: 0,
-                rotation: -10,
-                duration: 0.6,
-                stagger: 0.1,
-                ease: "back.out(1.7)"
-            }, "-=0.4")
+        // 6. 창업비용 카운팅 및 애니메이션
+        const unifiedTl = gsap.timeline({
+            scrollTrigger: { trigger: ".startup-cost-section.unified", start: "top 70%", toggleActions: "play none none reverse" }
+        });
+        unifiedTl.from(".cost-row", { y: 30, opacity: 0, duration: 0.8, stagger: 0.1, ease: "power2.out" })
+            .from(".support-badge", { scale: 0, rotation: -10, duration: 0.6, stagger: 0.1, ease: "back.out(1.7)" }, "-=0.4")
             .to(".res-price.counter", {
-                duration: 2,
-                innerText: 24650,
-                roundProps: "innerText",
-                ease: "power2.inOut",
+                duration: 2, innerText: 2000, roundProps: "innerText", ease: "power2.inOut",
                 onUpdate: function () {
                     const counter = document.querySelector(".res-price.counter");
-                    counter.innerText = Math.ceil(this.targets()[0].innerText).toLocaleString();
+                    if (counter) counter.innerText = Math.ceil(this.targets()[0].innerText).toLocaleString();
                 }
             }, "-=0.2");
 
-        // 섹션 6: 창업 절차 타임라인 애니메이션
+        // 7. 창업 절차 타임라인 애니메이션
         const procedureTl = gsap.timeline({
-            scrollTrigger: {
-                trigger: ".procedure-section",
-                start: "top 60%",
-                toggleActions: "play none none reverse"
-            }
+            scrollTrigger: { trigger: ".procedure-section", start: "top 70%", toggleActions: "play none none reverse" }
         });
-
-        const steps = document.querySelectorAll(".procedure-item");
-
-        steps.forEach((step, index) => {
-            // 스텝 활성화 (카드 등장 및 하이라이트)
-            procedureTl.to(step, {
+        document.querySelectorAll(".procedure-item").forEach((step, index) => {
+            procedureTl.fromTo(step, { opacity: 0, y: 30 }, {
+                opacity: 1, y: 0, duration: 0.8,
                 onStart: () => step.classList.add("active"),
-                duration: 0.3,
                 ease: "power2.out"
-            }, index * 0.2); // 스태거 효과 유지
+            }, index * 0.2);
         });
 
-        // 섹션 7: 문의하기 애니메이션
+        // 8. 문의하기 및 모달 제어
         gsap.from(".inquiry-box", {
-            scrollTrigger: {
-                trigger: ".inquiry-section",
-                start: "top 60%",
-                toggleActions: "play none none reverse"
-            },
-            y: 50,
-            opacity: 0,
-            duration: 1,
-            ease: "power3.out"
+            scrollTrigger: { trigger: ".inquiry-section", start: "top 65%", toggleActions: "play none none reverse" },
+            y: 50, opacity: 0, duration: 1, ease: "power3.out"
         });
 
-        // 개인정보 모달 제어
         const modal = document.getElementById('privacy-modal');
-        const openBtn = document.getElementById('open-privacy');
-        const closeBtn = document.getElementById('close-privacy');
-        const overlay = modal.querySelector('.modal-overlay');
-
         const openModal = () => {
             modal.classList.add('active');
-            document.body.style.overflow = 'hidden'; // 스크롤 방지
+            document.body.style.overflow = 'hidden';
             gsap.fromTo(".modal-content", { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: "power3.out" });
         };
-
         const closeModal = () => {
             gsap.to(".modal-content", {
-                y: 50,
-                opacity: 0,
-                duration: 0.3,
-                ease: "power3.in",
-                onComplete: () => {
-                    modal.classList.remove('active');
-                    document.body.style.overflow = '';
+                y: 50, opacity: 0, duration: 0.3, ease: "power3.in", onComplete: () => {
+                    modal.classList.remove('active'); document.body.style.overflow = '';
                 }
             });
         };
-
-        openBtn.addEventListener('click', openModal);
+        document.getElementById('open-privacy')?.addEventListener('click', openModal);
         document.querySelectorAll('.open-privacy-footer').forEach(el => el.addEventListener('click', openModal));
-        closeBtn.addEventListener('click', closeModal);
-        overlay.addEventListener('click', closeModal);
+        document.getElementById('close-privacy')?.addEventListener('click', closeModal);
+        modal?.querySelector('.modal-overlay')?.addEventListener('click', closeModal);
+
+        // 9. 강제 리프레시 (정합성 확보)
+        ScrollTrigger.refresh();
     </script>
     </main>
     `

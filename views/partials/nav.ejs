@@ -37,9 +37,10 @@
             </div>
         </div>
         <div class="nav-right">
-            <a href="https://www.instagram.com/" target="_blank" class="icon-link"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.instagram.com/" target="_blank" class="icon-link"><i
+                    class="fa-brands fa-instagram"></i></a>
             <button class="menu-toggle" id="menuToggle">
-                <i class="fas fa-bars"></i>
+                <i class="fa-solid fa-bars"></i>
             </button>
         </div>
     </div>
@@ -62,7 +63,7 @@
     // 모바일 서브메뉴 아코디언 토글
     document.querySelectorAll('.nav-item > a').forEach(anchor => {
         anchor.addEventListener('click', (e) => {
-            if (window.innerWidth <= 768) {
+            if (window.innerWidth <= 1024) { // 768px에서 1024px로 상향 조정
                 const parent = anchor.parentElement;
                 const hasSub = parent.querySelector('.sub-menu');
 

@@ -4,6 +4,12 @@
     background: #fff;
 }
 
+@media (max-width: 768px) {
+    .location-page {
+        padding-top: 100px;
+    }
+}
+
 .location-container {
     max-width: 1200px;
     margin: 0 auto;

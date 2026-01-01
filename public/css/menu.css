@@ -6,10 +6,23 @@
     padding-top: 150px;
 }
 
+@media (max-width: 768px) {
+    .menu-page {
+        padding-top: 100px;
+        /* 모바일에서는 헤더 높이에 맞춰 패딩 축소 */
+    }
+}
+
 .menu-container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 2rem;
+}
+
+@media (max-width: 768px) {
+    .menu-container {
+        padding: 0 1.5rem;
+    }
 }
 
 .menu-header {
