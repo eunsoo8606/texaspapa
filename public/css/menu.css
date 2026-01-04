@@ -100,13 +100,18 @@
     border-radius: 20px;
     overflow: hidden;
     border: 1px solid #eee;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    /* 등장 시에는 트랜지션을 주지 않고 hover 시에만 동작하도록 분리 */
+    transition: box-shadow 0.4s ease, border-color 0.4s ease;
 }
 
 .menu-item:hover {
     transform: translateY(-10px);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
     border-color: #013b8d;
+    /* 호버 응답성을 위해 여기서만 transform 트랜지션 허용 */
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+        box-shadow 0.4s ease,
+        border-color 0.4s ease;
 }
 
 .item-img {

@@ -22,7 +22,7 @@
             <!-- 메뉴 그리드 -->
             <div class="menu-grid" id="menuGrid">
                 <!-- 크레페 아이템들 -->
-                <div class="menu-item crepe fade-up">
+                <div class="menu-item crepe">
                     <div class="item-img">
                         <img src="/images/banana_crepe_sample.png" alt="바나나 크레페">
                     </div>
@@ -31,7 +31,7 @@
                         <span class="en">banana crepe</span>
                     </div>
                 </div>
-                <div class="menu-item crepe fade-up">
+                <div class="menu-item crepe">
                     <div class="item-img">
                         <img src="/images/strawberry_crepe_sample.png" alt="딸기 크레페">
                     </div>
@@ -40,7 +40,7 @@
                         <span class="en">strawberry crepe</span>
                     </div>
                 </div>
-                <div class="menu-item crepe fade-up">
+                <div class="menu-item crepe">
                     <div class="item-img">
                         <img src="/images/banana_crepe_sample.png" alt="바나나 크레페">
                     </div>
@@ -49,7 +49,7 @@
                         <span class="en">banana crepe</span>
                     </div>
                 </div>
-                <div class="menu-item crepe fade-up">
+                <div class="menu-item crepe">
                     <div class="item-img">
                         <img src="/images/strawberry_crepe_sample.png" alt="딸기 크레페">
                     </div>
@@ -60,7 +60,7 @@
                 </div>
 
                 <!-- 커피 & 음료 아이템들 -->
-                <div class="menu-item coffee fade-up" style="display: none;">
+                <div class="menu-item coffee" style="display: none;">
                     <div class="item-img">
                         <img src="/images/iced_americano.png" alt="아메리카노 (ICE)">
                     </div>
@@ -69,7 +69,7 @@
                         <span class="en">iced americano</span>
                     </div>
                 </div>
-                <div class="menu-item coffee fade-up" style="display: none;">
+                <div class="menu-item coffee" style="display: none;">
                     <div class="item-img">
                         <img src="/images/cafe_latte_ice.png" alt="카페라떼 (ICE)">
                     </div>
@@ -78,7 +78,7 @@
                         <span class="en">cafe latte</span>
                     </div>
                 </div>
-                <div class="menu-item coffee fade-up" style="display: none;">
+                <div class="menu-item coffee" style="display: none;">
                     <div class="item-img">
                         <img src="/images/vanilla_latte_ice.png" alt="바닐라라떼 (ICE)">
                     </div>
@@ -87,7 +87,7 @@
                         <span class="en">vanilla latte</span>
                     </div>
                 </div>
-                <div class="menu-item coffee fade-up" style="display: none;">
+                <div class="menu-item coffee" style="display: none;">
                     <div class="item-img">
                         <img src="/images/green_grape_ade.png" alt="청포도에이드">
                     </div>
@@ -96,7 +96,7 @@
                         <span class="en">green grape ade</span>
                     </div>
                 </div>
-                <div class="menu-item coffee fade-up" style="display: none;">
+                <div class="menu-item coffee" style="display: none;">
                     <div class="item-img">
                         <img src="/images/lemon_ade.png" alt="레몬에이드">
                     </div>
@@ -105,7 +105,7 @@
                         <span class="en">lemon ade</span>
                     </div>
                 </div>
-                <div class="menu-item coffee fade-up" style="display: none;">
+                <div class="menu-item coffee" style="display: none;">
                     <div class="item-img">
                         <img src="/images/grapefruit_ade.png" alt="자몽에이드">
                     </div>
@@ -115,7 +115,7 @@
                     </div>
                 </div>
                 <!-- 사이드 아이템들 -->
-                <div class="menu-item side fade-up" style="display: none;">
+                <div class="menu-item side" style="display: none;">
                     <div class="item-img">
                         <img src="/images/vanilla_ice_cream.png" alt="바닐라 아이스크림">
                     </div>
@@ -124,7 +124,7 @@
                         <span class="en">vanilla ice cream</span>
                     </div>
                 </div>
-                <div class="menu-item side fade-up" style="display: none;">
+                <div class="menu-item side" style="display: none;">
                     <div class="item-img">
                         <img src="/images/strawberry_ice_cream.png" alt="딸기 아이스크림">
                     </div>
@@ -133,7 +133,7 @@
                         <span class="en">strawberry ice cream</span>
                     </div>
                 </div>
-                <div class="menu-item side fade-up" style="display: none;">
+                <div class="menu-item side" style="display: none;">
                     <div class="item-img">
                         <img src="/images/vanilla_ice_cream.png" alt="초코 아이스크림">
                     </div>
@@ -198,18 +198,18 @@
                     targetTab.click();
                 }
             } else {
-                // 파라미터가 없는 경우 초기 애니메이션
-                gsap.from('.menu-item.crepe', {
-                    opacity: 0,
-                    y: 30,
-                    duration: 1,
-                    stagger: 0.1,
-                    ease: "power3.out",
-                    scrollTrigger: {
-                        trigger: '.menu-grid',
-                        start: "top 80%"
+                // 파라미터가 없는 경우 초기 애니메이션 (크레페 메뉴 즉시 노출)
+                // fromTo를 사용하여 명시적으로 0에서 1로 애니메이션
+                gsap.fromTo('.menu-item.crepe',
+                    { opacity: 0, y: 30 },
+                    {
+                        opacity: 1,
+                        y: 0,
+                        duration: 1,
+                        stagger: 0.1,
+                        ease: "power3.out"
                     }
-                });
+                );
             }
         });
     </script>

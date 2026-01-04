@@ -176,13 +176,19 @@
     border-radius: 30px;
     text-align: center;
     border: 1px solid rgba(1, 59, 141, 0.08);
-    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    /* 등장 시에는 트랜지션을 주지 않고 hover 시에만 동작하도록 분리 */
+    transition: box-shadow 0.4s ease, border-color 0.4s ease, background 0.4s ease;
 }
 
 .core-card:hover {
     background: #013b8d;
     transform: translateY(-15px);
     box-shadow: 0 30px 60px rgba(1, 59, 141, 0.2);
+    /* 호버 응답성을 위해 여기서만 transform 트랜지션 허용 */
+    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
+        box-shadow 0.4s ease,
+        border-color 0.4s ease,
+        background 0.4s ease;
 }
 
 .core-icon {
