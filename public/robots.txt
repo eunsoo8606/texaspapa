@@ -1,0 +1,20 @@
+User-agent: *
+Allow: /
+
+# 주요 페이지
+Allow: /brand
+Allow: /company
+Allow: /menu
+Allow: /franchise
+Allow: /community
+Allow: /location
+
+# 정적 리소스
+Allow: /css/
+Allow: /js/
+Allow: /images/
+Allow: /rss.xml
+Allow: /sitemap.xml
+
+# Sitemap 위치
+Sitemap: https://texaspapa.co.kr/sitemap.xml

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Texas Papa - 텍사스파파</title>
+    <link>https://texaspapa.co.kr</link>
+    <description>텍사스파파 공식 홈페이지 - 프리미엄 치킨 프랜차이즈</description>
+    <language>ko</language>
+    <lastBuildDate>Wed, 15 Jan 2026 20:53:24 +0900</lastBuildDate>
+    <atom:link href="https://texaspapa.co.kr/rss.xml" rel="self" type="application/rss+xml"/>
+    
+    <!-- 최신 공지사항 및 이벤트 항목 -->
+    <item>
+      <title>텍사스파파 가맹점 모집</title>
+      <link>https://texaspapa.co.kr/franchise</link>
+      <description>텍사스파파와 함께 성공적인 창업을 시작하세요. 차별화된 메뉴와 체계적인 시스템으로 안정적인 수익을 보장합니다.</description>
+      <pubDate>Wed, 15 Jan 2026 00:00:00 +0900</pubDate>
+      <guid>https://texaspapa.co.kr/franchise</guid>
+    </item>
+    
+    <item>
+      <title>텍사스파파 신메뉴 출시</title>
+      <link>https://texaspapa.co.kr/menu</link>
+      <description>텍사스파파의 새로운 메뉴를 만나보세요. 프리미엄 치킨과 다양한 사이드 메뉴로 구성되어 있습니다.</description>
+      <pubDate>Mon, 13 Jan 2026 00:00:00 +0900</pubDate>
+      <guid>https://texaspapa.co.kr/menu-20260113</guid>
+    </item>
+    
+    <item>
+      <title>텍사스파파 브랜드 소개</title>
+      <link>https://texaspapa.co.kr/brand</link>
+      <description>텍사스파파는 프리미엄 치킨 프랜차이즈로, 최고의 품질과 맛을 제공합니다.</description>
+      <pubDate>Fri, 10 Jan 2026 00:00:00 +0900</pubDate>
+      <guid>https://texaspapa.co.kr/brand</guid>
+    </item>
+    
+    <item>
+      <title>매장 위치 안내</title>
+      <link>https://texaspapa.co.kr/location</link>
+      <description>전국 텍사스파파 매장 위치를 확인하세요. 가까운 매장에서 맛있는 치킨을 즐기실 수 있습니다.</description>
+      <pubDate>Wed, 08 Jan 2026 00:00:00 +0900</pubDate>
+      <guid>https://texaspapa.co.kr/location</guid>
+    </item>
+  </channel>
+</rss>
