@@ -140,6 +140,52 @@ app.get('/rss.xml', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'rss.xml'));
 });
 
+// 창업 상담 신청 API
+app.post('/api/consultation', async (req, res) => {
+    const { name, phone, email, region, budget, experience, message } = req.body;
+
+    try {
+        // 입력 검증
+        if (!name || !phone) {
+            return res.status(400).json({
+                success: false,
+                message: '이름과 연락처는 필수 입력 항목입니다.'
+            });
+        }
+
+        // 전화번호 형식 검증 (간단한 검증)
+        const phoneRegex = /^[0-9-]+$/;
+        if (!phoneRegex.test(phone)) {
+            return res.status(400).json({
+                success: false,
+                message: '올바른 전화번호 형식이 아닙니다.'
+            });
+        }
+
+        const db = require('./config/database');
+        const createIp = req.ip || req.connection.remoteAddress;
+
+        // 상담 신청 저장
+        await db.query(
+            `INSERT INTO consultation (name, phone, email, region, budget, experience, message, create_ip, created_at) 
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())`,
+            [name, phone, email, region, budget, experience, message, createIp]
+        );
+
+        res.json({
+            success: true,
+            message: '상담 신청이 완료되었습니다. 빠른 시일 내에 연락드리겠습니다.'
+        });
+
+    } catch (error) {
+        console.error('상담 신청 오류:', error);
+        res.status(500).json({
+            success: false,
+            message: '상담 신청 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.'
+        });
+    }
+});
+
 // 관리자 라우터 연결
 const adminRouter = require('./routes/admin');
 app.use('/console', adminRouter);

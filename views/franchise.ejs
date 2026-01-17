@@ -715,6 +715,14 @@
                             </div>
                         </div>
 
+                        <!-- 이메일 -->
+                        <div class="form-group row">
+                            <label for="user_email">이메일</label>
+                            <div class="input-wrap">
+                                <input type="email" id="user_email" name="user_email" placeholder="이메일 (선택)">
+                            </div>
+                        </div>
+
                         <!-- 창업 희망 지역 -->
                         <div class="form-group row">
                             <label for="hope_area">창업 희망 지역</label>
@@ -1251,6 +1259,87 @@
                 btn.classList.add('active');
                 // Update hidden input
                 hopePkgInput.value = btn.dataset.pkg;
+            });
+        });
+
+        // 창업 상담 신청 폼 제출 처리
+        const inquiryForm = document.getElementById('inquiry-form');
+        if (inquiryForm) {
+            inquiryForm.addEventListener('submit', async function (e) {
+                e.preventDefault();
+
+                const submitBtn = this.querySelector('.submit-btn');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<span>전송 중...</span><i class="fas fa-spinner fa-spin"></i>';
+
+                try {
+                    // 폼 데이터 수집
+                    const formData = {
+                        name: document.getElementById('user_name').value,
+                        phone: document.getElementById('user_phone').value,
+                        email: document.getElementById('user_email').value,
+                        region: document.getElementById('hope_area').value,
+                        budget: document.getElementById('hope_package').value,
+                        experience: document.querySelector('input[name="startup_type"]:checked')?.value || '',
+                        message: document.getElementById('user_message').value
+                    };
+
+                    // API 호출
+                    const response = await fetch('/api/consultation', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(formData)
+                    });
+
+                    const result = await response.json();
+
+                    if (result.success) {
+                        alert(result.message);
+                        inquiryForm.reset();
+                        // 패키지 선택 초기화
+                        pkgSelBtns.forEach(b => b.classList.remove('active'));
+                        document.querySelector('.pkg-sel-btn[data-pkg="standard"]')?.classList.add('active');
+                        hopePkgInput.value = 'standard';
+                    } else {
+                        alert(result.message || '상담 신청 중 오류가 발생했습니다.');
+                    }
+                } catch (error) {
+                    console.error('상담 신청 오류:', error);
+                    alert('상담 신청 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalText;
+                }
+            });
+        }
+    </script>
+
+    <!-- 맨 위로 가기 버튼 -->
+    <button id="scroll-to-top" class="scroll-to-top" aria-label="맨 위로 가기">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // 맨 위로 가기 버튼 기능
+        const scrollToTopBtn = document.getElementById('scroll-to-top');
+
+        // 스크롤 이벤트 감지
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollToTopBtn.classList.add('visible');
+            } else {
+                scrollToTopBtn.classList.remove('visible');
+            }
+        });
+
+        // 버튼 클릭 시 맨 위로 스크롤
+        scrollToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
             });
         });
     </script>
