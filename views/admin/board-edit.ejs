@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= title %> | Texas Papa 관리자
+    </title>
+    <link rel="icon" type="image/png" href="/images/logo.png">
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Outfit:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Admin Dashboard CSS -->
+    <link rel="stylesheet" href="/css/admin-dashboard.css">
+
+    <!-- Quill Editor CSS -->
+    <link href="/lib/quill/quill.snow.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="admin-wrapper">
+        <!-- 사이드바 -->
+        <%- include('./partials/sidebar', { user, currentPage }) %>
+
+            <!-- 메인 콘텐츠 영역 -->
+            <div class="main-content">
+                <!-- 헤더 -->
+                <header class="admin-header">
+                    <div class="header-left">
+                        <button class="sidebar-toggle" onclick="toggleSidebar()">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                        <h1 class="page-title">
+                            <%= title %>
+                        </h1>
+                    </div>
+                    <div class="header-right">
+                        <div class="user-info">
+                            <div class="user-avatar">
+                                <i class="fas fa-user-circle"></i>
+                            </div>
+                            <div class="user-details">
+                                <span class="user-name">
+                                    <%= user.name || user.adminName %>
+                                </span>
+                                <span class="user-role">
+                                    <%= user.role==='super_admin' ? '최고 관리자' : user.role==='admin' ? '관리자' : '편집자' %>
+                                </span>
+                            </div>
+                        </div>
+                        <a href="/console/logout" class="logout-btn" title="로그아웃">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </a>
+                    </div>
+                </header>
+
+                <!-- 페이지 콘텐츠 -->
+                <main class="page-content">
+                    <div class="board-form-container">
+                        <form id="boardForm" method="POST" action="/console/board/<%= boardType %>/<%= post.id %>/edit">
+                            <!-- 제목 입력 -->
+                            <div class="form-group">
+                                <label for="title" class="form-label">
+                                    <i class="fas fa-heading"></i>
+                                    제목
+                                </label>
+                                <input type="text" id="title" name="title" class="form-input" placeholder="제목을 입력하세요"
+                                    required maxlength="255" value="<%= post.title %>">
+                            </div>
+
+                            <!-- 에디터 -->
+                            <div class="form-group">
+                                <label for="editor" class="form-label">
+                                    <i class="fas fa-edit"></i>
+                                    내용
+                                </label>
+                                <div id="editor" class="quill-editor"></div>
+                                <input type="hidden" id="content" name="content">
+                            </div>
+
+                            <!-- 상위노출 (공지사항, 이벤트만) -->
+                            <% if (boardType==='notice' || boardType==='event' ) { %>
+                                <div class="form-group">
+                                    <label class="form-checkbox">
+                                        <input type="checkbox" name="top_yn" value="Y" <%=post.top_yn==='Y' ? 'checked'
+                                            : '' %>>
+                                        <span class="checkbox-label">
+                                            <i class="fas fa-thumbtack"></i>
+                                            상위 고정
+                                        </span>
+                                    </label>
+                                    <p class="form-help-text">체크하면 게시글 목록 상단에 고정됩니다.</p>
+                                </div>
+                                <% } %>
+
+                                    <!-- 버튼 그룹 -->
+                                    <div class="form-actions">
+                                        <button type="button" class="btn-secondary"
+                                            onclick="location.href='/console/board/<%= boardType %>/<%= post.id %>'">
+                                            <i class="fas fa-times"></i>
+                                            취소
+                                        </button>
+                                        <button type="submit" class="btn-primary">
+                                            <i class="fas fa-check"></i>
+                                            수정 완료
+                                        </button>
+                                    </div>
+                        </form>
+                    </div>
+                </main>
+            </div>
+    </div>
+
+    <!-- Quill Editor JS -->
+    <script src="/lib/quill/quill.js"></script>
+
+    <script>
+        // 사이드바 토글
+        function toggleSidebar() {
+            document.querySelector('.admin-sidebar').classList.toggle('collapsed');
+            document.querySelector('.main-content').classList.toggle('expanded');
+        }
+
+        // Quill 에디터 초기화 (스크립트 로딩 완료 후)
+        let quill;
+
+        function initQuillEditor() {
+            if (typeof Quill !== 'undefined') {
+                try {
+                    quill = new Quill('#editor', {
+                        theme: 'snow',
+                        placeholder: '내용을 입력하세요...',
+                        modules: {
+                            toolbar: [
+                                [{ 'header': [1, 2, 3, false] }],
+                                ['bold', 'italic', 'underline', 'strike'],
+                                [{ 'color': [] }, { 'background': [] }],
+                                [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                                [{ 'align': [] }],
+                                ['link', 'image'],
+                                ['clean']
+                            ]
+                        }
+                    });
+
+                    // 기존 내용 로드
+                    const existingContent = `<%- post.content %>`;
+                    quill.root.innerHTML = existingContent;
+
+                    console.log('✅ Quill 에디터 초기화 성공');
+
+                    // 폼 제출 시 에디터 내용을 hidden input에 저장
+                    document.getElementById('boardForm').addEventListener('submit', function (e) {
+                        const content = quill.root.innerHTML;
+
+                        // 내용 검증 (빈 내용 체크)
+                        if (quill.getText().trim().length === 0) {
+                            e.preventDefault();
+                            alert('내용을 입력해주세요.');
+                            return false;
+                        }
+
+                        document.getElementById('content').value = content;
+                    });
+                } catch (error) {
+                    console.error('Quill 에디터 초기화 오류:', error);
+                    alert('에디터를 불러오는 중 오류가 발생했습니다. 페이지를 새로고침해주세요.');
+                }
+            } else {
+                console.error('❌ Quill 라이브러리를 로드할 수 없습니다.');
+                alert('에디터 라이브러리를 불러올 수 없습니다. 인터넷 연결을 확인해주세요.');
+            }
+        }
+
+        // DOM 로딩 완료 후 실행
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initQuillEditor);
+        } else {
+            initQuillEditor();
+        }
+
+        // 모바일에서 메뉴 클릭 시 사이드바 닫기
+        if (window.innerWidth <= 768) {
+            document.querySelectorAll('.sidebar-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    document.querySelector('.admin-sidebar').classList.add('collapsed');
+                });
+            });
+        }
+    </script>
+</body>
+
+</html>

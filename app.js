@@ -50,9 +50,13 @@ app.get('/franchise', (req, res) => {
     res.render('franchise', { title: 'Texas Papa - Franchise', activePage: 'franchise' });
 });
 
-// 커뮤니티 섹션 라우팅 (단일 페이지)
-app.get('/community/:tab?', (req, res) => {
-    const tab = req.params.tab || 'notice'; // 기본값은 공지사항
+// 커뮤니티 섹션 라우팅
+app.get('/community/:tab?', async (req, res) => {
+    const tab = req.params.tab || 'notice';
+    const page = parseInt(req.query.page) || 1;
+    const limit = 10;
+    const offset = (page - 1) * limit;
+
     const titles = {
         notice: '공지사항',
         event: '이벤트',
@@ -61,11 +65,64 @@ app.get('/community/:tab?', (req, res) => {
         inquiry: '문의게시판'
     };
 
-    res.render('community/index', {
-        title: `${titles[tab] || '커뮤니티'} | Texas Papa`,
-        activePage: 'community',
-        currentTab: tab
-    });
+    try {
+        const db = require('./config/database');
+
+        // boards 테이블에서 해당 게시판 ID 조회 (company_id 2번 - Texas Papa)
+        const [boardResult] = await db.query(
+            'SELECT id FROM boards WHERE company_id = 2 AND category = ? LIMIT 1',
+            [tab]
+        );
+
+        let posts = [];
+        let totalPosts = 0;
+        let totalPages = 1;
+
+        if (boardResult.length > 0) {
+            const boardId = boardResult[0].id;
+
+            // 게시글 목록 조회 (상단 고정 우선, 최신순)
+            [posts] = await db.query(
+                `SELECT post_no, title, writer, views, create_dt, top_yn
+                 FROM posts
+                 WHERE board_id = ?
+                 ORDER BY top_yn DESC, create_dt DESC
+                 LIMIT ? OFFSET ?`,
+                [boardId, limit, offset]
+            );
+
+            // 총 게시글 수
+            const [countResult] = await db.query(
+                'SELECT COUNT(*) as total FROM posts WHERE board_id = ?',
+                [boardId]
+            );
+            totalPosts = countResult[0].total;
+            totalPages = Math.ceil(totalPosts / limit);
+
+            // 조회수 증가는 상세 페이지에서만 처리
+        }
+
+        res.render('community/index', {
+            title: `${titles[tab] || '커뮤니티'} | Texas Papa`,
+            activePage: 'community',
+            currentTab: tab,
+            posts: posts,
+            pagination: {
+                currentPage: page,
+                totalPages: totalPages,
+                totalPosts: totalPosts
+            }
+        });
+    } catch (error) {
+        console.error('커뮤니티 조회 오류:', error);
+        res.render('community/index', {
+            title: `${titles[tab] || '커뮤니티'} | Texas Papa`,
+            activePage: 'community',
+            currentTab: tab,
+            posts: [],
+            pagination: { currentPage: 1, totalPages: 1, totalPosts: 0 }
+        });
+    }
 });
 
 app.get('/location', (req, res) => {
@@ -83,26 +140,9 @@ app.get('/rss.xml', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'rss.xml'));
 });
 
-// 관리자 콘솔 라우팅
-app.get('/console', (req, res) => {
-    // 이미 로그인된 경우 대시보드로 리다이렉트 (추후 구현)
-    // if (req.session.isAdmin) {
-    //     return res.redirect('/console/dashboard');
-    // }
-    res.render('admin/login', { title: '관리자 로그인', error: null });
-});
-
-// 로그인 처리 (추후 데이터베이스 연동 구현)
-app.post('/console/login', (req, res) => {
-    const { username, password } = req.body;
-
-    // TODO: 데이터베이스에서 사용자 확인 및 비밀번호 검증
-    // 임시로 에러 메시지 반환
-    res.render('admin/login', {
-        title: '관리자 로그인',
-        error: '로그인 기능은 추후 구현 예정입니다.'
-    });
-});
+// 관리자 라우터 연결
+const adminRouter = require('./routes/admin');
+app.use('/console', adminRouter);
 
 if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
     app.listen(PORT, () => {

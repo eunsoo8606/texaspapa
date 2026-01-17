@@ -7,11 +7,12 @@
         "start": "node app.js"
     },
     "dependencies": {
+        "bcrypt": "^5.1.1",
+        "dotenv": "^16.3.1",
         "ejs": "^3.1.9",
         "express": "^4.18.2",
-        "dotenv": "^16.3.1",
         "express-session": "^1.17.3",
-        "bcrypt": "^5.1.1",
-        "mysql2": "^3.6.5"
+        "mysql2": "^3.6.5",
+        "quill": "^2.0.3"
     }
 }

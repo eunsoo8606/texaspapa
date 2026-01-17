@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= title %> | Texas Papa 관리자
+    </title>
+    <link rel="icon" type="image/png" href="/images/logo.png">
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Outfit:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Admin Dashboard CSS -->
+    <link rel="stylesheet" href="/css/admin-dashboard.css">
+</head>
+
+<body>
+    <div class="admin-wrapper">
+        <!-- 사이드바 -->
+        <%- include('./partials/sidebar', { user, currentPage }) %>
+
+            <!-- 메인 콘텐츠 영역 -->
+            <div class="main-content">
+                <!-- 헤더 -->
+                <header class="admin-header">
+                    <div class="header-left">
+                        <button class="sidebar-toggle" onclick="toggleSidebar()">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                        <h1 class="page-title">
+                            <%= boardTitle %>
+                        </h1>
+                    </div>
+                    <div class="header-right">
+                        <div class="user-info">
+                            <div class="user-avatar">
+                                <i class="fas fa-user-circle"></i>
+                            </div>
+                            <div class="user-details">
+                                <span class="user-name">
+                                    <%= user.name || user.adminName %>
+                                </span>
+                                <span class="user-role">
+                                    <%= user.role==='super_admin' ? '최고 관리자' : user.role==='admin' ? '관리자' : '편집자' %>
+                                </span>
+                            </div>
+                        </div>
+                        <a href="/console/logout" class="logout-btn" title="로그아웃">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </a>
+                    </div>
+                </header>
+
+                <!-- 페이지 콘텐츠 -->
+                <main class="page-content">
+                    <div class="board-detail-container">
+                        <!-- 게시글 헤더 -->
+                        <div class="board-detail-header">
+                            <h2 class="board-detail-title">
+                                <%= post.title %>
+                            </h2>
+                            <div class="board-detail-meta">
+                                <span class="meta-item">
+                                    <i class="fas fa-user"></i>
+                                    <%= post.author %>
+                                </span>
+                                <span class="meta-item">
+                                    <i class="fas fa-calendar"></i>
+                                    <%= new Date(post.created_at).toLocaleDateString('ko-KR') %>
+                                </span>
+                                <span class="meta-item">
+                                    <i class="fas fa-eye"></i>
+                                    <%= post.views %>
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- 게시글 내용 -->
+                        <div class="board-detail-content">
+                            <%- post.content %>
+                        </div>
+
+                        <!-- 버튼 그룹 -->
+                        <div class="board-detail-actions">
+                            <div class="action-left">
+                                <button type="button" class="btn-secondary"
+                                    onclick="location.href='/console/board/<%= boardType %>'">
+                                    <i class="fas fa-list"></i>
+                                    목록
+                                </button>
+                            </div>
+                            <div class="action-right">
+                                <button type="button" class="btn-primary"
+                                    onclick="location.href='/console/board/<%= boardType %>/<%= post.id %>/edit'">
+                                    <i class="fas fa-edit"></i>
+                                    수정
+                                </button>
+                                <button type="button" class="btn-danger" onclick="confirmDelete()">
+                                    <i class="fas fa-trash"></i>
+                                    삭제
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+    </div>
+
+    <!-- 삭제 확인 모달 -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>
+                    <i class="fas fa-exclamation-triangle"></i>
+                    게시글 삭제
+                </h3>
+            </div>
+            <div class="modal-body">
+                <p>정말로 이 게시글을 삭제하시겠습니까?</p>
+                <p class="text-danger">삭제된 게시글은 복구할 수 없습니다.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary" onclick="closeDeleteModal()">
+                    취소
+                </button>
+                <form id="deleteForm" method="POST" action="/console/board/<%= boardType %>/<%= post.id %>/delete"
+                    style="display: inline;">
+                    <button type="submit" class="btn-danger">
+                        삭제
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 사이드바 토글
+        function toggleSidebar() {
+            document.querySelector('.admin-sidebar').classList.toggle('collapsed');
+            document.querySelector('.main-content').classList.toggle('expanded');
+        }
+
+        // 삭제 확인 모달 열기
+        function confirmDelete() {
+            document.getElementById('deleteModal').style.display = 'flex';
+        }
+
+        // 삭제 확인 모달 닫기
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').style.display = 'none';
+        }
+
+        // 모달 외부 클릭 시 닫기
+        window.onclick = function (event) {
+            const modal = document.getElementById('deleteModal');
+            if (event.target === modal) {
+                closeDeleteModal();
+            }
+        }
+
+        // 모바일에서 메뉴 클릭 시 사이드바 닫기
+        if (window.innerWidth <= 768) {
+            document.querySelectorAll('.sidebar-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    document.querySelector('.admin-sidebar').classList.add('collapsed');
+                });
+            });
+        }
+    </script>
+</body>
+
+</html>

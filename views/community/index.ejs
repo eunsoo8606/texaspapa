@@ -48,62 +48,63 @@
                         </nav>
 
                         <div class="community-content fade-up">
-                            <% if (currentTab==='notice' ) { %>
+                            <% if (posts && posts.length> 0) { %>
                                 <div class="notice-list">
-                                    <!-- 중요한 공지 -->
-                                    <div class="notice-item">
-                                        <span class="ni-num"><i class="fa-solid fa-bullhorn"
-                                                style="color: var(--primary-blue);"></i></span>
-                                        <div class="ni-content">
-                                            <a href="#" class="ni-title"><span class="ni-badge important">HOT</span>
-                                                텍사스파파 공식 홈페이지가 리뉴얼 되었습니다.</a>
-                                            <span class="ni-date">2026-01-10</span>
+                                    <% posts.forEach((post, index)=> { %>
+                                        <div class="notice-item">
+                                            <% if (post.top_yn==='Y' ) { %>
+                                                <span class="ni-num"><i class="fa-solid fa-bullhorn"
+                                                        style="color: var(--primary-blue);"></i></span>
+                                                <% } else { %>
+                                                    <span class="ni-num">
+                                                        <%= pagination.totalPosts - ((pagination.currentPage - 1) * 10 +
+                                                            index) %>
+                                                    </span>
+                                                    <% } %>
+                                                        <div class="ni-content">
+                                                            <a href="/community/<%= currentTab %>/<%= post.post_no %>"
+                                                                class="ni-title">
+                                                                <% if (post.top_yn==='Y' ) { %>
+                                                                    <span class="ni-badge important">공지</span>
+                                                                    <% } %>
+                                                                        <%= post.title %>
+                                                            </a>
+                                                            <span class="ni-date">
+                                                                <%= new Date(post.create_dt).toISOString().split('T')[0]
+                                                                    %>
+                                                            </span>
+                                                        </div>
                                         </div>
-                                    </div>
-
-                                    <!-- 일반 공지 예시 -->
-                                    <div class="notice-item">
-                                        <span class="ni-num">04</span>
-                                        <div class="ni-content">
-                                            <a href="#" class="ni-title">2026년 설 연휴 영업 안내</a>
-                                            <span class="ni-date">2026-01-12</span>
-                                        </div>
-                                    </div>
-                                    <div class="notice-item">
-                                        <span class="ni-num">03</span>
-                                        <div class="ni-content">
-                                            <a href="#" class="ni-title">겨울 시즌 신메뉴 '스노우베리 크레페' 출시 기념 프로모션</a>
-                                            <span class="ni-date">2026-01-05</span>
-                                        </div>
-                                    </div>
-                                    <div class="notice-item">
-                                        <span class="ni-num">02</span>
-                                        <div class="ni-content">
-                                            <a href="#" class="ni-title">원부재료 단가 안정화를 위한 본사 지원 안내</a>
-                                            <span class="ni-date">2025-12-28</span>
-                                        </div>
-                                    </div>
-                                    <div class="notice-item">
-                                        <span class="ni-num">01</span>
-                                        <div class="ni-content">
-                                            <a href="#" class="ni-title">텍사스파파 개인정보 처리방침 개정 안내</a>
-                                            <span class="ni-date">2025-12-15</span>
-                                        </div>
-                                    </div>
+                                        <% }); %>
                                 </div>
 
-                                <div class="pagination fade-up">
-                                    <a href="#" class="pg-btn active">1</a>
-                                </div>
-                                <% } else { %>
-                                    <div style="text-align: center; padding: 100px 0; color: #999;">
-                                        <i class="fa-solid fa-tools"
-                                            style="font-size: 3rem; margin-bottom: 20px; color: var(--primary-blue);"></i>
-                                        <p style="font-size: 1.2rem;">죄송합니다. 현재 <strong>'<%= title.split(' | ')[0] %>'
-                                                    </strong> 페이지는 준비 중입니다.</p>
-                                        <p>빠른 시일 내에 더 좋은 서비스로 찾아뵙겠습니다.</p>
+                                <% if (pagination.totalPages> 1) { %>
+                                    <div class="pagination fade-up">
+                                        <% if (pagination.currentPage> 1) { %>
+                                            <a href="/community/<%= currentTab %>?page=<%= pagination.currentPage - 1 %>"
+                                                class="pg-btn">‹</a>
+                                            <% } %>
+
+                                                <% for (let i=1; i <=pagination.totalPages; i++) { %>
+                                                    <a href="/community/<%= currentTab %>?page=<%= i %>"
+                                                        class="pg-btn <%= i === pagination.currentPage ? 'active' : '' %>">
+                                                        <%= i %>
+                                                    </a>
+                                                    <% } %>
+
+                                                        <% if (pagination.currentPage < pagination.totalPages) { %>
+                                                            <a href="/community/<%= currentTab %>?page=<%= pagination.currentPage + 1 %>"
+                                                                class="pg-btn">›</a>
+                                                            <% } %>
                                     </div>
                                     <% } %>
+                                        <% } else { %>
+                                            <div style="text-align: center; padding: 100px 0; color: #999;">
+                                                <i class="fa-solid fa-inbox"
+                                                    style="font-size: 3rem; margin-bottom: 20px; color: var(--primary-blue);"></i>
+                                                <p style="font-size: 1.2rem;">등록된 게시글이 없습니다.</p>
+                                            </div>
+                                            <% } %>
                         </div>
                     </div>
                 </div>

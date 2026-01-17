@@ -1,0 +1,64 @@
+<aside class="admin-sidebar">
+    <!-- 로고 -->
+    <div class="sidebar-logo">
+        <i class="fas fa-fire"></i>
+        <span class="logo-text">Texas Papa</span>
+    </div>
+
+    <!-- 메뉴 -->
+    <nav class="sidebar-menu">
+        <!-- 대시보드 -->
+        <a href="/console/dashboard" class="menu-item <%= currentPage === 'dashboard' ? 'active' : '' %>">
+            <i class="fas fa-home"></i>
+            <span class="menu-text">대시보드</span>
+        </a>
+
+        <!-- 게시판 -->
+        <div class="menu-group">
+            <div class="menu-group-title">
+                <i class="fas fa-clipboard-list"></i>
+                <span class="menu-text">게시판</span>
+            </div>
+            <div class="submenu">
+                <a href="/console/board/notice" class="menu-item <%= currentPage === 'board-notice' ? 'active' : '' %>">
+                    <i class="fas fa-bullhorn"></i>
+                    <span class="menu-text">공지사항</span>
+                </a>
+                <a href="/console/board/event" class="menu-item <%= currentPage === 'board-event' ? 'active' : '' %>">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span class="menu-text">이벤트</span>
+                </a>
+                <a href="/console/board/faq" class="menu-item <%= currentPage === 'board-faq' ? 'active' : '' %>">
+                    <i class="fas fa-question-circle"></i>
+                    <span class="menu-text">FAQ</span>
+                </a>
+                <a href="/console/board/voice" class="menu-item <%= currentPage === 'board-voice' ? 'active' : '' %>">
+                    <i class="fas fa-comments"></i>
+                    <span class="menu-text">고객의소리</span>
+                </a>
+                <a href="/console/board/inquiry"
+                    class="menu-item <%= currentPage === 'board-inquiry' ? 'active' : '' %>">
+                    <i class="fas fa-envelope"></i>
+                    <span class="menu-text">문의게시판</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- 문의하기 -->
+        <a href="/console/inquiry" class="menu-item <%= currentPage === 'inquiry' ? 'active' : '' %>">
+            <i class="fas fa-inbox"></i>
+            <span class="menu-text">문의하기</span>
+        </a>
+
+        <!-- 가맹점 -->
+        <a href="/console/franchise" class="menu-item <%= currentPage === 'franchise' ? 'active' : '' %>">
+            <i class="fas fa-store"></i>
+            <span class="menu-text">가맹점</span>
+        </a>
+    </nav>
+
+    <!-- 푸터 -->
+    <div class="sidebar-footer">
+        <p>&copy; 2026 Texas Papa</p>
+    </div>
+</aside>
