@@ -11,6 +11,9 @@ const PORT = process.env.PORT || 3000;
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
+// Vercel 프록시 신뢰 설정 (HTTPS 쿠키 작동을 위해 필수)
+app.set('trust proxy', 1);
+
 // 미들웨어 설정
 app.use(express.urlencoded({ extended: true })); // POST 데이터 파싱
 app.use(express.json()); // JSON 데이터 파싱
