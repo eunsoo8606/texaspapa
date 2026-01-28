@@ -2,6 +2,7 @@ require('dotenv').config(); // 환경 변수 로드
 
 const express = require('express');
 const session = require('express-session');
+const MySQLStore = require('express-mysql-session')(session);
 const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -14,9 +15,34 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.urlencoded({ extended: true })); // POST 데이터 파싱
 app.use(express.json()); // JSON 데이터 파싱
 
+// MySQL 세션 스토어 설정 (Vercel 서버리스 환경 대응)
+const sessionStoreOptions = {
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT || 3306,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    clearExpired: true,
+    checkExpirationInterval: 900000, // 15분마다 만료된 세션 정리
+    expiration: 86400000, // 24시간 (밀리초)
+    createDatabaseTable: true, // 세션 테이블 자동 생성
+    schema: {
+        tableName: 'sessions',
+        columnNames: {
+            session_id: 'session_id',
+            expires: 'expires',
+            data: 'data'
+        }
+    }
+};
+
+const sessionStore = new MySQLStore(sessionStoreOptions);
+
 // 세션 설정
 app.use(session({
+    key: 'texaspapa_session',
     secret: process.env.SESSION_SECRET || 'default-secret-key',
+    store: sessionStore,
     resave: false,
     saveUninitialized: false,
     cookie: {
