@@ -140,6 +140,28 @@
     color: #fff;
 }
 
+/* 문의하기 버튼 */
+.write-btn {
+    display: inline-block;
+    padding: 12px 30px;
+    background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+}
+
+.write-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+}
+
+.write-btn i {
+    margin-right: 5px;
+}
+
 /* Pagination */
 .pagination {
     display: flex;
@@ -194,5 +216,15 @@
 
     .ni-num {
         display: none;
+    }
+
+    .write-btn-container {
+        text-align: center !important;
+        margin-bottom: 15px !important;
+    }
+
+    .write-btn {
+        width: 100%;
+        text-align: center;
     }
 }

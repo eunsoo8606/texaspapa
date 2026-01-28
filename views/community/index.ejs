@@ -47,65 +47,103 @@
                                 class="tab-item <%= currentTab === 'inquiry' ? 'active' : '' %>">문의게시판</a>
                         </nav>
 
-                        <div class="community-content fade-up">
-                            <% if (posts && posts.length> 0) { %>
-                                <div class="notice-list">
-                                    <% posts.forEach((post, index)=> { %>
-                                        <div class="notice-item">
-                                            <% if (post.top_yn==='Y' ) { %>
-                                                <span class="ni-num"><i class="fa-solid fa-bullhorn"
-                                                        style="color: var(--primary-blue);"></i></span>
-                                                <% } else { %>
-                                                    <span class="ni-num">
-                                                        <%= pagination.totalPosts - ((pagination.currentPage - 1) * 10 +
-                                                            index) %>
-                                                    </span>
-                                                    <% } %>
-                                                        <div class="ni-content">
-                                                            <a href="/community/<%= currentTab %>/<%= post.post_no %>"
-                                                                class="ni-title">
-                                                                <% if (post.top_yn==='Y' ) { %>
-                                                                    <span class="ni-badge important">공지</span>
-                                                                    <% } %>
-                                                                        <%= post.title %>
-                                                            </a>
-                                                            <span class="ni-date">
-                                                                <%= new Date(post.create_dt).toISOString().split('T')[0]
-                                                                    %>
-                                                            </span>
-                                                        </div>
-                                        </div>
-                                        <% }); %>
-                                </div>
+                        <!-- 문의하기 버튼 (문의게시판, 고객의소리만) -->
+                        <% if (currentTab==='inquiry' || currentTab==='voice' ) { %>
+                            <div class="write-btn-container" style="text-align: right; margin-bottom: 20px;">
+                                <a href="/community/<%= currentTab %>/write" class="write-btn">
+                                    <i class="fas fa-pen"></i> 문의하기
+                                </a>
+                            </div>
+                            <% } %>
 
-                                <% if (pagination.totalPages> 1) { %>
-                                    <div class="pagination fade-up">
-                                        <% if (pagination.currentPage> 1) { %>
-                                            <a href="/community/<%= currentTab %>?page=<%= pagination.currentPage - 1 %>"
-                                                class="pg-btn">‹</a>
-                                            <% } %>
-
-                                                <% for (let i=1; i <=pagination.totalPages; i++) { %>
-                                                    <a href="/community/<%= currentTab %>?page=<%= i %>"
-                                                        class="pg-btn <%= i === pagination.currentPage ? 'active' : '' %>">
-                                                        <%= i %>
-                                                    </a>
-                                                    <% } %>
-
-                                                        <% if (pagination.currentPage < pagination.totalPages) { %>
-                                                            <a href="/community/<%= currentTab %>?page=<%= pagination.currentPage + 1 %>"
-                                                                class="pg-btn">›</a>
-                                                            <% } %>
+                                <!-- 성공 메시지 -->
+                                <% if (typeof query !=='undefined' && query.success==='1' ) { %>
+                                    <div class="success-message"
+                                        style="background: #d4edda; color: #155724; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #28a745;">
+                                        <i class="fas fa-check-circle"></i> 문의가 성공적으로 등록되었습니다. 빠른 시일 내에 답변드리겠습니다.
                                     </div>
                                     <% } %>
-                                        <% } else { %>
-                                            <div style="text-align: center; padding: 100px 0; color: #999;">
-                                                <i class="fa-solid fa-inbox"
-                                                    style="font-size: 3rem; margin-bottom: 20px; color: var(--primary-blue);"></i>
-                                                <p style="font-size: 1.2rem;">등록된 게시글이 없습니다.</p>
-                                            </div>
-                                            <% } %>
-                        </div>
+
+                                        <div class="community-content fade-up">
+                                            <% if (posts && posts.length> 0) { %>
+                                                <div class="notice-list">
+                                                    <% posts.forEach((post, index)=> { %>
+                                                        <div class="notice-item">
+                                                            <% if (post.top_yn==='Y' ) { %>
+                                                                <span class="ni-num"><i class="fa-solid fa-bullhorn"
+                                                                        style="color: var(--primary-blue);"></i></span>
+                                                                <% } else { %>
+                                                                    <span class="ni-num">
+                                                                        <%= pagination.totalPosts -
+                                                                            ((pagination.currentPage - 1) * 10 + index)
+                                                                            %>
+                                                                    </span>
+                                                                    <% } %>
+                                                                        <div class="ni-content">
+                                                                            <a href="/community/<%= currentTab %>/<%= post.post_no %>"
+                                                                                class="ni-title">
+                                                                                <% if (post.top_yn==='Y' ) { %>
+                                                                                    <span
+                                                                                        class="ni-badge important">공지</span>
+                                                                                    <% } %>
+                                                                                        <% if (currentTab==='inquiry' ||
+                                                                                            currentTab==='voice' ) { %>
+                                                                                            <% if
+                                                                                                (post.status==='pending'
+                                                                                                ) { %>
+                                                                                                <span class="ni-badge"
+                                                                                                    style="background: #ffc107; color: #000;">답변대기</span>
+                                                                                                <% } else if
+                                                                                                    (post.status==='answered'
+                                                                                                    ) { %>
+                                                                                                    <span
+                                                                                                        class="ni-badge"
+                                                                                                        style="background: #28a745; color: #fff;">답변완료</span>
+                                                                                                    <% } %>
+                                                                                                        <% } %>
+                                                                                                            <%= post.title
+                                                                                                                %>
+                                                                            </a>
+                                                                            <span class="ni-date">
+                                                                                <%= new
+                                                                                    Date(post.create_dt).toISOString().split('T')[0]
+                                                                                    %>
+                                                                            </span>
+                                                                        </div>
+                                                        </div>
+                                                        <% }); %>
+                                                </div>
+
+                                                <% if (pagination.totalPages> 1) { %>
+                                                    <div class="pagination fade-up">
+                                                        <% if (pagination.currentPage> 1) { %>
+                                                            <a href="/community/<%= currentTab %>?page=<%= pagination.currentPage - 1 %>"
+                                                                class="pg-btn">‹</a>
+                                                            <% } %>
+
+                                                                <% for (let i=1; i <=pagination.totalPages; i++) { %>
+                                                                    <a href="/community/<%= currentTab %>?page=<%= i %>"
+                                                                        class="pg-btn <%= i === pagination.currentPage ? 'active' : '' %>">
+                                                                        <%= i %>
+                                                                    </a>
+                                                                    <% } %>
+
+                                                                        <% if (pagination.currentPage <
+                                                                            pagination.totalPages) { %>
+                                                                            <a href="/community/<%= currentTab %>?page=<%= pagination.currentPage + 1 %>"
+                                                                                class="pg-btn">›</a>
+                                                                            <% } %>
+                                                    </div>
+                                                    <% } %>
+                                                        <% } else { %>
+                                                            <div
+                                                                style="text-align: center; padding: 100px 0; color: #999;">
+                                                                <i class="fa-solid fa-inbox"
+                                                                    style="font-size: 3rem; margin-bottom: 20px; color: var(--primary-blue);"></i>
+                                                                <p style="font-size: 1.2rem;">등록된 게시글이 없습니다.</p>
+                                                            </div>
+                                                            <% } %>
+                                        </div>
                     </div>
                 </div>
             </main>

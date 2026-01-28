@@ -392,8 +392,22 @@ router.get('/board/:type/:id', requireAuth, async (req, res) => {
             author: posts[0].writer,
             created_at: posts[0].create_dt,
             top_yn: posts[0].top_yn,
-            views: posts[0].views || 0
+            views: posts[0].views || 0,
+            author_name: posts[0].author_name,
+            author_email: posts[0].author_email,
+            author_phone: posts[0].author_phone,
+            status: posts[0].status
         };
+
+        // 답변 조회 (문의게시판, 고객의소리만)
+        let reply = null;
+        if (type === 'inquiry' || type === 'voice') {
+            const [replies] = await db.query(
+                'SELECT * FROM replies WHERE post_no = ? ORDER BY created_at DESC LIMIT 1',
+                [id]
+            );
+            reply = replies.length > 0 ? replies[0] : null;
+        }
 
         res.render('admin/board-detail', {
             title: post.title,
@@ -401,7 +415,8 @@ router.get('/board/:type/:id', requireAuth, async (req, res) => {
             boardType: type,
             boardTitle,
             currentPage: `board-${type}`,
-            post
+            post,
+            reply
         });
 
     } catch (error) {
@@ -574,6 +589,82 @@ router.get('/inquiry', requireAuth, (req, res) => {
         user: req.session.adminUser,
         currentPage: 'inquiry'
     });
+});
+
+// ===========================
+// 답변 저장/수정 (인증 필요)
+// ===========================
+router.post('/board/:type/:id/reply', requireAuth, async (req, res) => {
+    const { type, id } = req.params;
+    const { reply_content } = req.body;
+
+    try {
+        const db = require('../config/database');
+
+        // 입력 검증
+        if (!reply_content || reply_content.trim() === '') {
+            return res.status(400).send('답변 내용을 입력해주세요.');
+        }
+
+        // 기존 답변 확인
+        const [existingReplies] = await db.query(
+            'SELECT * FROM replies WHERE post_no = ?',
+            [id]
+        );
+
+        const isNewReply = existingReplies.length === 0; // 새 답변 여부 확인
+
+        if (existingReplies.length > 0) {
+            // 답변 수정
+            await db.query(
+                'UPDATE replies SET reply_content = ?, updated_at = NOW() WHERE post_no = ?',
+                [reply_content, id]
+            );
+        } else {
+            // 새 답변 등록
+            await db.query(
+                'INSERT INTO replies (post_no, reply_content, admin_id, created_at) VALUES (?, ?, ?, NOW())',
+                [id, reply_content, req.session.adminUser.id]
+            );
+        }
+
+        // 게시글 상태를 'answered'로 업데이트
+        await db.query(
+            'UPDATE posts SET status = ? WHERE post_no = ?',
+            ['answered', id]
+        );
+
+        // 사용자에게 답변 완료 이메일 발송 (첫 등록 시에만, 문의게시판/고객의소리만)
+        if (isNewReply && (type === 'inquiry' || type === 'voice')) {
+            try {
+                // 게시글 정보 조회
+                const [posts] = await db.query(
+                    'SELECT title, author_name, author_email FROM posts WHERE post_no = ?',
+                    [id]
+                );
+
+                if (posts.length > 0 && posts[0].author_email) {
+                    const { sendReplyNotification } = require('../utils/email');
+                    await sendReplyNotification({
+                        userEmail: posts[0].author_email,
+                        userName: posts[0].author_name,
+                        postTitle: posts[0].title,
+                        replyContent: reply_content,
+                        boardType: type
+                    });
+                }
+            } catch (emailError) {
+                console.error('이메일 발송 실패 (답변은 정상 등록됨):', emailError);
+            }
+        }
+
+        // 상세 페이지로 리다이렉트
+        res.redirect(`/console/board/${type}/${id}`);
+
+    } catch (error) {
+        console.error('답변 저장 오류:', error);
+        res.status(500).send('답변 저장 중 오류가 발생했습니다.');
+    }
 });
 
 // ===========================

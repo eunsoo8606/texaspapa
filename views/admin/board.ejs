@@ -71,10 +71,13 @@
                                         <%= pagination.totalPosts %>
                                     </strong>개</p>
                             </div>
-                            <button class="btn-primary" onclick="location.href='/console/board/<%= boardType %>/write'">
-                                <i class="fas fa-plus"></i>
-                                새 글 작성
-                            </button>
+                            <% if (boardType !=='inquiry' && boardType !=='voice' ) { %>
+                                <button class="btn-primary"
+                                    onclick="location.href='/console/board/<%= boardType %>/write'">
+                                    <i class="fas fa-plus"></i>
+                                    새 글 작성
+                                </button>
+                                <% } %>
                         </div>
 
                         <!-- 검색 폼 -->

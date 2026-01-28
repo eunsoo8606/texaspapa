@@ -148,7 +148,8 @@ app.get('/community/:tab?', async (req, res) => {
                 currentPage: page,
                 totalPages: totalPages,
                 totalPosts: totalPosts
-            }
+            },
+            query: req.query // 쿼리 파라미터 전달
         });
     } catch (error) {
         console.error('커뮤니티 조회 오류:', error);
@@ -157,8 +158,201 @@ app.get('/community/:tab?', async (req, res) => {
             activePage: 'community',
             currentTab: tab,
             posts: [],
-            pagination: { currentPage: 1, totalPages: 1, totalPosts: 0 }
+            pagination: { currentPage: 1, totalPages: 1, totalPosts: 0 },
+            query: req.query
         });
+    }
+});
+
+// ===========================
+// 문의 작성 페이지 (문의게시판, 고객의소리만)
+// ===========================
+app.get('/community/:tab/write', (req, res) => {
+    const { tab } = req.params;
+
+    // 문의게시판과 고객의소리만 사용자 작성 가능
+    if (tab !== 'inquiry' && tab !== 'voice') {
+        return res.redirect(`/community/${tab}`);
+    }
+
+    const titles = {
+        voice: '고객의소리',
+        inquiry: '문의게시판'
+    };
+
+    res.render('community/inquiry_write', {
+        title: `${titles[tab]} 작성 | Texas Papa`,
+        activePage: 'community',
+        boardType: tab,
+        boardTitle: titles[tab]
+    });
+});
+
+// ===========================
+// 문의 작성 처리
+// ===========================
+app.post('/community/:tab/write', async (req, res) => {
+    const { tab } = req.params;
+    const { author_name, author_email, author_phone, password, title, content } = req.body;
+
+    try {
+        // 문의게시판과 고객의소리만 허용
+        if (tab !== 'inquiry' && tab !== 'voice') {
+            return res.status(400).send('잘못된 요청입니다.');
+        }
+
+        // 입력 검증
+        if (!author_name || !author_email || !author_phone || !password || !title || !content) {
+            return res.status(400).send('모든 필수 항목을 입력해주세요.');
+        }
+
+        const db = require('./config/database');
+        const bcrypt = require('bcrypt');
+
+        // boards 테이블에서 해당 게시판 ID 조회 (company_id 2번 - Texas Papa)
+        const [boardResult] = await db.query(
+            'SELECT id FROM boards WHERE company_id = 2 AND category = ? LIMIT 1',
+            [tab]
+        );
+
+        if (boardResult.length === 0) {
+            return res.status(400).send('게시판을 찾을 수 없습니다.');
+        }
+
+        const boardId = boardResult[0].id;
+
+        // 비밀번호 해시
+        const passwordHash = await bcrypt.hash(password, 10);
+
+        // IP 주소
+        const createIp = req.ip || req.connection.remoteAddress;
+
+        // posts 테이블에 저장
+        await db.query(
+            `INSERT INTO posts 
+            (board_id, title, content, writer, author_name, author_email, author_phone, password, status, create_ip, create_dt, views, top_yn) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?, NOW(), 0, 'N')`,
+            [boardId, title, content, author_name, author_name, author_email, author_phone, passwordHash, createIp]
+        );
+
+        // 관리자에게 이메일 알림 발송 (비동기, 실패해도 문의 등록은 성공)
+        try {
+            const { sendInquiryNotification } = require('./utils/email');
+            await sendInquiryNotification({
+                author_name,
+                author_email,
+                author_phone,
+                title,
+                content,
+                boardType: tab
+            });
+        } catch (emailError) {
+            console.error('이메일 발송 실패 (문의는 정상 등록됨):', emailError);
+        }
+
+        res.redirect(`/community/${tab}?success=1`);
+
+    } catch (error) {
+        console.error('문의 작성 오류:', error);
+        res.status(500).send('문의 작성 중 오류가 발생했습니다.');
+    }
+});
+
+// ===========================
+// 비밀번호 확인 페이지
+// ===========================
+app.get('/community/:tab/:id', async (req, res) => {
+    const { tab, id } = req.params;
+
+    try {
+        // 문의게시판과 고객의소리는 비밀번호 확인 필요
+        if (tab === 'inquiry' || tab === 'voice') {
+            const titles = {
+                voice: '고객의소리',
+                inquiry: '문의게시판'
+            };
+
+            return res.render('community/password_check', {
+                title: `비밀번호 확인 | Texas Papa`,
+                activePage: 'community',
+                boardType: tab,
+                boardTitle: titles[tab],
+                postNo: id,
+                error: null
+            });
+        }
+
+        // 다른 게시판은 바로 조회 (추후 구현)
+        res.redirect(`/community/${tab}`);
+
+    } catch (error) {
+        console.error('게시글 조회 오류:', error);
+        res.status(500).send('게시글 조회 중 오류가 발생했습니다.');
+    }
+});
+
+// ===========================
+// 비밀번호 검증 및 상세 조회
+// ===========================
+app.post('/community/:tab/:id/verify', async (req, res) => {
+    const { tab, id } = req.params;
+    const { password } = req.body;
+
+    try {
+        const db = require('./config/database');
+        const bcrypt = require('bcrypt');
+
+        // 게시글 조회
+        const [posts] = await db.query(
+            'SELECT * FROM posts WHERE post_no = ?',
+            [id]
+        );
+
+        if (posts.length === 0) {
+            return res.status(404).send('게시글을 찾을 수 없습니다.');
+        }
+
+        const post = posts[0];
+
+        // 비밀번호 검증
+        const isPasswordValid = await bcrypt.compare(password, post.password);
+
+        if (!isPasswordValid) {
+            const titles = {
+                voice: '고객의소리',
+                inquiry: '문의게시판'
+            };
+
+            return res.render('community/password_check', {
+                title: `비밀번호 확인 | Texas Papa`,
+                activePage: 'community',
+                boardType: tab,
+                boardTitle: titles[tab],
+                postNo: id,
+                error: '비밀번호가 일치하지 않습니다.'
+            });
+        }
+
+        // 답변 조회
+        const [replies] = await db.query(
+            'SELECT * FROM replies WHERE post_no = ? ORDER BY created_at DESC LIMIT 1',
+            [id]
+        );
+
+        const reply = replies.length > 0 ? replies[0] : null;
+
+        // 상세 페이지 렌더링
+        res.render('community/inquiry_detail', {
+            title: `${post.title} | Texas Papa`,
+            activePage: 'community',
+            boardType: tab,
+            post: post,
+            reply: reply
+        });
+
+    } catch (error) {
+        console.error('비밀번호 검증 오류:', error);
+        res.status(500).send('비밀번호 검증 중 오류가 발생했습니다.');
     }
 });
 
@@ -208,6 +402,22 @@ app.post('/api/consultation', async (req, res) => {
              VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())`,
             [name, phone, email, region, budget, experience, message, createIp]
         );
+
+        // 관리자에게 이메일 알림 발송
+        try {
+            const { sendConsultationNotification } = require('./utils/email');
+            await sendConsultationNotification({
+                name,
+                phone,
+                email,
+                region,
+                budget,
+                experience,
+                message
+            });
+        } catch (emailError) {
+            console.error('이메일 발송 실패 (상담 신청은 정상 등록됨):', emailError);
+        }
 
         res.json({
             success: true,
