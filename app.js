@@ -48,14 +48,16 @@ app.use(session({
     key: 'texaspapa_session',
     secret: process.env.SESSION_SECRET || 'default-secret-key',
     store: sessionStore,
-    resave: false,
+    resave: true, // 세션을 항상 저장 (서버리스 환경에서 중요)
     saveUninitialized: false,
     cookie: {
+        path: '/', // 모든 경로에서 쿠키 사용
         secure: process.env.NODE_ENV === 'production', // HTTPS에서만 쿠키 전송
         httpOnly: true,
         maxAge: 24 * 60 * 60 * 1000, // 24시간
         sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax' // CORS 대응
-    }
+    },
+    rolling: true // 요청마다 세션 만료 시간 갱신
 }));
 
 // 정적 파일 경로 설정
