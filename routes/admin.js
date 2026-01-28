@@ -8,7 +8,13 @@ const { requireAuth, redirectIfAuthenticated } = require('../middleware/auth');
 // 로그인 페이지
 // ===========================
 router.get('/', redirectIfAuthenticated, (req, res) => {
-    res.render('admin/login', { title: '관리자 로그인', error: null });
+    let errorMessage = null;
+
+    if (req.query.error === 'session_expired') {
+        errorMessage = '[세션 만료] 로그인 세션이 만료되었거나 존재하지 않습니다. 다시 로그인해주세요.';
+    }
+
+    res.render('admin/login', { title: '관리자 로그인', error: errorMessage });
 });
 
 // ===========================
@@ -18,16 +24,20 @@ router.post('/login', async (req, res) => {
     const { username, password } = req.body;
 
     try {
+        console.log('🔐 로그인 시도:', username);
+
         // 입력 검증
         if (!username || !password) {
+            console.log('❌ 입력 검증 실패: 아이디 또는 비밀번호 누락');
             return res.render('admin/login', {
                 title: '관리자 로그인',
-                error: '아이디와 비밀번호를 입력해주세요.'
+                error: '[1단계 실패] 아이디와 비밀번호를 입력해주세요.'
             });
         }
 
         // 데이터베이스에서 사용자 조회 (Prepared Statement로 SQL Injection 방지)
         // admin_id 또는 admin_name으로 로그인 가능
+        console.log('📊 데이터베이스 조회 시작...');
         const [users] = await db.query(
             `SELECT * FROM admins 
              WHERE (admin_id = ? OR admin_name = ?) 
@@ -37,23 +47,29 @@ router.post('/login', async (req, res) => {
 
         // 사용자가 없거나 비활성화된 경우
         if (users.length === 0) {
+            console.log('❌ 사용자를 찾을 수 없음:', username);
             return res.render('admin/login', {
                 title: '관리자 로그인',
-                error: '아이디 또는 비밀번호가 올바르지 않습니다.'
+                error: '[2단계 실패] 아이디 또는 비밀번호가 올바르지 않습니다.'
             });
         }
 
         const user = users[0];
+        console.log('✅ 사용자 찾음:', user.admin_id);
 
         // 비밀번호 검증 (bcrypt)
+        console.log('🔑 비밀번호 검증 중...');
         const isPasswordValid = await bcrypt.compare(password, user.password);
 
         if (!isPasswordValid) {
+            console.log('❌ 비밀번호 불일치');
             return res.render('admin/login', {
                 title: '관리자 로그인',
-                error: '아이디 또는 비밀번호가 올바르지 않습니다.'
+                error: '[3단계 실패] 아이디 또는 비밀번호가 올바르지 않습니다.'
             });
         }
+
+        console.log('✅ 비밀번호 검증 성공');
 
         // 세션에 사용자 정보 저장 (비밀번호는 저장하지 않음)
         req.session.adminUser = {
@@ -66,30 +82,40 @@ router.post('/login', async (req, res) => {
             companyId: user.company_id
         };
 
+        console.log('💾 세션에 사용자 정보 저장:', req.session.adminUser);
+
         // 마지막 로그인 시간 업데이트
         await db.query(
             'UPDATE admins SET last_login = NOW() WHERE id = ?',
             [user.id]
         );
 
-        // 세션 저장 후 리다이렉트 (중요!)
-        req.session.save((err) => {
-            if (err) {
-                console.error('세션 저장 오류:', err);
-                return res.render('admin/login', {
-                    title: '관리자 로그인',
-                    error: '로그인 처리 중 오류가 발생했습니다.'
-                });
-            }
-            console.log('✅ 로그인 성공 - 세션 저장 완료:', req.session.adminUser);
-            res.redirect('/console/dashboard');
+        console.log('📅 마지막 로그인 시간 업데이트 완료');
+
+        // 세션 저장을 Promise로 래핑
+        await new Promise((resolve, reject) => {
+            req.session.save((err) => {
+                if (err) {
+                    console.error('❌ 세션 저장 실패:', err);
+                    reject(new Error('[4단계 실패] 세션 저장 오류: ' + err.message));
+                } else {
+                    console.log('✅ 세션 저장 완료');
+                    console.log('📦 세션 ID:', req.sessionID);
+                    console.log('📦 세션 데이터:', req.session);
+                    resolve();
+                }
+            });
         });
 
+        console.log('🚀 대시보드로 리다이렉트');
+        res.redirect('/console/dashboard');
+
     } catch (error) {
-        console.error('로그인 오류:', error);
+        console.error('💥 로그인 오류:', error);
+        console.error('💥 오류 스택:', error.stack);
         res.render('admin/login', {
             title: '관리자 로그인',
-            error: '로그인 처리 중 오류가 발생했습니다.'
+            error: error.message || '로그인 처리 중 오류가 발생했습니다.'
         });
     }
 });
