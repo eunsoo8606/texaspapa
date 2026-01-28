@@ -72,8 +72,18 @@ router.post('/login', async (req, res) => {
             [user.id]
         );
 
-        // 대시보드로 리다이렉트
-        res.redirect('/console/dashboard');
+        // 세션 저장 후 리다이렉트 (중요!)
+        req.session.save((err) => {
+            if (err) {
+                console.error('세션 저장 오류:', err);
+                return res.render('admin/login', {
+                    title: '관리자 로그인',
+                    error: '로그인 처리 중 오류가 발생했습니다.'
+                });
+            }
+            console.log('✅ 로그인 성공 - 세션 저장 완료:', req.session.adminUser);
+            res.redirect('/console/dashboard');
+        });
 
     } catch (error) {
         console.error('로그인 오류:', error);

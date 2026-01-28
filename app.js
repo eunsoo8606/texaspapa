@@ -38,6 +38,11 @@ const sessionStoreOptions = {
 
 const sessionStore = new MySQLStore(sessionStoreOptions);
 
+// 세션 스토어 에러 핸들링
+sessionStore.on('error', function (error) {
+    console.error('세션 스토어 에러:', error);
+});
+
 // 세션 설정
 app.use(session({
     key: 'texaspapa_session',
@@ -48,7 +53,8 @@ app.use(session({
     cookie: {
         secure: process.env.NODE_ENV === 'production', // HTTPS에서만 쿠키 전송
         httpOnly: true,
-        maxAge: 24 * 60 * 60 * 1000 // 24시간
+        maxAge: 24 * 60 * 60 * 1000, // 24시간
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax' // CORS 대응
     }
 }));
 
