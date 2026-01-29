@@ -24,7 +24,7 @@ async function sendInquiryNotification(inquiry) {
 
     const mailOptions = {
         from: `"Texas Papa 알림" <${process.env.EMAIL_USER}>`,
-        to: 'eunsoo8606@gmail.com',
+        to: 'dongdongfnb@naver.com',
         subject: `[Texas Papa] 새로운 ${boardTitle} 등록`,
         html: `
             <div style="font-family: 'Noto Sans KR', sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f8f9fa;">
@@ -91,7 +91,7 @@ ${inquiry.content}
 async function sendConsultationNotification(consultation) {
     const mailOptions = {
         from: `"Texas Papa 알림" <${process.env.EMAIL_USER}>`,
-        to: 'eunsoo8606@gmail.com',
+        to: 'dongdongfnb@naver.com',
         subject: '[Texas Papa] 새로운 창업 상담 신청',
         html: `
             <div style="font-family: 'Noto Sans KR', sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f8f9fa;">

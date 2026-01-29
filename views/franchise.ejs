@@ -1,5 +1,6 @@
-<%- include('layouts/layout', { title: 'Franchise Guide' , head: '' , activePage: 'franchise' , body: ` <main
-    class="sub-page">
+<%- include('layouts/layout', { title: 'Franchise Guide' ,
+    head: '<link rel="preload" as="image" href="/images/gamang_main_img.webp" fetchpriority="high">' ,
+    activePage: 'franchise' , body: ` <main class="sub-page">
     <!-- 창업 경쟁력 섹션 -->
     <section id="competence" class="franchise-competence">
         <div class="competence-container">
@@ -84,97 +85,130 @@
                     <!-- 1열 (다산점 1호점 우선 배치) -->
                     <div class="story-node-row">
                         <div class="story-card left highlight" data-rel="1호점">
-                            <span class="node-tag">다성공의 시작</span>
-                            <h4 class="node-branch">다산점(1호점)</h4>
+                            <span class="node-tag">성공의 시작</span>
+                            <h3 class="node-branch">다산점(1호점)</h3>
                         </div>
                         <div class="story-card right side-tag" data-rel="직영투자">
                             <span class="node-tag">START</span>
-                            <h4 class="node-branch">이태원점</h4>
+                            <h3 class="node-branch">이태원점</h3>
                         </div>
                     </div>
 
                     <div class="story-node-row">
                         <div class="story-card left side-tag" data-rel="직영투자">
-                            <h4 class="node-branch">신사점</h4>
+                            <h3 class="node-branch">신사점</h3>
                         </div>
                         <div class="story-card right side-tag" data-rel="직영투자">
-                            <h4 class="node-branch">잠실점</h4>
+                            <h3 class="node-branch">잠실점</h3>
                         </div>
                     </div>
 
                     <!-- 관계 확장 (알바, 단골, 동창 등) -->
                     <div class="story-node-row">
                         <div class="story-card left" data-rel="알바">
-                            <h4 class="node-branch">갈매스칸센점</h4>
+                            <h3 class="node-branch">갈매스칸센점</h3>
                         </div>
                         <div class="story-card right" data-rel="단골">
-                            <h4 class="node-branch">성수점</h4>
+                            <h3 class="node-branch">성수점</h3>
                         </div>
                     </div>
 
                     <div class="story-node-row">
                         <div class="story-card left" data-rel="지인">
-                            <h4 class="node-branch">문정점</h4>
+                            <h3 class="node-branch">문정점</h3>
                         </div>
                         <div class="story-card right" data-rel="다점포">
-                            <h4 class="node-branch">광양점</h4>
+                            <h3 class="node-branch">광양점</h3>
                         </div>
                     </div>
 
                     <!-- 가족 및 깊은 신뢰 (딸, 부부, 아들, 조카) -->
                     <div class="story-node-row">
                         <div class="story-card left" data-rel="딸">
-                            <h4 class="node-branch">월곡점</h4>
+                            <h3 class="node-branch">월곡점</h3>
                         </div>
                         <div class="story-card right" data-rel="부부">
-                            <h4 class="node-branch">하남점</h4>
+                            <h3 class="node-branch">하남점</h3>
                         </div>
                     </div>
 
                     <div class="story-node-row">
                         <div class="story-card left" data-rel="동창">
-                            <h4 class="node-branch">강동점</h4>
+                            <h3 class="node-branch">강동점</h3>
                         </div>
                         <div class="story-card right" data-rel="동창">
-                            <h4 class="node-branch">천안신부점</h4>
+                            <h3 class="node-branch">천안신부점</h3>
                         </div>
                     </div>
 
                     <div class="story-node-row">
                         <div class="story-card left" data-rel="동창">
-                            <h4 class="node-branch">양천점</h4>
+                            <h3 class="node-branch">양천점</h3>
                         </div>
                         <div class="story-card right" data-rel="아들">
-                            <h4 class="node-branch">천안쌍용점</h4>
+                            <h3 class="node-branch">천안쌍용점</h3>
                         </div>
                     </div>
 
                     <div class="story-node-row">
                         <div class="story-card left" data-rel="조카">
-                            <h4 class="node-branch">면목점</h4>
+                            <h3 class="node-branch">면목점</h3>
                         </div>
                         <div class="story-card right" data-rel="아들">
-                            <h4 class="node-branch">수원인계점</h4>
+                            <h3 class="node-branch">수원인계점</h3>
                         </div>
                     </div>
 
                     <!-- 거래처 및 추가 확장 -->
                     <div class="story-node-row">
                         <div class="story-card left" data-rel="거래처(세무사)">
-                            <h4 class="node-branch">노원점</h4>
+                            <h3 class="node-branch">노원점</h3>
                         </div>
                         <div class="story-card right" data-rel="거래처(인테리어)">
-                            <h4 class="node-branch">수유점</h4>
+                            <h3 class="node-branch">수유점</h3>
                         </div>
                     </div>
 
                     <div class="story-node-row">
                         <div class="story-card left" data-rel="지인">
-                            <h4 class="node-branch">구로디지털점</h4>
+                            <h3 class="node-branch">구로디지털점</h3>
                         </div>
                         <div class="story-card right" data-rel="지인">
-                            <h4 class="node-branch">성남태평점</h4>
+                            <h3 class="node-branch">성남태평점</h3>
                         </div>
+                    </div>
+
+                    <!-- 대기 중인 점포들 (준비 중 느낌) -->
+                    <div class="story-node-row">
+                        <div class="story-card left pending" data-rel="준비중">
+                            <span class="node-tag pending-tag">COMING SOON</span>
+                            <h3 class="node-branch">???점</h3>
+                            <p class="pending-text">창업 준비 중...</p>
+                        </div>
+                        <div class="story-card right pending" data-rel="준비중">
+                            <span class="node-tag pending-tag">COMING SOON</span>
+                            <h3 class="node-branch">???점</h3>
+                            <p class="pending-text">창업 준비 중...</p>
+                        </div>
+                    </div>
+
+                    <div class="story-node-row">
+                        <div class="story-card left pending" data-rel="대기중">
+                            <span class="node-tag pending-tag">WAITING</span>
+                            <h3 class="node-branch">???점</h3>
+                            <p class="pending-text">상담 진행 중...</p>
+                        </div>
+                        <div class="story-card right pending" data-rel="대기중">
+                            <span class="node-tag pending-tag">WAITING</span>
+                            <h3 class="node-branch">???점</h3>
+                            <p class="pending-text">상담 진행 중...</p>
+                        </div>
+                    </div>
+
+                    <!-- 계속 확장 중 표시 -->
+                    <div class="expansion-indicator">
+                        <div class="pulse-dot"></div>
+                        <p class="expansion-text"></p>
                     </div>
                 </div>
             </div>
@@ -811,7 +845,7 @@
                         <label class="privacy-agree">
                             <input type="checkbox" name="privacy_agree" required>
                             <span class="check-box"></span>
-                            <span class="agree-label">개인정보처리방침(<a href="javascript:void(0)" id="open-privacy">전문보기</a>)에
+                            <span class="agree-label">개인정보처리방침(<a href="#" id="open-privacy">전문보기</a>)에
                                 동의</span>
                         </label>
                         <button type="submit" class="submit-btn">
@@ -1245,8 +1279,14 @@
                 }
             });
         };
-        document.getElementById('open-privacy')?.addEventListener('click', openModal);
-        document.querySelectorAll('.open-privacy-footer').forEach(el => el.addEventListener('click', openModal));
+        document.getElementById('open-privacy')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            openModal();
+        });
+        document.querySelectorAll('.open-privacy-footer').forEach(el => el.addEventListener('click', (e) => {
+            e.preventDefault();
+            openModal();
+        }));
         document.getElementById('close-privacy')?.addEventListener('click', closeModal);
         modal?.querySelector('.modal-overlay')?.addEventListener('click', closeModal);
 

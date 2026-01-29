@@ -68,23 +68,63 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // 라우팅
 app.get('/', (req, res) => {
-    res.render('franchise', { title: 'Texas Papa - Franchise', activePage: 'franchise' });
+    res.render('franchise', {
+        title: '텍사스파파 크레페 프랜차이즈 - 소자본 고수익 창업',
+        description: '원가율 20%, 소자본 창업 가능! 텍사스파파 크레페 프랜차이즈로 성공적인 디저트 창업을 시작하세요. 1인 운영 가능, 낮은 로스율, 높은 순이익.',
+        keywords: '텍사스파파, 크레페프랜차이즈, 소자본창업, 디저트창업, 크레페가맹점, 1인창업, 고수익창업, 원가율20%',
+        ogTitle: '텍사스파파 크레페 프랜차이즈 - 소자본으로 시작하는 고수익 창업',
+        ogDescription: '원가율 20%! 소자본으로 시작 가능한 텍사스파파 크레페 프랜차이즈. 지금 바로 창업 상담 받으세요.',
+        canonical: 'https://texaspapa.co.kr',
+        activePage: 'franchise'
+    });
 });
 
 app.get('/brand', (req, res) => {
-    res.render('brand', { title: 'Texas Papa - Brand', activePage: 'brand' });
+    res.render('brand', {
+        title: '브랜드 스토리 - 텍사스파파 크레페',
+        description: '텍사스파파 크레페의 브랜드 철학과 스토리를 만나보세요. 신뢰와 진심으로 만들어가는 프리미엄 크레페 브랜드.',
+        keywords: '텍사스파파브랜드, 크레페브랜드, 브랜드스토리, 텍사스파파철학',
+        ogTitle: '텍사스파파 브랜드 스토리 - 신뢰로 만들어가는 크레페',
+        ogDescription: '점주님들의 신뢰로 성장하는 텍사스파파 크레페 브랜드 이야기',
+        canonical: 'https://texaspapa.co.kr/brand',
+        activePage: 'brand'
+    });
 });
 
 app.get('/company', (req, res) => {
-    res.render('company', { title: 'Texas Papa - Company', activePage: 'brand' });
+    res.render('company', {
+        title: '회사 소개 - 텍사스파파',
+        description: '(주)동동F&B 텍사스파파 회사 소개. 크레페 프랜차이즈 전문 기업으로 성공적인 창업을 지원합니다.',
+        keywords: '텍사스파파회사소개, 동동F&B, 크레페전문기업, 프랜차이즈본사',
+        ogTitle: '텍사스파파 회사 소개 - (주)동동F&B',
+        ogDescription: '크레페 프랜차이즈 전문 기업 텍사스파파를 소개합니다',
+        canonical: 'https://texaspapa.co.kr/company',
+        activePage: 'brand'
+    });
 });
 
 app.get('/menu', (req, res) => {
-    res.render('menu', { title: 'Texas Papa - Menu', activePage: 'menu' });
+    res.render('menu', {
+        title: '메뉴 - 텍사스파파 크레페',
+        description: '텍사스파파의 다양한 크레페 메뉴를 만나보세요. 프리미엄 재료로 만든 맛있는 크레페, 커피, 음료, 사이드 메뉴.',
+        keywords: '텍사스파파메뉴, 크레페메뉴, 디저트메뉴, 크레페종류',
+        ogTitle: '텍사스파파 크레페 메뉴 - 프리미엄 디저트',
+        ogDescription: '다양한 크레페 메뉴와 커피, 음료를 만나보세요',
+        canonical: 'https://texaspapa.co.kr/menu',
+        activePage: 'menu'
+    });
 });
 
 app.get('/franchise', (req, res) => {
-    res.render('franchise', { title: 'Texas Papa - Franchise', activePage: 'franchise' });
+    res.render('franchise', {
+        title: '프랜차이즈 - 텍사스파파 크레페',
+        description: '원가율 20%, 소자본 창업 가능! 텍사스파파 크레페 프랜차이즈로 성공적인 디저트 창업을 시작하세요.',
+        keywords: '텍사스파파프랜차이즈, 크레페가맹, 소자본창업, 디저트프랜차이즈',
+        ogTitle: '텍사스파파 크레페 프랜차이즈 - 소자본 고수익 창업',
+        ogDescription: '원가율 20%! 소자본으로 시작 가능한 텍사스파파 크레페 프랜차이즈',
+        canonical: 'https://texaspapa.co.kr/franchise',
+        activePage: 'franchise'
+    });
 });
 
 // 커뮤니티 섹션 라우팅
