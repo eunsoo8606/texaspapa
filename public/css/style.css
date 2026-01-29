@@ -317,9 +317,16 @@ body {
     transform-origin: center;
 }
 
+@media (max-width: 1024px) {
+    .sub-nav .logo {
+        margin-left: -20px;
+    }
+}
+
 @media (max-width: 480px) {
     .sub-nav .logo {
         height: 60px;
+        margin-left: -30px;
     }
 
     .sub-nav .logo img {
@@ -496,7 +503,7 @@ body {
         flex-direction: column;
         justify-content: flex-start;
         align-items: stretch;
-        padding: 2rem 0;
+        padding: 0;
         transform: translateY(-100%);
         opacity: 0;
         visibility: hidden;
@@ -508,7 +515,12 @@ body {
     .sub-nav.menu-active .nav-links {
         transform: translateY(0);
         opacity: 1;
+        top: 70px;
         visibility: visible;
+    }
+
+    .sub-nav.menu-active {
+        border-bottom: none;
     }
 
     .nav-item {
@@ -517,6 +529,10 @@ body {
         flex: none;
         border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         align-items: stretch;
+    }
+
+    .nav-item:first-child {
+        border-top: none;
     }
 
     .nav-links>.nav-item>a {
@@ -540,12 +556,26 @@ body {
         pointer-events: auto;
         display: none;
         background: #f9f9f9;
-        padding: 1rem 0;
+        padding: 0.5rem 0;
         min-width: 100%;
     }
 
     .nav-item.sub-open .sub-menu {
         display: flex;
+    }
+
+    /* 모바일 서브메뉴 링크 스타일 */
+    .sub-menu li a {
+        color: #555 !important;
+        font-size: 0.95rem !important;
+        padding: 0.8rem 2rem 0.8rem 3rem !important;
+        text-align: left !important;
+    }
+
+    .sub-menu li a:hover {
+        color: rgb(11, 51, 182) !important;
+        background: rgba(11, 51, 182, 0.05) !important;
+        transform: none !important;
     }
 }
 
@@ -868,7 +898,7 @@ body {
 
 /* Section 3: Smart Startup Type Section (New Tier System) */
 .startup-types-section {
-    padding: 120px 0;
+    padding: 1px 0;
     background-color: #013b8d;
     overflow: hidden;
 }
@@ -1088,7 +1118,7 @@ body {
     width: 100%;
     height: 120vh;
     /* 150vh에서 조금 더 줄인 120vh로 세밀 조정 */
-    background-color: #013b8d;
+    background-color: #ffffff;
     overflow: hidden;
 }
 
@@ -1189,17 +1219,16 @@ body {
     justify-content: center;
     padding: 1.5rem;
     text-align: center;
-    color: #111;
-    /* 흰색 배경을 고려하여 어두운 색상으로 변경 */
-    background: #fff;
-    /* 배경색을 흰색으로 변경 */
+    color: #fff;
+    background: linear-gradient(135deg, #0a33b5 0%, #1a4fd6 100%);
+    box-shadow: 0 10px 30px rgba(10, 51, 181, 0.2);
 }
 
 .card-bg p {
     font-size: 1.25rem;
     font-weight: 700;
-    /* 가독성을 위해 굵기 조정 */
     line-height: 1.6;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* 개별 카드 위치 설정 (중앙 500x700 상자 기준 - 겹치지 않도록 조정) */
@@ -1247,7 +1276,14 @@ body {
 
 @media (max-width: 768px) {
     .scroll-sequence-section {
-        height: 100vh;
+        height: auto;
+        min-height: 100vh;
+        padding: 60px 0;
+    }
+
+    .sticky-wrapper {
+        position: relative;
+        height: auto;
     }
 
     /* 모바일은 고정 */
@@ -1262,8 +1298,9 @@ body {
     .main-shrink-box {
         width: 100% !important;
         /* 100vw에서 변경 */
-        height: 100vh !important;
-        border-radius: 0 !important;
+        height: 60vh !important;
+        border-radius: 20px !important;
+        margin-bottom: 30px;
     }
 
     .shrink-text {
@@ -2455,7 +2492,7 @@ body {
 .procedure-main-title {
     font-size: 3.5rem;
     font-weight: 800;
-    color: #fff;
+    color: #ffeb3b;
     letter-spacing: -2px;
     margin-bottom: 20px;
 }
@@ -2642,7 +2679,6 @@ body {
     position: relative;
     padding: 120px 0;
     background-color: #013b8d;
-    /* 확실한 메인 블루 컬러 적용 */
     overflow: hidden;
 }
 
@@ -2672,9 +2708,25 @@ body {
 .inquiry-main-title {
     font-size: 3.5rem;
     font-weight: 800;
-    color: #fff;
+    color: #ffeb3b;
     letter-spacing: -2px;
     margin-bottom: 20px;
+    text-shadow: 0 4px 20px rgba(255, 235, 59, 0.4);
+    animation: titlePulse 3s ease-in-out infinite;
+}
+
+@keyframes titlePulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        text-shadow: 0 4px 20px rgba(255, 235, 59, 0.4);
+    }
+
+    50% {
+        transform: scale(1.02);
+        text-shadow: 0 6px 30px rgba(255, 235, 59, 0.6);
+    }
 }
 
 .inquiry-sub-title {
@@ -3873,7 +3925,7 @@ body {
    ========================================= */
 .startup-cost-section {
     padding: 120px 0;
-    background: #013b8d;
+    background: #ffffff;
 }
 
 .startup-container {
@@ -3889,7 +3941,7 @@ body {
 
 .support-tag {
     display: inline-block;
-    color: #ffeb3b;
+    color: #0a33b5;
     font-weight: 700;
     letter-spacing: 2px;
     font-size: 0.85rem;
@@ -3899,17 +3951,17 @@ body {
 .startup-main-title {
     font-size: 2.8rem;
     font-weight: 800;
-    color: #fff;
+    color: #1a1a1a;
     margin-bottom: 15px;
 }
 
 .startup-main-title .text-blue {
-    color: #ffeb3b;
+    color: #0a33b5;
 }
 
 .startup-sub-title {
     font-size: 1.1rem;
-    color: rgba(255, 255, 255, 0.8);
+    color: #666;
 }
 
 /* Package Tabs */
@@ -4379,6 +4431,26 @@ body {
         right: 20px;
         width: 45px;
         height: 45px;
+        font-size: 1rem;
+    }
+
+    /* 모바일에서 패럴랙스 효과 비활성화 (성능 및 호환성) */
+    .franchise-competence {
+        background-attachment: scroll;
+        padding: 100px 0 80px;
+    }
+
+    .competence-container {
+        flex-direction: column;
+        padding: 0 2rem;
+        gap: 2rem;
+    }
+
+    .competence-highlight {
+        font-size: 2.5rem;
+    }
+
+    .competence-desc {
         font-size: 1rem;
     }
 }

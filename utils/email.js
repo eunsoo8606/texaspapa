@@ -28,7 +28,7 @@ async function sendInquiryNotification(inquiry) {
         subject: `[Texas Papa] 새로운 ${boardTitle} 등록`,
         html: `
             <div style="font-family: 'Noto Sans KR', sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f8f9fa;">
-                <div style="background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%); padding: 30px; text-align: center; border-radius: 10px 10px 0 0;">
+                <div style="background: linear-gradient(135deg, #0a33b5 0%, #0846d8 100%); padding: 30px; text-align: center; border-radius: 10px 10px 0 0;">
                     <h1 style="color: white; margin: 0; font-size: 24px;">🔔 새로운 문의가 등록되었습니다</h1>
                 </div>
                 
@@ -59,7 +59,7 @@ ${inquiry.content}
                     
                     <div style="text-align: center; margin-top: 30px;">
                         <a href="https://texaspapa.vercel.app/console" 
-                           style="display: inline-block; padding: 15px 40px; background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 16px;">
+                           style="display: inline-block; padding: 15px 40px; background: linear-gradient(135deg, #0a33b5 0%, #0846d8 100%); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 16px;">
                             관리자 페이지에서 답변하기
                         </a>
                     </div>
@@ -95,7 +95,7 @@ async function sendConsultationNotification(consultation) {
         subject: '[Texas Papa] 새로운 창업 상담 신청',
         html: `
             <div style="font-family: 'Noto Sans KR', sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f8f9fa;">
-                <div style="background: linear-gradient(135deg, #013b8d 0%, #00255e 100%); padding: 30px; text-align: center; border-radius: 10px 10px 0 0;">
+                <div style="background: linear-gradient(135deg, #0a33b5 0%, #0846d8 100%); padding: 30px; text-align: center; border-radius: 10px 10px 0 0;">
                     <h1 style="color: white; margin: 0; font-size: 24px;">🎯 새로운 창업 상담 신청</h1>
                 </div>
                 
@@ -125,7 +125,7 @@ ${consultation.message}
                     
                     <div style="text-align: center; margin-top: 30px;">
                         <a href="https://texaspapa.vercel.app/console" 
-                           style="display: inline-block; padding: 15px 40px; background: linear-gradient(135deg, #013b8d 0%, #00255e 100%); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 16px;">
+                           style="display: inline-block; padding: 15px 40px; background: linear-gradient(135deg, #0a33b5 0%, #0846d8 100%); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 16px;">
                             관리자 페이지에서 확인하기
                         </a>
                     </div>
@@ -164,7 +164,7 @@ async function sendReplyNotification(data) {
         subject: `[Texas Papa] ${boardTitle} 답변이 등록되었습니다`,
         html: `
             <div style="font-family: 'Noto Sans KR', sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f8f9fa;">
-                <div style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%); padding: 30px; text-align: center; border-radius: 10px 10px 0 0;">
+                <div style="background: linear-gradient(135deg, #0a33b5 0%, #0846d8 100%); padding: 30px; text-align: center; border-radius: 10px 10px 0 0;">
                     <h1 style="color: white; margin: 0; font-size: 24px;">✅ 답변이 등록되었습니다</h1>
                 </div>
                 
@@ -185,7 +185,7 @@ async function sendReplyNotification(data) {
                     
                     <div style="margin-bottom: 30px;">
                         <h2 style="color: #333; margin: 0 0 10px 0; font-size: 16px;">💬 관리자 답변</h2>
-                        <div style="background: #e8f5e9; padding: 20px; border-radius: 8px; border-left: 4px solid #28a745; white-space: pre-wrap; color: #333; line-height: 1.8;">
+                        <div style="background: #e8f2ff; padding: 20px; border-radius: 8px; border-left: 4px solid #0a33b5; white-space: pre-wrap; color: #333; line-height: 1.8;">
 ${replyContent}
                         </div>
                     </div>
@@ -195,7 +195,7 @@ ${replyContent}
                             추가 문의사항이 있으시면 언제든지 연락주세요.
                         </p>
                         <a href="https://texaspapa.vercel.app" 
-                           style="display: inline-block; padding: 15px 40px; background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 16px;">
+                           style="display: inline-block; padding: 15px 40px; background: linear-gradient(135deg, #0a33b5 0%, #0846d8 100%); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 16px;">
                             Texas Papa 홈페이지 바로가기
                         </a>
                     </div>

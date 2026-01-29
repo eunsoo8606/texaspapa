@@ -141,7 +141,7 @@
                     </div>
 
                     <div class="story-node-row">
-                        <div class="story-card left" data-rel="조카">
+                        <div class="story-card left" data-rel="동창">
                             <h4 class="node-branch">양천점</h4>
                         </div>
                         <div class="story-card right" data-rel="아들">
@@ -150,7 +150,7 @@
                     </div>
 
                     <div class="story-node-row">
-                        <div class="story-card left" data-rel="동창">
+                        <div class="story-card left" data-rel="조카">
                             <h4 class="node-branch">면목점</h4>
                         </div>
                         <div class="story-card right" data-rel="아들">
@@ -1030,17 +1030,23 @@
             });
         });
 
-        // 5. 인터랙티브 스크롤 시퀀스 (MainShrinkBox)
-        const tl = gsap.timeline({
-            scrollTrigger: {
-                trigger: ".scroll-sequence-section",
-                start: "top top",
-                end: "bottom top",
-                scrub: 1, pin: true, anticipatePin: 1
+        // 5. 인터랙티브 스크롤 시퀀스 (MainShrinkBox) - 데스크톱만
+        ScrollTrigger.matchMedia({
+            "(min-width: 769px)": function () {
+                const tl = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: ".scroll-sequence-section",
+                        start: "top top",
+                        end: "bottom top",
+                        scrub: 1,
+                        pin: true,
+                        anticipatePin: 1
+                    }
+                });
+                tl.to("#mainShrinkBox", { width: "500px", height: "700px", borderRadius: "20px", duration: 2, ease: "power2.inOut" })
+                    .from(".grid-card", { opacity: 0, scale: 0.8, stagger: 0.2, duration: 1 }, "-=1");
             }
         });
-        tl.to("#mainShrinkBox", { width: "500px", height: "700px", borderRadius: "20px", duration: 2, ease: "power2.inOut" })
-            .from(".grid-card", { opacity: 0, scale: 0.8, stagger: 0.2, duration: 1 }, "-=1");
 
         // 6. 창업비용 패키지 데이터 및 전환 로직
         const packageData = {

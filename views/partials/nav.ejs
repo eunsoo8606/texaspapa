@@ -6,8 +6,8 @@
                 <a href="/company" class="<%= activePage === 'brand' ? 'active' : '' %>">브랜드소개</a>
                 <ul class="sub-menu">
                     <li><a href="/company">COMPANY</a></li>
-                    <li><a href="#">Brand</a></li>
-                    <li><a href="#">가맹점현황</a></li>
+                    <li><a href="/brand">Brand Story</a></li>
+                    <li><a href="/franchise#success-story">가맹점현황</a></li>
                     <li><a href="/location">오시는길</a></li>
                 </ul>
             </div>
@@ -55,6 +55,16 @@
 
     menuToggle.addEventListener('click', () => {
         subNav.classList.toggle('menu-active');
+        // 햄버거 아이콘 변경
+        const icon = menuToggle.querySelector('i');
+        if (subNav.classList.contains('menu-active')) {
+            icon.classList.remove('fa-bars');
+            icon.classList.add('fa-times');
+        } else {
+            icon.classList.remove('fa-times');
+            icon.classList.add('fa-bars');
+        }
+
         // 메뉴 닫힐 때 모든 서브메뉴도 초기화
         if (!subNav.classList.contains('menu-active')) {
             document.querySelectorAll('.nav-item').forEach(item => {
@@ -65,15 +75,66 @@
 
     // 모바일 서브메뉴 아코디언 토글
     document.querySelectorAll('.nav-item > a').forEach(anchor => {
+        // 모바일에서만 화살표 아이콘 추가
+        if (window.innerWidth <= 1024) {
+            const parent = anchor.parentElement;
+            const hasSub = parent.querySelector('.sub-menu');
+            if (hasSub && !anchor.querySelector('.arrow-icon')) {
+                const arrow = document.createElement('i');
+                arrow.className = 'fas fa-chevron-down arrow-icon';
+                arrow.style.marginLeft = 'auto';
+                arrow.style.transition = 'transform 0.3s';
+                anchor.appendChild(arrow);
+            }
+        }
+
         anchor.addEventListener('click', (e) => {
-            if (window.innerWidth <= 1024) { // 768px에서 1024px로 상향 조정
+            if (window.innerWidth <= 1024) {
                 const parent = anchor.parentElement;
                 const hasSub = parent.querySelector('.sub-menu');
 
                 if (hasSub) {
                     e.preventDefault();
+
+                    // 다른 열린 메뉴 닫기
+                    document.querySelectorAll('.nav-item').forEach(item => {
+                        if (item !== parent && item.classList.contains('sub-open')) {
+                            item.classList.remove('sub-open');
+                            const otherArrow = item.querySelector('.arrow-icon');
+                            if (otherArrow) {
+                                otherArrow.style.transform = 'rotate(0deg)';
+                            }
+                        }
+                    });
+
+                    // 현재 메뉴 토글
                     parent.classList.toggle('sub-open');
+                    const arrow = anchor.querySelector('.arrow-icon');
+                    if (arrow) {
+                        arrow.style.transform = parent.classList.contains('sub-open')
+                            ? 'rotate(180deg)'
+                            : 'rotate(0deg)';
+                    }
                 }
+            }
+        });
+    });
+
+    // 화면 크기 변경 시 화살표 아이콘 추가/제거
+    window.addEventListener('resize', () => {
+        document.querySelectorAll('.nav-item > a').forEach(anchor => {
+            const parent = anchor.parentElement;
+            const hasSub = parent.querySelector('.sub-menu');
+            const existingArrow = anchor.querySelector('.arrow-icon');
+
+            if (window.innerWidth <= 1024 && hasSub && !existingArrow) {
+                const arrow = document.createElement('i');
+                arrow.className = 'fas fa-chevron-down arrow-icon';
+                arrow.style.marginLeft = 'auto';
+                arrow.style.transition = 'transform 0.3s';
+                anchor.appendChild(arrow);
+            } else if (window.innerWidth > 1024 && existingArrow) {
+                existingArrow.remove();
             }
         });
     });
