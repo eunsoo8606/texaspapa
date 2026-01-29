@@ -33,7 +33,7 @@
 
 .crepe-decoration {
     position: absolute;
-    top: -50px;
+    top: -35px;
     right: 0;
     width: 200px;
     z-index: 1;
@@ -190,7 +190,8 @@
         display: none;
     }
 }
-/* ±ÂÁî ÁØºñÁß ½ºÅ¸ÀÏ */
+
+/* ï¿½ï¿½ï¿½ï¿½ ï¿½Øºï¿½ï¿½ï¿½ ï¿½ï¿½Å¸ï¿½ï¿½ */
 .menu-item.coming-soon {
     grid-column: 1 / -1;
     display: flex;
