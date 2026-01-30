@@ -458,6 +458,8 @@ body {
         width: auto;
         /* 모바일에서 고정 너비 해제 */
         gap: 1rem;
+        position: relative;
+        left: 20px;
     }
 }
 
@@ -482,6 +484,8 @@ body {
     .nav-right {
         gap: 0.8rem;
         /* 아이콘 간격 좁힘 */
+        position: relative;
+        left: 20px;
     }
 
     .icon-link {
@@ -1280,8 +1284,7 @@ body {
 @media (max-width: 768px) {
     .scroll-sequence-section {
         height: auto;
-        min-height: 100vh;
-        padding: 60px 0;
+        min-height: 60vh;
     }
 
     .sticky-wrapper {
@@ -1302,8 +1305,6 @@ body {
         width: 100% !important;
         /* 100vw에서 변경 */
         height: 60vh !important;
-        border-radius: 20px !important;
-        margin-bottom: 30px;
     }
 
     .shrink-text {
@@ -4070,6 +4071,10 @@ body {
 }
 
 @media (max-width: 768px) {
+    .behind-story-section {
+        padding: 50px 0;
+    }
+
     .story-main-title {
         font-size: 2.2rem;
     }
@@ -4092,6 +4097,10 @@ body {
     .story-card.right::after {
         left: -30px;
         width: 30px;
+    }
+
+    .expansion-indicator {
+        display: none;
     }
 }
 
