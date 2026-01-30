@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SEO Meta Tags -->
+    <title>
+        <%= locals.title || '텍사스파파' %>
+    </title>
+    <meta name="description"
+        content="<%= locals.description || '텍사스파파 크레페 프랜차이즈 - 소자본 창업, 높은 수익률, 낮은 원가율로 성공적인 창업을 시작하세요.' %>">
+    <meta name="keywords" content="<%= locals.keywords || '텍사스파파, 크레페, 프랜차이즈, 소자본창업, 디저트창업, 카페창업, 크레페가맹점' %>">
+    <meta name="author" content="텍사스파파">
+
+    <!-- 네이버 서치어드바이저 사이트 인증 -->
+    <meta name="naver-site-verification" content="946a1c5fc5e3eabb90ce8954b152518ebcd3c192" />
+
+    <!-- Open Graph Meta Tags (Facebook, KakaoTalk) -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="텍사스파파">
+    <meta property="og:title" content="<%= locals.ogTitle || locals.title || '텍사스파파' %>">
+    <meta property="og:description"
+        content="<%= locals.ogDescription || locals.description || '텍사스파파 크레페 프랜차이즈 - 소자본 창업의 새로운 기준' %>">
+    <meta property="og:image" content="<%= locals.ogImage || '/images/logo.webp' %>">
+    <meta property="og:url" content="<%= locals.ogUrl || 'https://texaspapa.co.kr' %>">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="<%= locals.ogTitle || locals.title || '텍사스파파' %>">
+    <meta name="twitter:description" content="<%= locals.ogDescription || locals.description || '텍사스파파 크레페 프랜차이즈' %>">
+    <meta name="twitter:image" content="<%= locals.ogImage || '/images/logo.webp' %>">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/images/logo.png">
+
+    <!-- Canonical URL -->
+    <% if (locals.canonical) { %>
+        <link rel="canonical" href="<%= canonical %>">
+        <% } %>
+
+            <!-- RSS Feed -->
+            <link rel="alternate" type="application/rss+xml" title="텍사스파파 크레페 RSS Feed"
+                href="https://texaspapa.co.kr/rss.xml">
+
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+            <link rel="stylesheet" href="/css/style.css">
+            <link rel="stylesheet" href="/css/company.css">
+            <link rel="stylesheet" href="/css/menu.css">
+            <link rel="stylesheet" href="/css/comparison.css">
+            <link rel="stylesheet" href="/css/store_map.css"> <!-- 스토어 맵 전용 CSS -->
+
+            <!-- JS Libraries -->
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+            <!-- Google Fonts -->
+            <link
+                href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&family=Outfit:wght@400;700&display=swap"
+                rel="stylesheet">
+            <link rel="stylesheet" href="/css/location.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <% if (locals.activePage) { %>
+            <%- include('partials/nav', { activePage: activePage }) %>
+                <% } %>
+
+                    <main class="store-map-page">
+                        <div class="store-map-wrapper">
+                            <!-- 사이드바 (검색 및 리스트) -->
+                            <div class="store-sidebar">
+                                <div class="sidebar-header">
+                                    <h2 class="sidebar-title">매장 찾기</h2>
+                                    <div class="search-box">
+                                        <input type="text" id="store-search" placeholder="매장명 또는 주소 검색하기">
+                                        <button type="button" id="search-btn"><i class="fas fa-search"></i></button>
+                                    </div>
+                                    <div class="filter-options">
+                                        <button class="filter-btn active" data-filter="all">전체</button>
+                                        <button class="filter-btn" data-filter="seoul">서울</button>
+                                        <button class="filter-btn" data-filter="gyeonggi">경기</button>
+                                        <button class="filter-btn" data-filter="other">기타</button>
+                                    </div>
+                                </div>
+
+                                <div class="store-list-container">
+                                    <ul class="store-list" id="store-list">
+                                        <!-- 자바스크립트로 동적 생성됨 -->
+                                    </ul>
+                                    <div class="no-result" id="no-result" style="display: none;">
+                                        <p>검색 결과가 없습니다.</p>
+                                    </div>
+                                </div>
+
+                                <button class="sidebar-toggle-btn mobile-only">
+                                    <i class="fas fa-chevron-up"></i> 목록 보기
+                                </button>
+                            </div>
+
+                            <!-- 지도 영역 -->
+                            <div class="map-container">
+                                <div id="map"></div>
+                                <!-- API 키 미등록 시 안내 -->
+                                <div id="map-placeholder">
+                                    <div class="placeholder-content">
+                                        <i class="fas fa-map-marked-alt"></i>
+                                        <p>카카오 지도 API 키 등록이 필요합니다.</p>
+                                        <small>store_map.ejs 파일 하단의 스크립트 부분을 확인해주세요.</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+
+                    <!-- Footer 파셜 통합 (Gate 페이지가 아닐 때만 노출) -->
+                    <% if (!locals.isGate) { %>
+                        <%- include('partials/footer', { isGate: false }) %>
+                            <% } %>
+    </div>
+
+    <!-- 카카오 지도 API (YOUR_KAKAO_JS_KEY 부분에 실제 키를 입력하세요) -->
+    <script type="text/javascript"
+        src="//dapi.kakao.com/v2/maps/sdk.js?appkey=6cfe1538ff177afffbb05683d64b8188"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const storeData = <% - JSON.stringify(stores) %>; // 서버에서 전달받은 데이터
+            const mapContainer = document.getElementById('map');
+            const placeholder = document.getElementById('map-placeholder');
+            const storeList = document.getElementById('store-list');
+            const searchInput = document.getElementById('store-search');
+            const searchBtn = document.getElementById('search-btn');
+            const noResult = document.getElementById('no-result');
+            const filterBtns = document.querySelectorAll('.filter-btn');
+
+            // 지도 객체 및 마커 배열
+            let map;
+            let markers = [];
+            let selectedMarker = null;
+            let selectedInfowindow = null;
+
+            // 카카오맵 로드 후 초기화
+            if (typeof kakao !== 'undefined' && kakao.maps) {
+                placeholder.style.display = 'none';
+                kakao.maps.load(() => {
+                    initMap();
+                });
+            } else {
+                console.error('Kakao Maps SDK not loaded');
+                // 키가 잘못되었거나 로드 실패 시 placeholder 유지
+                renderStoreList(storeData);
+            }
+
+            function initMap() {
+                const mapOption = {
+                    center: new kakao.maps.LatLng(37.566826, 126.9786567),
+                    level: 9
+                };
+
+                map = new kakao.maps.Map(mapContainer, mapOption);
+
+                const zoomControl = new kakao.maps.ZoomControl();
+                map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+
+                createMarkers(storeData);
+                renderStoreList(storeData);
+            }
+
+            function createMarkers(stores) {
+                markers.forEach(function (marker) { marker.setMap(null); });
+                markers = [];
+
+                stores.forEach(function (store, index) {
+                    const position = new kakao.maps.LatLng(store.lat, store.lng);
+                    const marker = new kakao.maps.Marker({
+                        position: position,
+                        title: store.name
+                    });
+
+                    marker.setMap(map);
+                    markers.push(marker);
+
+                    kakao.maps.event.addListener(marker, 'click', function () {
+                        selectStore(store, marker, index);
+                    });
+
+                    marker.storeIndex = index;
+                });
+            }
+
+            function renderStoreList(stores) {
+                storeList.innerHTML = '';
+
+                if (stores.length === 0) {
+                    noResult.style.display = 'block';
+                    return;
+                } else {
+                    noResult.style.display = 'none';
+                }
+
+                stores.forEach(function (store, index) {
+                    const li = document.createElement('li');
+                    li.className = 'store-item';
+                    li.setAttribute('data-lat', store.lat);
+                    li.setAttribute('data-lng', store.lng);
+
+                    let html = '<div class="store-info">';
+                    html += '<h3 class="store-name">' + store.name + '</h3>';
+                    html += '<p class="store-address">' + store.address + '</p>';
+                    html += '<p class="store-phone"><i class="fas fa-phone-alt"></i> ' + store.phone + '</p>';
+                    html += '</div>';
+                    html += '<button class="view-map-btn" title="지도에서 보기"><i class="fas fa-map-marker-alt"></i></button>';
+
+                    li.innerHTML = html;
+
+                    li.addEventListener('click', function () {
+                        if (map) {
+                            const targetMarker = markers.find(function (m) { return m.getTitle() === store.name; });
+                            if (targetMarker) {
+                                selectStore(store, targetMarker);
+                            }
+                        }
+
+                        document.querySelectorAll('.store-item').forEach(function (item) { item.classList.remove('active'); });
+                        li.classList.add('active');
+                    });
+
+                    storeList.appendChild(li);
+                });
+            }
+
+            function selectStore(store, marker) {
+                if (!map) return;
+
+                const moveLatLon = new kakao.maps.LatLng(store.lat, store.lng);
+                map.panTo(moveLatLon);
+                map.setLevel(4);
+
+                if (selectedInfowindow) {
+                    selectedInfowindow.close();
+                }
+
+                let content = '<div class="custom-infowindow">';
+                content += '<div class="info-header">';
+                content += '<h4>' + store.name + '</h4>';
+                content += '<button class="close-btn" onclick="closeInfowindow()">×</button>';
+                content += '</div>';
+                content += '<div class="info-body">';
+                content += '<p class="address">' + store.address + '</p>';
+                content += '<p class="phone">' + store.phone + '</p>';
+                content += '<a href="https://map.kakao.com/link/to/' + store.name + ',' + store.lat + ',' + store.lng + '" target="_blank" class="nav-link">길찾기</a>';
+                content += '</div></div>';
+
+                window.closeInfowindow = function () {
+                    if (selectedInfowindow) selectedInfowindow.close();
+                };
+
+                const infowindow = new kakao.maps.InfoWindow({
+                    content: content,
+                    removable: true
+                });
+
+                infowindow.open(map, marker);
+                selectedInfowindow = infowindow;
+
+                const listItems = document.querySelectorAll('.store-item');
+                for (let i = 0; i < listItems.length; i++) {
+                    const item = listItems[i];
+                    if (item.querySelector('.store-name').textContent === store.name) {
+                        item.classList.add('active');
+                        item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    } else {
+                        item.classList.remove('active');
+                    }
+                }
+            }
+
+            function filterStores() {
+                const keyword = searchInput.value.trim().toLowerCase();
+                const activeFilter = document.querySelector('.filter-btn.active').dataset.filter;
+
+                const filtered = storeData.filter(function (store) {
+                    const matchKeyword = store.name.toLowerCase().includes(keyword) ||
+                        store.address.toLowerCase().includes(keyword);
+
+                    let matchRegion = true;
+                    if (activeFilter === 'seoul') matchRegion = store.address.includes('서울');
+                    else if (activeFilter === 'gyeonggi') matchRegion = store.address.includes('경기') || store.address.includes('인천');
+                    else if (activeFilter === 'other') matchRegion = !store.address.includes('서울') && !store.address.includes('경기') && !store.address.includes('인천');
+
+                    return matchKeyword && matchRegion;
+                });
+
+                renderStoreList(filtered);
+            }
+
+            if (searchBtn) {
+                searchBtn.addEventListener('click', filterStores);
+            }
+
+            searchInput.addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') filterStores();
+            });
+
+            filterBtns.forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    filterBtns.forEach(function (b) { b.classList.remove('active'); });
+                    btn.classList.add('active');
+                    filterStores();
+                });
+            });
+
+            const sidebarToggleBtn = document.querySelector('.sidebar-toggle-btn');
+            const sidebar = document.querySelector('.store-sidebar');
+
+            if (sidebarToggleBtn) {
+                sidebarToggleBtn.addEventListener('click', function () {
+                    sidebar.classList.toggle('expanded');
+                    const icon = sidebarToggleBtn.querySelector('i');
+                    if (sidebar.classList.contains('expanded')) {
+                        icon.classList.remove('fa-chevron-up');
+                        icon.classList.add('fa-chevron-down');
+                        sidebarToggleBtn.innerHTML = '<i class="fas fa-chevron-down"></i> 지도 보기';
+                    } else {
+                        icon.classList.remove('fa-chevron-down');
+                        icon.classList.add('fa-chevron-up');
+                        sidebarToggleBtn.innerHTML = '<i class="fas fa-chevron-up"></i> 목록 보기';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

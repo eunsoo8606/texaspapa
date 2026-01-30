@@ -632,6 +632,8 @@ body {
 
 .competence-text {
     flex: 1.2;
+    z-index: 1;
+    position: relative;
 }
 
 .competence-title {
@@ -689,6 +691,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    left: 50px;
 }
 
 .nexus-core {

@@ -1,0 +1,437 @@
+/* Store Map Page Styles */
+.store-map-page {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    /* 전체 화면 높이 사용 */
+    padding-top: 80px;
+    /* 네비게이션 바 높이만큼 여백 */
+    background: #f8f9fa;
+    overflow: hidden;
+}
+
+.store-map-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+}
+
+/* Map Container */
+.map-container {
+    flex: 1;
+    position: relative;
+    height: 100%;
+    background: #e9ecef;
+    /* 지도 로딩 전 배경색 */
+}
+
+#map {
+    width: 100%;
+    height: 100%;
+}
+
+#map-placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(240, 240, 240, 0.8);
+    z-index: 10;
+}
+
+.placeholder-content {
+    text-align: center;
+    padding: 2rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.placeholder-content i {
+    font-size: 3rem;
+    color: #0d6efd;
+    margin-bottom: 1rem;
+}
+
+/* Sidebar (Floating Style) */
+.store-sidebar {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 380px;
+    height: calc(100% - 40px);
+    /* 위아래 여백 제외 */
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    z-index: 20;
+    /* 지도 위에 표시 */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.sidebar-header {
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+    background: white;
+}
+
+.sidebar-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.search-box {
+    display: flex;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.search-box input {
+    flex: 1;
+    padding: 10px 15px;
+    border: none;
+    outline: none;
+    font-size: 0.95rem;
+}
+
+.search-box button {
+    background: #013b8d;
+    /* 브랜드 컬러 */
+    color: white;
+    border: none;
+    padding: 0 15px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.search-box button:hover {
+    background: #002a6b;
+}
+
+.filter-options {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    padding: 6px 12px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    background: white;
+    color: #666;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.filter-btn:hover {
+    background: #f0f0f0;
+}
+
+.filter-btn.active {
+    background: #013b8d;
+    color: white;
+    border-color: #013b8d;
+}
+
+/* Store List */
+.store-list-container {
+    flex: 1;
+    overflow-y: auto;
+    background: #f9f9f9;
+}
+
+/* 스크롤바 커스텀 */
+.store-list-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.store-list-container::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 3px;
+}
+
+.store-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.store-item {
+    background: white;
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    transition: background 0.2s;
+}
+
+.store-item:hover {
+    background: #f0f8ff;
+}
+
+.store-item.active {
+    background: #e8f2ff;
+    border-left: 4px solid #013b8d;
+}
+
+.store-info {
+    flex: 1;
+}
+
+.store-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 6px;
+}
+
+.store-address {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 4px;
+    line-height: 1.4;
+}
+
+.store-phone {
+    font-size: 0.85rem;
+    color: #888;
+}
+
+.store-phone i {
+    margin-right: 4px;
+    font-size: 0.8rem;
+}
+
+.view-map-btn {
+    background: none;
+    border: none;
+    color: #bbb;
+    cursor: pointer;
+    font-size: 1.2rem;
+    margin-left: 10px;
+    transition: color 0.2s;
+}
+
+.store-item:hover .view-map-btn {
+    color: #013b8d;
+}
+
+.no-result {
+    padding: 40px;
+    text-align: center;
+    color: #999;
+}
+
+/* Custom Infowindow */
+.custom-infowindow {
+    padding: 15px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    min-width: 200px;
+    max-width: 300px;
+    border: 1px solid #ddd;
+}
+
+.custom-infowindow .info-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 8px;
+}
+
+.custom-infowindow h4 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #013b8d;
+    font-weight: 700;
+}
+
+.custom-infowindow .close-btn {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: #999;
+    padding: 0;
+    line-height: 1;
+}
+
+.custom-infowindow .info-body p {
+    margin: 5px 0;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.custom-infowindow .nav-link {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 5px 12px;
+    background: #013b8d;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    transition: background 0.2s;
+}
+
+.custom-infowindow .nav-link:hover {
+    background: #002a6b;
+}
+
+.mobile-only {
+    display: none;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .store-map-page {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        padding-top: 60px;
+        /* 모바일 헤더 높이에 맞춤 */
+    }
+
+    .store-map-wrapper {
+        flex-direction: column;
+        height: 100%;
+    }
+
+    /* 지도 컨테이너가 전체 차지 */
+    .map-container {
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+    }
+
+    /* 바텀 시트 스타일의 사이드바 */
+    .store-sidebar {
+        position: absolute;
+        top: auto;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 70vh;
+        /* 최대 높이 설정 */
+        max-height: 80%;
+        /* 화면 너무 가리지 않게 */
+
+        /* 기본 상태: 토글 버튼만 보이게 내림 */
+        /* 토글 버튼 높이(약 50px)만큼 남기고 내림 */
+        transform: translateY(calc(100% - 50px));
+
+        background: white;
+        border-radius: 20px 20px 0 0;
+        box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.15);
+        z-index: 100;
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+        /* Flex 설정 유지 */
+        display: flex;
+        flex-direction: column;
+    }
+
+    .store-sidebar.expanded {
+        transform: translateY(0);
+    }
+
+    /* 토글 버튼을 맨 위로 */
+    .sidebar-toggle-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+        height: 50px;
+        /* 고정 높이 */
+        padding: 0;
+        background: white;
+        border: none;
+        border-bottom: 1px solid #eee;
+        font-weight: 700;
+        color: #013b8d;
+        cursor: pointer;
+        order: -1;
+        /* Flex 아이템 순서 맨 위로 */
+        border-radius: 20px 20px 0 0;
+        /* 상단 둥글게 */
+    }
+
+    .sidebar-header {
+        padding: 15px 20px;
+        background: #fff;
+    }
+
+    .sidebar-title {
+        display: none;
+        /* 모바일에서는 공간 절약을 위해 타이틀 숨김 */
+    }
+
+    .search-box {
+        margin-bottom: 10px;
+    }
+
+    .filter-options {
+        gap: 6px;
+        overflow-x: auto;
+        /* 필터 많으면 가로 스크롤 */
+        padding-bottom: 5px;
+        flex-wrap: nowrap;
+        /* 한 줄로 유지 */
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .filter-btn {
+        flex-shrink: 0;
+        font-size: 0.8rem;
+        padding: 5px 10px;
+    }
+
+    .store-list-container {
+        flex: 1;
+        overflow-y: auto;
+        background: #fff;
+        padding-bottom: 20px;
+    }
+
+    .store-item {
+        padding: 15px 20px;
+    }
+
+    /* 인포윈도우 모바일 스타일 조정 */
+    .custom-infowindow {
+        min-width: 150px;
+        max-width: 250px;
+        padding: 10px;
+    }
+
+    .custom-infowindow h4 {
+        font-size: 1rem;
+    }
+
+    .custom-infowindow .info-body p {
+        font-size: 0.8rem;
+    }
+}

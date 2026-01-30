@@ -397,7 +397,45 @@ app.post('/community/:tab/:id/verify', async (req, res) => {
 });
 
 app.get('/location', (req, res) => {
-    res.render('location', { title: 'Texas Papa - Location', activePage: 'brand' });
+    res.render('location', { title: '오시는 길 - 텍사스파파', activePage: 'brand' });
+});
+
+// 가맹점 현황 (Store Locator)
+app.get('/stores', (req, res) => {
+    // 가맹점 데이터
+    const stores = [
+        { name: '다산점 (본점)', address: '경기 남양주시 다산중앙로123번길 22-26 1층', phone: '0507-1300-0000', lat: 37.6163, lng: 127.1427 },
+        { name: '이태원점', address: '서울 용산구 이태원로 123', phone: '02-790-0000', lat: 37.5342, lng: 126.9940 },
+        { name: '신사점', address: '서울 강남구 도산대로 123', phone: '02-540-0000', lat: 37.5173, lng: 127.0227 },
+        { name: '잠실점', address: '서울 송파구 올림픽로 300', phone: '02-420-0000', lat: 37.5132, lng: 127.1001 },
+        { name: '갈매스칸센점', address: '경기 구리시 갈매순환로 123', phone: '031-570-0000', lat: 37.6350, lng: 127.1150 },
+        { name: '성수점', address: '서울 성동구 아차산로 123', phone: '02-460-0000', lat: 37.5445, lng: 127.0560 },
+        { name: '문정점', address: '서울 송파구 법원로 123', phone: '02-2200-0000', lat: 37.4842, lng: 127.1215 },
+        { name: '광양점', address: '전남 광양시 시청로 123', phone: '061-790-0000', lat: 34.9406, lng: 127.6959 },
+        { name: '월곡점', address: '서울 성북구 화랑로 123', phone: '02-940-0000', lat: 37.6025, lng: 127.0400 },
+        { name: '하남점', address: '경기 하남시 미사강변동로 123', phone: '031-790-0000', lat: 37.5615, lng: 127.1850 },
+        { name: '강동점', address: '서울 강동구 천호대로 123', phone: '02-470-0000', lat: 37.5300, lng: 127.1350 },
+        { name: '천안신부점', address: '충남 천안시 동남구 만남로 123', phone: '041-550-0000', lat: 36.8180, lng: 127.1560 },
+        { name: '양천점', address: '서울 양천구 목동로 123', phone: '02-2600-0000', lat: 37.5170, lng: 126.8660 },
+        { name: '천안쌍용점', address: '충남 천안시 서북구 쌍용대로 123', phone: '041-570-0000', lat: 36.7950, lng: 127.1250 },
+        { name: '면목점', address: '서울 중랑구 면목로 123', phone: '02-430-0000', lat: 37.5950, lng: 127.0850 },
+        { name: '수원인계점', address: '경기 수원시 팔달구 권광로 123', phone: '031-230-0000', lat: 37.2650, lng: 127.0300 },
+        { name: '노원점', address: '서울 노원구 노해로 123', phone: '02-930-0000', lat: 37.6540, lng: 127.0600 },
+        { name: '수유점', address: '서울 강북구 도봉로 123', phone: '02-990-0000', lat: 37.6370, lng: 127.0250 },
+        { name: '구로디지털점', address: '서울 구로구 디지털로 123', phone: '02-860-0000', lat: 37.4850, lng: 126.8990 },
+        { name: '성남태평점', address: '경기 성남시 수정구 수정로 123', phone: '031-750-0000', lat: 37.4450, lng: 127.1300 }
+    ];
+
+    res.render('store_map', {
+        title: '가맹점 찾기 - 텍사스파파',
+        description: '텍사스파파 전국 가맹점 위치 및 정보를 확인하세요.',
+        keywords: '텍사스파파매장, 가맹점찾기, 텍사스파파위치',
+        ogTitle: '텍사스파파 가맹점 찾기',
+        ogDescription: '전국 텍사스파파 매장 위치 안내',
+        canonical: 'https://texaspapa.co.kr/stores',
+        activePage: 'brand',
+        stores
+    });
 });
 
 // SEO 파일 제공
