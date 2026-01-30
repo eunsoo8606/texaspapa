@@ -3762,9 +3762,21 @@ body {
     left: 0;
     width: 100%;
     height: 0%;
-    background: linear-gradient(to bottom, var(--primary-blue), #4a90e2);
+    background: linear-gradient(to bottom, transparent, var(--primary-blue), #4a90e2, transparent);
+    background-size: 100% 200%;
     box-shadow: 0 0 15px rgba(1, 59, 141, 0.5);
     transition: height 0.3s ease-out;
+    animation: flowLight 3s linear infinite;
+}
+
+@keyframes flowLight {
+    0% {
+        background-position: 0% 0%;
+    }
+
+    100% {
+        background-position: 0% 200%;
+    }
 }
 
 .axis-glow {
@@ -3798,23 +3810,26 @@ body {
 
 .story-card {
     width: calc(50% - 60px);
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(1, 59, 141, 0.1);
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(1, 59, 141, 0.15);
     padding: 30px;
-    border-radius: 20px;
+    border-radius: 24px;
     position: relative;
-    transition: all 0.4s ease;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04),
+        inset 0 0 20px rgba(255, 255, 255, 0.5);
     opacity: 0;
-    transform: translateY(30px) scale(0.95);
-    animation: storeAppear 0.6s ease-out forwards;
+    transform: translateY(40px) perspective(1000px) rotateX(10deg);
+    animation: storeAppear 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+    transform-style: preserve-3d;
 }
 
 @keyframes storeAppear {
     to {
         opacity: 1;
-        transform: translateY(0) scale(1);
+        transform: translateY(0) perspective(1000px) rotateX(0deg);
     }
 }
 
@@ -3865,9 +3880,19 @@ body {
 }
 
 .story-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-8px) perspective(1000px) rotateY(var(--rotate-y, 5deg)) rotateX(var(--rotate-x, -2deg));
     border-color: var(--primary-blue);
-    box-shadow: 0 15px 40px rgba(1, 59, 141, 0.15);
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 25px 50px rgba(1, 59, 141, 0.15),
+        inset 0 0 30px rgba(255, 255, 255, 0.8);
+}
+
+.story-card.left:hover {
+    --rotate-y: -5deg;
+}
+
+.story-card.right:hover {
+    --rotate-y: 5deg;
 }
 
 /* 관계 태그 (Relationship Tag) */
@@ -3875,13 +3900,27 @@ body {
     content: attr(data-rel);
     position: absolute;
     top: -15px;
-    background: #ff4757;
+    background: linear-gradient(135deg, #ff4757, #ff6b81);
     color: #fff;
-    padding: 4px 12px;
-    border-radius: 20px;
+    padding: 5px 15px;
+    border-radius: 50px;
     font-size: 0.75rem;
-    font-weight: 700;
-    box-shadow: 0 5px 15px rgba(255, 71, 87, 0.3);
+    font-weight: 800;
+    box-shadow: 0 5px 15px rgba(255, 71, 87, 0.4);
+    transform: translateZ(20px);
+    animation: floatingTag 3s ease-in-out infinite;
+}
+
+@keyframes floatingTag {
+
+    0%,
+    100% {
+        transform: translateZ(20px) translateY(0);
+    }
+
+    50% {
+        transform: translateZ(20px) translateY(-3px);
+    }
 }
 
 .story-card.left::before {
@@ -3907,7 +3946,36 @@ body {
     background: rgba(1, 59, 141, 0.05);
     padding: 4px 10px;
     border-radius: 5px;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+    position: relative;
+    z-index: 2;
+}
+
+.node-icon {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    font-size: 3.5rem;
+    color: var(--primary-blue);
+    opacity: 0.04;
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.story-card:hover .node-icon {
+    opacity: 0.12;
+    transform: scale(1.1) rotate(-10deg) translateY(-5px);
+    color: var(--primary-blue);
+}
+
+.story-card.highlight .node-icon {
+    color: #fff;
+    opacity: 0.1;
+}
+
+.story-card.highlight:hover .node-icon {
+    opacity: 0.25;
 }
 
 .story-card.highlight {
@@ -3929,18 +3997,30 @@ body {
     content: '';
     position: absolute;
     top: 50%;
-    width: 60px;
+    width: 0;
     height: 2px;
-    background: #f0f4f8;
+    background: linear-gradient(to right, #f0f4f8, var(--primary-blue));
     z-index: -1;
+    transition: width 0.8s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 .story-card.left::after {
     right: -60px;
+    background: linear-gradient(to left, #f0f4f8, var(--primary-blue));
 }
 
 .story-card.right::after {
     left: -60px;
+}
+
+.story-card.revealed::after {
+    width: 60px;
+}
+
+.story-card:hover::after {
+    height: 3px;
+    background: var(--primary-blue);
+    box-shadow: 0 0 10px rgba(1, 59, 141, 0.3);
 }
 
 /* 대기 중인 점포 스타일 */
