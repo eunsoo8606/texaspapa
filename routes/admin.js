@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const router = express.Router();
 const db = require('../config/database');
 const { requireAuth, redirectIfAuthenticated } = require('../middleware/auth');
+const { decrypt, formatPhone } = require('../utils/crypto');
 
 // ===========================
 // 로그인 페이지
@@ -393,9 +394,9 @@ router.get('/board/:type/:id', requireAuth, async (req, res) => {
             created_at: posts[0].create_dt,
             top_yn: posts[0].top_yn,
             views: posts[0].views || 0,
-            author_name: posts[0].author_name,
-            author_email: posts[0].author_email,
-            author_phone: posts[0].author_phone,
+            author_name: decrypt(posts[0].author_name),
+            author_email: decrypt(posts[0].author_email),
+            author_phone: formatPhone(decrypt(posts[0].author_phone)),
             status: posts[0].status
         };
 
@@ -583,17 +584,49 @@ router.post('/board/:type/:id/delete', requireAuth, async (req, res) => {
 // ===========================
 // 문의하기 관리 (인증 필요)
 // ===========================
-router.get('/inquiry', requireAuth, (req, res) => {
-    res.render('admin/inquiry', {
-        title: '문의하기 관리',
-        user: req.session.adminUser,
-        currentPage: 'inquiry'
-    });
+router.get('/inquiry', requireAuth, async (req, res) => {
+    try {
+        const [rows] = await db.query(
+            'SELECT * FROM consultation ORDER BY created_at DESC'
+        );
+
+        const inquiries = rows.map(item => ({
+            ...item,
+            name: decrypt(item.name),
+            email: decrypt(item.email),
+            phone: formatPhone(decrypt(item.phone))
+        }));
+
+        res.render('admin/inquiry', {
+            title: '문의하기 관리',
+            user: req.session.adminUser,
+            currentPage: 'inquiry',
+            inquiries
+        });
+    } catch (error) {
+        console.error('문의 내역 조회 오류:', error);
+        res.status(500).send('문의 내역을 불러오는 중 오류가 발생했습니다.');
+    }
 });
 
 // ===========================
-// 답변 저장/수정 (인증 필요)
+// 문의하기 상태 변경 (인증 필요)
 // ===========================
+router.post('/inquiry/:id/status', requireAuth, async (req, res) => {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    try {
+        await db.query(
+            'UPDATE consultation SET status = ?, updated_at = NOW() WHERE consultation_id = ?',
+            [status, id]
+        );
+        res.json({ success: true });
+    } catch (error) {
+        console.error('상태 업데이트 오류:', error);
+        res.status(500).json({ success: false, message: '상태 업데이트 중 오류가 발생했습니다.' });
+    }
+});
 router.post('/board/:type/:id/reply', requireAuth, async (req, res) => {
     const { type, id } = req.params;
     const { reply_content } = req.body;

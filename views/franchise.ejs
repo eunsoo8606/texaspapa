@@ -1320,14 +1320,29 @@
                     const backgroundAxis = entry.target.querySelector('.growth-axis');
                     const dot = entry.target.querySelector('.pulse-dot');
 
-                    if (axis && backgroundAxis && dot) {
+                    if (axis && backgroundAxis) {
                         const updateAxisHeight = () => {
+                            const isMobile = window.innerWidth <= 768;
                             const wrapperRect = entry.target.querySelector('.trust-stream-wrapper').getBoundingClientRect();
-                            const dotRect = dot.getBoundingClientRect();
-                            const targetHeight = dotRect.top - wrapperRect.top + (dotRect.height / 2);
+                            let targetHeight = 0;
 
-                            backgroundAxis.style.height = targetHeight + 'px';
-                            axis.style.height = '100%';
+                            if (isMobile) {
+                                // 모바일에서는 도트가 숨겨지므로 마지막 카드의 중앙까지 연결
+                                const allCards = entry.target.querySelectorAll('.story-card');
+                                const lastCard = allCards[allCards.length - 1];
+                                if (lastCard) {
+                                    const cardRect = lastCard.getBoundingClientRect();
+                                    targetHeight = cardRect.top - wrapperRect.top + (cardRect.height / 2);
+                                }
+                            } else if (dot) {
+                                const dotRect = dot.getBoundingClientRect();
+                                targetHeight = dotRect.top - wrapperRect.top + (dotRect.height / 2);
+                            }
+
+                            if (targetHeight > 0) {
+                                backgroundAxis.style.height = targetHeight + 'px';
+                                axis.style.height = '100%';
+                            }
                         };
 
                         updateAxisHeight();

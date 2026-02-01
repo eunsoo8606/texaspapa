@@ -1,4 +1,5 @@
 require('dotenv').config(); // 환경 변수 로드
+const { encrypt, stripPhone } = require('./utils/crypto');
 
 const express = require('express');
 const session = require('express-session');
@@ -267,12 +268,18 @@ app.post('/community/:tab/write', async (req, res) => {
         // IP 주소
         const createIp = req.ip || req.connection.remoteAddress;
 
+        // 개인정보 암호화 및 연락처 정규화
+        const strippedPhone = stripPhone(author_phone);
+        const encryptedName = encrypt(author_name);
+        const encryptedEmail = encrypt(author_email);
+        const encryptedPhone = encrypt(strippedPhone);
+
         // posts 테이블에 저장
         await db.query(
             `INSERT INTO posts 
             (board_id, title, content, writer, author_name, author_email, author_phone, password, status, create_ip, create_dt, views, top_yn) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?, NOW(), 0, 'N')`,
-            [boardId, title, content, author_name, author_name, author_email, author_phone, passwordHash, createIp]
+            [boardId, title, content, author_name, encryptedName, encryptedEmail, encryptedPhone, passwordHash, createIp]
         );
 
         // 관리자에게 이메일 알림 발송 (비동기, 실패해도 문의 등록은 성공)
@@ -474,11 +481,17 @@ app.post('/api/consultation', async (req, res) => {
         const db = require('./config/database');
         const createIp = req.ip || req.connection.remoteAddress;
 
+        // 개인정보 암호화 및 연락처 정규화
+        const strippedPhone = stripPhone(phone);
+        const encryptedName = encrypt(name);
+        const encryptedEmail = encrypt(email);
+        const encryptedPhone = encrypt(strippedPhone);
+
         // 상담 신청 저장
         await db.query(
             `INSERT INTO consultation (name, phone, email, region, budget, experience, message, create_ip, created_at) 
              VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())`,
-            [name, phone, email, region, budget, experience, message, createIp]
+            [encryptedName, encryptedPhone, encryptedEmail, region, budget, experience, message, createIp]
         );
 
         // 관리자에게 이메일 알림 발송

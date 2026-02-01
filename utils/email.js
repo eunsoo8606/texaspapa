@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer');
+const { decrypt, formatPhone } = require('./crypto');
 
 // 이메일 전송 설정
 const transporter = nodemailer.createTransport({
@@ -45,9 +46,9 @@ async function sendInquiryNotification(inquiry) {
                     
                     <div style="margin-bottom: 20px; padding-bottom: 20px; border-bottom: 2px solid #f0f0f0;">
                         <h2 style="color: #333; margin: 0 0 10px 0; font-size: 18px;">👤 작성자 정보</h2>
-                        <p style="margin: 5px 0; color: #666;"><strong>이름:</strong> ${inquiry.author_name}</p>
-                        <p style="margin: 5px 0; color: #666;"><strong>이메일:</strong> ${inquiry.author_email}</p>
-                        <p style="margin: 5px 0; color: #666;"><strong>연락처:</strong> ${inquiry.author_phone}</p>
+                        <p style="margin: 5px 0; color: #666;"><strong>이름:</strong> ${decrypt(inquiry.author_name)}</p>
+                        <p style="margin: 5px 0; color: #666;"><strong>이메일:</strong> ${decrypt(inquiry.author_email)}</p>
+                        <p style="margin: 5px 0; color: #666;"><strong>연락처:</strong> ${formatPhone(decrypt(inquiry.author_phone))}</p>
                     </div>
                     
                     <div style="margin-bottom: 30px;">
@@ -102,9 +103,9 @@ async function sendConsultationNotification(consultation) {
                 <div style="background: white; padding: 30px; border-radius: 0 0 10px 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
                     <div style="margin-bottom: 20px; padding-bottom: 20px; border-bottom: 2px solid #f0f0f0;">
                         <h2 style="color: #333; margin: 0 0 10px 0; font-size: 18px;">👤 신청자 정보</h2>
-                        <p style="margin: 5px 0; color: #666;"><strong>이름:</strong> ${consultation.name}</p>
-                        <p style="margin: 5px 0; color: #666;"><strong>연락처:</strong> ${consultation.phone}</p>
-                        ${consultation.email ? `<p style="margin: 5px 0; color: #666;"><strong>이메일:</strong> ${consultation.email}</p>` : ''}
+                        <p style="margin: 5px 0; color: #666;"><strong>이름:</strong> ${decrypt(consultation.name)}</p>
+                        <p style="margin: 5px 0; color: #666;"><strong>연락처:</strong> ${formatPhone(decrypt(consultation.phone))}</p>
+                        ${consultation.email ? `<p style="margin: 5px 0; color: #666;"><strong>이메일:</strong> ${decrypt(consultation.email)}</p>` : ''}
                     </div>
                     
                     <div style="margin-bottom: 20px; padding-bottom: 20px; border-bottom: 2px solid #f0f0f0;">
@@ -170,7 +171,7 @@ async function sendReplyNotification(data) {
                 
                 <div style="background: white; padding: 30px; border-radius: 0 0 10px 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
                     <p style="font-size: 16px; color: #333; margin-bottom: 20px;">
-                        안녕하세요, <strong>${userName}</strong>님!
+                        안녕하세요, <strong>${decrypt(userName)}</strong>님!
                     </p>
                     
                     <p style="color: #666; line-height: 1.6; margin-bottom: 30px;">

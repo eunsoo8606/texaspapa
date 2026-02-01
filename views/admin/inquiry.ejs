@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ko">
 
 <head>
@@ -40,9 +40,7 @@
                     </div>
                     <div class="header-right">
                         <div class="user-info">
-                            <div class="user-avatar">
-                                <i class="fas fa-user-circle"></i>
-                            </div>
+                            <div class="user-avatar"><i class="fas fa-user-circle"></i></div>
                             <div class="user-details">
                                 <span class="user-name">
                                     <%= user.name || user.adminName %>
@@ -66,9 +64,78 @@
                         </div>
 
                         <div class="inquiry-content">
-                            <div class="empty-state">
-                                <i class="fas fa-inbox"></i>
-                                <p>문의하기 기능은 추후 구현 예정입니다.</p>
+                            <% if (inquiries && inquiries.length> 0) { %>
+                                <div class="table-overlay">
+                                    <table class="admin-table">
+                                        <thead>
+                                            <tr>
+                                                <th>상태</th>
+                                                <th>신청자</th>
+                                                <th>연락처</th>
+                                                <th>희망지역</th>
+                                                <th>예산</th>
+                                                <th>경험</th>
+                                                <th>신청일</th>
+                                                <th>관리</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% inquiries.forEach(item=> { %>
+                                                <tr>
+                                                    <td>
+                                                        <span class="status-badge <%= item.status %>">
+                                                            <%= item.status==='pending' ? '대기' :
+                                                                item.status==='processing' ? '진행중' : '완료' %>
+                                                        </span>
+                                                    </td>
+                                                    <td class="user-name-cell">
+                                                        <%= item.name %>
+                                                    </td>
+                                                    <td>
+                                                        <%= item.phone %>
+                                                    </td>
+                                                    <td>
+                                                        <%= item.region || '-' %>
+                                                    </td>
+                                                    <td>
+                                                        <%= item.budget || '-' %>
+                                                    </td>
+                                                    <td>
+                                                        <%= item.experience || '-' %>
+                                                    </td>
+                                                    <td class="date-cell">
+                                                        <%= new Date(item.created_at).toLocaleDateString('ko-KR') %>
+                                                    </td>
+                                                    <td>
+                                                        <button class="view-btn"
+                                                            onclick="viewDetail('<%= item.consultation_id %>')">상세보기</button>
+                                                    </td>
+                                                </tr>
+                                                <% }); %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <% } else { %>
+                                    <div class="empty-state">
+                                        <i class="fas fa-inbox"></i>
+                                        <p>아직 접수된 상담 신청이 없습니다.</p>
+                                    </div>
+                                    <% } %>
+                        </div>
+
+                        <!-- 상담 상세 모달 -->
+                        <div id="detailModal" class="admin-modal">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h3>상담 신청 상세 정보</h3>
+                                    <button class="close-modal" onclick="closeModal()">&times;</button>
+                                </div>
+                                <div class="modal-body" id="modalBody">
+                                    <!-- JS로 동적 생성 -->
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn-cancel" onclick="closeModal()">닫기</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -78,46 +145,339 @@
 
     <style>
         .inquiry-container {
-            background: var(--bg-secondary);
-            padding: 2rem;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow-md);
+            background: #fff;
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
         }
 
         .inquiry-header {
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid var(--border-color);
+            margin-bottom: 2.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .inquiry-header h2 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--text-primary);
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #1a1a1a;
         }
 
-        .inquiry-content {
-            min-height: 400px;
-            display: flex;
+        .table-overlay {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+
+        .admin-table th {
+            background-color: #f8f9fb;
+            color: #555;
+            font-weight: 600;
+            padding: 1.2rem;
+            text-align: left;
+            border-bottom: 2px solid #edf1f7;
+        }
+
+        .admin-table td {
+            padding: 1.2rem;
+            border-bottom: 1px solid #edf1f7;
+            color: #333;
+        }
+
+        .admin-table tr:hover {
+            background-color: #fcfdfe;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .status-badge.pending {
+            background: #fff4e5;
+            color: #ff9800;
+            border: 1px solid rgba(255, 152, 0, 0.2);
+        }
+
+        .status-badge.processing {
+            background: #e3f2fd;
+            color: #2196f3;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+        }
+
+        .status-badge.completed {
+            background: #e8f5e9;
+            color: #4caf50;
+            border: 1px solid rgba(76, 175, 80, 0.2);
+        }
+
+        .user-name-cell {
+            font-weight: 600;
+            color: #013b8d !important;
+        }
+
+        .date-cell {
+            color: #888;
+            font-size: 0.85rem;
+        }
+
+        .view-btn {
+            background: #f0f4f8;
+            color: #013b8d;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .view-btn:hover {
+            background: #013b8d;
+            color: #fff;
+        }
+
+        .empty-state {
+            padding: 80px 0;
+            text-align: center;
+            color: #ccc;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .admin-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
             align-items: center;
             justify-content: center;
         }
+
+        .admin-modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #fff;
+            width: 90%;
+            max-width: 600px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            animation: modalSlide 0.3s ease-out;
+        }
+
+        @keyframes modalSlide {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f8f9fb;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            font-size: 1.25rem;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #aaa;
+        }
+
+        .modal-body {
+            padding: 2rem;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .detail-row {
+            display: grid;
+            grid-template-columns: 100px 1fr;
+            margin-bottom: 1rem;
+            gap: 1rem;
+        }
+
+        .detail-label {
+            font-weight: 700;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .detail-value {
+            color: #1a1a1a;
+            line-height: 1.5;
+        }
+
+        .detail-message {
+            background: #f8f9fb;
+            padding: 1.2rem;
+            border-radius: 8px;
+            margin-top: 0.5rem;
+            white-space: pre-wrap;
+            border: 1px solid #eee;
+        }
+
+        .modal-footer {
+            padding: 1.2rem;
+            border-top: 1px solid #eee;
+            text-align: right;
+        }
+
+        .btn-cancel {
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            background: #fff;
+            cursor: pointer;
+        }
+
+        .status-select {
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            font-size: 0.9rem;
+            background-color: #fff;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .status-select:focus {
+            border-color: #013b8d;
+        }
     </style>
 
+    <div id="inquiries-data" data-json="<%= JSON.stringify(inquiries) %>" style="display: none;"></div>
     <script>
-        // 사이드바 토글
+        const inquiriesData = JSON.parse(document.getElementById('inquiries-data').getAttribute('data-json'));
+
+        function viewDetail(id) {
+            const item = inquiriesData.find(d => d.consultation_id == id);
+            if (!item) return;
+
+            const body = document.getElementById('modalBody');
+            body.innerHTML = `
+                <div class="detail-row">
+                    <span class="detail-label">신청자</span>
+                    <span class="detail-value">${item.name}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">연락처</span>
+                    <span class="detail-value">${item.phone}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">이메일</span>
+                    <span class="detail-value">${item.email || '-'}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">희망지역</span>
+                    <span class="detail-value">${item.region || '-'}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">예산</span>
+                    <span class="detail-value">${item.budget || '-'}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">창업경험</span>
+                    <span class="detail-value">${item.experience || '-'}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">신청일(IP)</span>
+                    <span class="detail-value">${new Date(item.created_at).toLocaleString()} (${item.create_ip || 'unknown'})</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">상태 변경</span>
+                    <div class="detail-value">
+                        <select id="statusSelect" class="status-select" onchange="updateStatus('${item.consultation_id}', this.value)">
+                            <option value="pending" ${item.status === 'pending' ? 'selected' : ''}>대기</option>
+                            <option value="processing" ${item.status === 'processing' ? 'selected' : ''}>진행중</option>
+                            <option value="completed" ${item.status === 'completed' ? 'selected' : ''}>완료</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="margin-top: 1.5rem;">
+                    <span class="detail-label" style="display:block; margin-bottom: 0.5rem;">문의 내용</span>
+                    <div class="detail-message">${item.message || '상세 내용 없음'}</div>
+                </div>
+            `;
+
+            document.getElementById('detailModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        async function updateStatus(id, newStatus) {
+            if (!confirm('상담 상태를 변경하시겠습니까?')) return;
+
+            try {
+                const response = await fetch(`/console/inquiry/${id}/status`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status: newStatus })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    alert('상태가 변경되었습니다.');
+                    location.reload();
+                } else {
+                    alert('변경 실패: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('상태 변경 중 오류가 발생했습니다.');
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('detailModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
         function toggleSidebar() {
             document.querySelector('.admin-sidebar').classList.toggle('collapsed');
             document.querySelector('.main-content').classList.toggle('expanded');
         }
 
-        // 모바일에서 메뉴 클릭 시 사이드바 닫기
-        if (window.innerWidth <= 768) {
-            document.querySelectorAll('.sidebar-menu a').forEach(link => {
-                link.addEventListener('click', () => {
-                    document.querySelector('.admin-sidebar').classList.add('collapsed');
-                });
-            });
+        window.onclick = function (event) {
+            const modal = document.getElementById('detailModal');
+            if (event.target == modal) {
+                closeModal();
+            }
         }
     </script>
 </body>
