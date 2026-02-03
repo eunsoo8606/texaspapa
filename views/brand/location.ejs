@@ -80,7 +80,7 @@
     </main>
 
     <script type="text/javascript"
-        src="//dapi.kakao.com/v2/maps/sdk.js?appkey=32d21192c59a01f88208043771e1a27d&libraries=services"></script>
+        src="//dapi.kakao.com/v2/maps/sdk.js?appkey=32d21192c59a01f88208043771e1a27d&libraries=services&autoload=false"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -110,12 +110,20 @@
                 }, 2000);
             };
 
+            if (typeof kakao === 'undefined') {
+                console.error('카카오 지도 SDK가 로드되지 않았습니다. API 키와 스크립트 경로를 확인해주세요.');
+                if (placeholder) placeholder.style.display = 'block';
+                return;
+            }
+
             kakao.maps.load(() => {
+                console.log('카카오 지도 API 로드 완료');
                 window.targetAddr = '서울특별시 송파구 오금로 11길 55';
                 const geocoder = new kakao.maps.services.Geocoder();
 
                 geocoder.addressSearch(window.targetAddr, function (result, status) {
                     if (status === kakao.maps.services.Status.OK) {
+                        console.log('주소 검색 성공:', result[0].x, result[0].y);
                         const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
 
                         const mapOption = { center: coords, level: 3 };
@@ -163,6 +171,8 @@
 
                         map.setCenter(coords);
                         window.addEventListener('resize', () => map.setCenter(coords));
+                    } else {
+                        console.error('주소 검색 실패:', status);
                     }
                 });
             });

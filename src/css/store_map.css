@@ -26,7 +26,7 @@
     /* 지도 로딩 전 배경색 */
 }
 
-#map {
+.store-map-page #map {
     width: 100%;
     height: 100%;
 }
