@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap');
+
 :root {
     --primary-blue: #013b8d;
     --dark-blue: #00255e;
@@ -1319,7 +1321,6 @@ body {
 
 
 /* Section 3: Revenue Dashboard (Precise Match) */
-@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap');
 
 .revenue-dashboard {
     position: relative;
