@@ -171,21 +171,52 @@ body {
 .menu-group-title {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    justify-content: space-between;
     padding: 0.875rem 1.5rem;
     color: var(--text-light);
     font-size: 0.85rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all var(--transition);
+}
+
+.menu-group-title:hover {
+    color: var(--text-white);
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.menu-group-title .title-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.toggle-icon {
+    font-size: 0.75rem;
+    transition: transform var(--transition);
 }
 
 .submenu {
-    padding-left: 1rem;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+    padding-left: 0;
+}
+
+.menu-group.expanded .submenu {
+    max-height: 500px;
+    /* 충분한 높이 */
+}
+
+.menu-group.expanded .toggle-icon {
+    transform: rotate(90deg);
 }
 
 .submenu .menu-item {
-    padding-left: 2.5rem;
+    padding-left: 3.5rem;
+    font-size: 0.9rem;
 }
 
 .admin-sidebar.collapsed .menu-group-title,
@@ -517,17 +548,70 @@ body {
    반응형 디자인
    =========================== */
 
+/* 모바일 사이드바 오버레이 */
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: all var(--transition);
+}
+
+.sidebar-overlay.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
 @media (max-width: 768px) {
-    .admin-sidebar {
-        transform: translateX(-100%);
+    .admin-wrapper .admin-sidebar {
+        left: -280px !important;
+        width: 280px !important;
+        transform: none !important;
+        transition: left var(--transition) !important;
+        background: var(--bg-darker);
+        box-shadow: none;
     }
 
-    .admin-sidebar:not(.collapsed) {
-        transform: translateX(0);
+    .admin-wrapper .admin-sidebar.active {
+        left: 0 !important;
+        box-shadow: 10px 0 30px rgba(0, 0, 0, 0.3) !important;
+    }
+
+    .sidebar-logo {
+        justify-content: space-between;
+    }
+
+    .logo-main {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .sidebar-close {
+        display: block;
+        background: none;
+        border: none;
+        color: var(--text-white);
+        font-size: 1.5rem;
+        cursor: pointer;
+        padding: 0.5rem;
+        opacity: 0.7;
+        transition: opacity var(--transition);
+    }
+
+    .sidebar-close:hover {
+        opacity: 1;
     }
 
     .main-content {
-        margin-left: 0;
+        margin-left: 0 !important;
     }
 
     .admin-header {
@@ -535,7 +619,7 @@ body {
     }
 
     .page-title {
-        font-size: 1.25rem;
+        font-size: 1.15rem;
     }
 
     .user-details {
@@ -552,6 +636,12 @@ body {
 
     .action-grid {
         grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 769px) {
+    .sidebar-close {
+        display: none;
     }
 }
 
@@ -1243,4 +1333,146 @@ body {
     margin-left: 2rem;
     font-size: 0.85rem;
     color: var(--text-secondary);
+}
+
+/* 목록 내 액션 버튼 스타일 */
+.view-btn {
+    padding: 0.5rem 1rem;
+    background: #f8faff;
+    color: var(--primary-color);
+    border: 1px solid rgba(102, 126, 234, 0.3);
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.view-btn:hover {
+    background: var(--primary-color);
+    color: var(--text-white);
+    border-color: var(--primary-color);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(102, 126, 234, 0.2);
+}
+
+/* 게시판 모바일 카드 UI 가시성 및 스타일 */
+.desktop-only {
+    display: block !important;
+}
+
+.mobile-only {
+    display: none !important;
+}
+
+@media (max-width: 768px) {
+    .desktop-only {
+        display: none !important;
+    }
+
+    .mobile-only {
+        display: block !important;
+    }
+
+    .mobile-card-list {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 1rem !important;
+        margin-top: 1rem !important;
+        padding-bottom: 2rem !important;
+    }
+
+    .board-card,
+    .inquiry-card {
+        background: #ffffff !important;
+        border: 1px solid #edf2f7 !important;
+        border-radius: 12px !important;
+        padding: 1.25rem !important;
+        cursor: pointer !important;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04) !important;
+        margin-bottom: 0.5rem !important;
+    }
+
+    .card-header {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        margin-bottom: 0.75rem !important;
+    }
+
+    .card-no {
+        font-size: 0.8rem !important;
+        font-weight: 600 !important;
+        color: #013b8d !important;
+        background: #f0f4f8 !important;
+        padding: 2px 8px !important;
+        border-radius: 4px !important;
+    }
+
+    .card-date {
+        font-size: 0.8rem !important;
+        color: #718096 !important;
+    }
+
+    .card-title {
+        font-size: 1.1rem !important;
+        font-weight: 600 !important;
+        color: #1a202c !important;
+        margin-bottom: 1rem !important;
+        line-height: 1.4 !important;
+        word-break: keep-all !important;
+        overflow-wrap: break-word !important;
+    }
+
+    .card-footer {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        padding-top: 0.75rem !important;
+        border-top: 1px dashed #e2e8f0 !important;
+        font-size: 0.85rem !important;
+        color: #4a5568 !important;
+    }
+
+    .card-author i,
+    .card-views i {
+        margin-right: 4px !important;
+        color: #a0aec0 !important;
+    }
+
+    /* 문의하기 전용 */
+    .card-name {
+        font-size: 1.1rem !important;
+        font-weight: 700 !important;
+        color: #1a202c !important;
+        margin-bottom: 0.5rem !important;
+    }
+
+    .card-phone {
+        font-size: 0.85rem !important;
+        font-weight: 400 !important;
+        color: #718096 !important;
+        margin-left: 8px !important;
+    }
+
+    .card-info-row {
+        display: flex !important;
+        gap: 1rem !important;
+        font-size: 0.85rem !important;
+        color: #4a5568 !important;
+        margin-bottom: 1rem !important;
+    }
+
+    .view-btn-full {
+        width: 100% !important;
+        padding: 0.8rem !important;
+        background: #f7fafc !important;
+        color: #013b8d !important;
+        border: 1px solid #edf2f7 !important;
+        border-radius: 8px !important;
+        font-weight: 600 !important;
+    }
 }

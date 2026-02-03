@@ -1,0 +1,61 @@
+<div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+<script>
+    // 사이드바 토글 함수
+    function toggleSidebar() {
+        const sidebar = document.querySelector('.admin-sidebar');
+        const content = document.querySelector('.main-content');
+        const overlay = document.querySelector('.sidebar-overlay');
+
+        console.log('Toggle Sidebar Triggered');
+
+        if (!sidebar) {
+            console.error('Sidebar element not found');
+            return;
+        }
+
+        const isMobile = window.innerWidth <= 768;
+        console.log('Current mode:', isMobile ? 'Mobile' : 'Desktop');
+
+        if (isMobile) {
+            sidebar.classList.toggle('active');
+            if (overlay) overlay.classList.toggle('active');
+            console.log('Mobile classes toggled:', sidebar.classList.contains('active'));
+        } else {
+            sidebar.classList.toggle('collapsed');
+            if (content) content.classList.toggle('expanded');
+            console.log('Desktop classes toggled:', sidebar.classList.contains('collapsed'));
+        }
+    }
+
+    // 전역에서도 접근 가능하도록 보장
+    window.toggleSidebar = toggleSidebar;
+
+    // 메뉴 그룹 토글 함수
+    function toggleSubmenu(element) {
+        const group = element.closest('.menu-group');
+        if (group) {
+            group.classList.toggle('expanded');
+            console.log('Submenu toggled:', group.classList.contains('expanded'));
+        }
+    }
+
+    // 전역 노출
+    window.toggleSubmenu = toggleSubmenu;
+
+    document.addEventListener('DOMContentLoaded', () => {
+        console.log('Admin Scripts Loaded');
+
+        // 메뉴 클릭 시 닫기 (모바일 전용)
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    const sidebar = document.querySelector('.admin-sidebar');
+                    const overlay = document.querySelector('.sidebar-overlay');
+                    if (sidebar) sidebar.classList.remove('active');
+                    if (overlay) overlay.classList.remove('active');
+                }
+            });
+        });
+    });
+</script>

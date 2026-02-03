@@ -1,0 +1,18 @@
+CREATE TABLE `stores` (
+	`id` INT NOT NULL AUTO_INCREMENT,
+	`company_id` INT NULL DEFAULT '2' COMMENT '회사 ID (텍사스파파: 2)',
+	`name` VARCHAR(100) NOT NULL COMMENT '매장명' COLLATE 'utf8mb4_unicode_ci',
+	`address` VARCHAR(255) NOT NULL COMMENT '주소' COLLATE 'utf8mb4_unicode_ci',
+	`phone` VARCHAR(20) NULL DEFAULT NULL COMMENT '전화번호' COLLATE 'utf8mb4_unicode_ci',
+	`lat` DECIMAL(10,8) NOT NULL COMMENT '위도',
+	`lng` DECIMAL(11,8) NOT NULL COMMENT '경도',
+	`is_active` ENUM('Y','N') NULL DEFAULT 'Y' COMMENT '노출 여부' COLLATE 'utf8mb4_unicode_ci',
+	`created_at` TIMESTAMP NULL DEFAULT (CURRENT_TIMESTAMP),
+	`updated_at` TIMESTAMP NULL DEFAULT (CURRENT_TIMESTAMP) ON UPDATE CURRENT_TIMESTAMP,
+	`use_yn` CHAR(1) NULL DEFAULT 'Y' COMMENT '사용여부' COLLATE 'utf8mb4_unicode_ci',
+	PRIMARY KEY (`id`) USING BTREE
+)
+COLLATE='utf8mb4_unicode_ci'
+ENGINE=InnoDB
+AUTO_INCREMENT=3
+;

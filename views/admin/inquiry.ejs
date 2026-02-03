@@ -23,124 +23,164 @@
 
 <body>
     <div class="admin-wrapper">
-        <!-- 사이드바 -->
-        <%- include('./partials/sidebar', { user, currentPage }) %>
+        <%- include('./partials/scripts') %>
 
-            <!-- 메인 콘텐츠 영역 -->
-            <div class="main-content">
-                <!-- 헤더 -->
-                <header class="admin-header">
-                    <div class="header-left">
-                        <button class="sidebar-toggle" onclick="toggleSidebar()">
-                            <i class="fas fa-bars"></i>
-                        </button>
-                        <h1 class="page-title">
-                            <%= title %>
-                        </h1>
-                    </div>
-                    <div class="header-right">
-                        <div class="user-info">
-                            <div class="user-avatar"><i class="fas fa-user-circle"></i></div>
-                            <div class="user-details">
-                                <span class="user-name">
-                                    <%= user.name || user.adminName %>
-                                </span>
-                                <span class="user-role">
-                                    <%= user.role==='super_admin' ? '최고 관리자' : user.role==='admin' ? '관리자' : '편집자' %>
-                                </span>
+            <!-- 사이드바 -->
+            <%- include('./partials/sidebar', { user, currentPage }) %>
+
+                <!-- 메인 콘텐츠 영역 -->
+                <div class="main-content">
+                    <!-- 헤더 -->
+                    <header class="admin-header">
+                        <div class="header-left">
+                            <button class="sidebar-toggle" onclick="toggleSidebar()">
+                                <i class="fas fa-bars"></i>
+                            </button>
+                            <h1 class="page-title">
+                                <%= title %>
+                            </h1>
+                        </div>
+                        <div class="header-right">
+                            <div class="user-info">
+                                <div class="user-avatar"><i class="fas fa-user-circle"></i></div>
+                                <div class="user-details">
+                                    <span class="user-name">
+                                        <%= user.name || user.adminName %>
+                                    </span>
+                                    <span class="user-role">
+                                        <%= user.role==='super_admin' ? '최고 관리자' : user.role==='admin' ? '관리자' : '편집자'
+                                            %>
+                                    </span>
+                                </div>
                             </div>
+                            <a href="/console/logout" class="logout-btn" title="로그아웃">
+                                <i class="fas fa-sign-out-alt"></i>
+                            </a>
                         </div>
-                        <a href="/console/logout" class="logout-btn" title="로그아웃">
-                            <i class="fas fa-sign-out-alt"></i>
-                        </a>
-                    </div>
-                </header>
+                    </header>
 
-                <!-- 페이지 콘텐츠 -->
-                <main class="page-content">
-                    <div class="inquiry-container">
-                        <div class="inquiry-header">
-                            <h2>문의하기 관리</h2>
-                        </div>
+                    <!-- 페이지 콘텐츠 -->
+                    <main class="page-content">
+                        <div class="inquiry-container">
+                            <div class="inquiry-header">
+                                <h2>문의하기 관리</h2>
+                            </div>
 
-                        <div class="inquiry-content">
-                            <% if (inquiries && inquiries.length> 0) { %>
-                                <div class="table-overlay">
-                                    <table class="admin-table">
-                                        <thead>
-                                            <tr>
-                                                <th>상태</th>
-                                                <th>신청자</th>
-                                                <th>연락처</th>
-                                                <th>희망지역</th>
-                                                <th>예산</th>
-                                                <th>경험</th>
-                                                <th>신청일</th>
-                                                <th>관리</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <% inquiries.forEach(item=> { %>
+                            <div class="inquiry-content">
+                                <% if (inquiries && inquiries.length> 0) { %>
+                                    <!-- 데스크톱 전용 테이블 -->
+                                    <div class="table-overlay desktop-only">
+                                        <table class="admin-table">
+                                            <thead>
                                                 <tr>
-                                                    <td>
-                                                        <span class="status-badge <%= item.status %>">
-                                                            <%= item.status==='pending' ? '대기' :
-                                                                item.status==='processing' ? '진행중' : '완료' %>
-                                                        </span>
-                                                    </td>
-                                                    <td class="user-name-cell">
-                                                        <%= item.name %>
-                                                    </td>
-                                                    <td>
-                                                        <%= item.phone %>
-                                                    </td>
-                                                    <td>
-                                                        <%= item.region || '-' %>
-                                                    </td>
-                                                    <td>
-                                                        <%= item.budget || '-' %>
-                                                    </td>
-                                                    <td>
-                                                        <%= item.experience || '-' %>
-                                                    </td>
-                                                    <td class="date-cell">
-                                                        <%= new Date(item.created_at).toLocaleDateString('ko-KR') %>
-                                                    </td>
-                                                    <td>
-                                                        <button class="view-btn"
-                                                            onclick="viewDetail('<%= item.consultation_id %>')">상세보기</button>
-                                                    </td>
+                                                    <th>상태</th>
+                                                    <th>신청자</th>
+                                                    <th>연락처</th>
+                                                    <th>희망지역</th>
+                                                    <th>예산</th>
+                                                    <th>경험</th>
+                                                    <th>신청일</th>
+                                                    <th>관리</th>
                                                 </tr>
-                                                <% }); %>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <% } else { %>
-                                    <div class="empty-state">
-                                        <i class="fas fa-inbox"></i>
-                                        <p>아직 접수된 상담 신청이 없습니다.</p>
+                                            </thead>
+                                            <tbody>
+                                                <% inquiries.forEach(item=> { %>
+                                                    <tr>
+                                                        <td>
+                                                            <span class="status-badge <%= item.status %>">
+                                                                <%= item.status==='pending' ? '대기' :
+                                                                    item.status==='processing' ? '진행중' : '완료' %>
+                                                            </span>
+                                                        </td>
+                                                        <td class="user-name-cell">
+                                                            <%= item.name %>
+                                                        </td>
+                                                        <td>
+                                                            <%= item.phone %>
+                                                        </td>
+                                                        <td>
+                                                            <%= item.region || '-' %>
+                                                        </td>
+                                                        <td>
+                                                            <%= item.budget || '-' %>
+                                                        </td>
+                                                        <td>
+                                                            <%= item.experience || '-' %>
+                                                        </td>
+                                                        <td class="date-cell">
+                                                            <%= new Date(item.created_at).toLocaleDateString('ko-KR') %>
+                                                        </td>
+                                                        <td>
+                                                            <button class="view-btn"
+                                                                onclick="viewDetail('<%= item.consultation_id %>')">상세보기</button>
+                                                        </td>
+                                                    </tr>
+                                                    <% }); %>
+                                            </tbody>
+                                        </table>
                                     </div>
-                                    <% } %>
-                        </div>
 
-                        <!-- 상담 상세 모달 -->
-                        <div id="detailModal" class="admin-modal">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h3>상담 신청 상세 정보</h3>
-                                    <button class="close-modal" onclick="closeModal()">&times;</button>
-                                </div>
-                                <div class="modal-body" id="modalBody">
-                                    <!-- JS로 동적 생성 -->
-                                </div>
-                                <div class="modal-footer">
-                                    <button class="btn-cancel" onclick="closeModal()">닫기</button>
+                                    <!-- 모바일 전용 카드 목록 -->
+                                    <div class="mobile-card-list mobile-only">
+                                        <% inquiries.forEach(item=> { %>
+                                            <div class="inquiry-card"
+                                                onclick="viewDetail('<%= item.consultation_id %>')">
+                                                <div class="card-header">
+                                                    <span class="status-badge <%= item.status %>">
+                                                        <%= item.status==='pending' ? '대기' : item.status==='processing'
+                                                            ? '진행중' : '완료' %>
+                                                    </span>
+                                                    <span class="card-date">
+                                                        <%= new Date(item.created_at).toLocaleDateString('ko-KR') %>
+                                                    </span>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="card-name">
+                                                        <%= item.name %> <span class="card-phone">
+                                                                <%= item.phone %>
+                                                            </span>
+                                                    </div>
+                                                    <div class="card-info-row">
+                                                        <span><i class="fas fa-map-marker-alt"></i>
+                                                            <%= item.region || '-' %>
+                                                        </span>
+                                                        <span><i class="fas fa-won-sign"></i>
+                                                            <%= item.budget || '-' %>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="card-footer">
+                                                    <button class="view-btn-full">상세보기</button>
+                                                </div>
+                                            </div>
+                                            <% }); %>
+                                    </div>
+                                    <% } else { %>
+                                        <div class="empty-state">
+                                            <i class="fas fa-inbox"></i>
+                                            <p>아직 접수된 상담 신청이 없습니다.</p>
+                                        </div>
+                                        <% } %>
+                            </div>
+
+                            <!-- 상담 상세 모달 -->
+                            <div id="detailModal" class="admin-modal">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h3>상담 신청 상세 정보</h3>
+                                        <button class="close-modal" onclick="closeModal()">&times;</button>
+                                    </div>
+                                    <div class="modal-body" id="modalBody">
+                                        <!-- JS로 동적 생성 -->
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button class="btn-cancel" onclick="closeModal()">닫기</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </main>
-            </div>
+                    </main>
+                </div>
     </div>
 
     <style>
@@ -470,11 +510,6 @@
         function closeModal() {
             document.getElementById('detailModal').classList.remove('active');
             document.body.style.overflow = '';
-        }
-
-        function toggleSidebar() {
-            document.querySelector('.admin-sidebar').classList.toggle('collapsed');
-            document.querySelector('.main-content').classList.toggle('expanded');
         }
 
         window.onclick = function (event) {

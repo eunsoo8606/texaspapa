@@ -23,129 +23,141 @@
 
 <body>
     <div class="admin-wrapper">
-        <!-- 사이드바 -->
-        <%- include('./partials/sidebar', { user, currentPage }) %>
+        <%- include('./partials/scripts') %>
 
-            <!-- 메인 콘텐츠 영역 -->
-            <div class="main-content">
-                <!-- 헤더 -->
-                <header class="admin-header">
-                    <div class="header-left">
-                        <button class="sidebar-toggle" onclick="toggleSidebar()">
-                            <i class="fas fa-bars"></i>
-                        </button>
-                        <h1 class="page-title">
-                            <%= title %>
-                        </h1>
-                    </div>
-                    <div class="header-right">
-                        <div class="user-info">
-                            <div class="user-avatar">
-                                <i class="fas fa-user-circle"></i>
-                            </div>
-                            <div class="user-details">
-                                <span class="user-name">
-                                    <%= user.name || user.adminName %>
-                                </span>
-                                <span class="user-role">
-                                    <%= user.role==='super_admin' ? '최고 관리자' : user.role==='admin' ? '관리자' : '편집자' %>
-                                </span>
-                            </div>
-                        </div>
-                        <a href="/console/logout" class="logout-btn" title="로그아웃">
-                            <i class="fas fa-sign-out-alt"></i>
-                        </a>
-                    </div>
-                </header>
+            <!-- 사이드바 -->
+            <%- include('./partials/sidebar', { user, currentPage }) %>
 
-                <!-- 페이지 콘텐츠 -->
-                <main class="page-content">
-                    <div class="franchise-container">
-                        <div class="franchise-header">
-                            <h2>가맹점 관리</h2>
-                            <button class="btn-primary">
-                                <i class="fas fa-plus"></i>
-                                가맹점 추가
+                <!-- 메인 콘텐츠 영역 -->
+                <div class="main-content">
+                    <!-- 헤더 -->
+                    <header class="admin-header">
+                        <div class="header-left">
+                            <button class="sidebar-toggle" onclick="toggleSidebar()">
+                                <i class="fas fa-bars"></i>
                             </button>
+                            <h1 class="page-title">
+                                <%= title %>
+                            </h1>
                         </div>
+                        <div class="header-right">
+                            <div class="user-info">
+                                <div class="user-avatar">
+                                    <i class="fas fa-user-circle"></i>
+                                </div>
+                                <div class="user-details">
+                                    <span class="user-name">
+                                        <%= user.name || user.adminName %>
+                                    </span>
+                                    <span class="user-role">
+                                        <%= user.role==='super_admin' ? '최고 관리자' : user.role==='admin' ? '관리자' : '편집자'
+                                            %>
+                                    </span>
+                                </div>
+                            </div>
+                            <a href="/console/logout" class="logout-btn" title="로그아웃">
+                                <i class="fas fa-sign-out-alt"></i>
+                            </a>
+                        </div>
+                    </header>
 
-                        <div class="franchise-content">
-                            <div class="empty-state">
-                                <i class="fas fa-store"></i>
-                                <p>가맹점 관리 기능은 추후 구현 예정입니다.</p>
+                    <!-- 페이지 콘텐츠 -->
+                    <main class="page-content">
+                        <div class="board-container">
+                            <div class="board-header">
+                                <div class="board-info">
+                                    <h2>가맹점 관리</h2>
+                                    <p class="board-count">전체 <strong>
+                                            <%= stores ? stores.length : 0 %>
+                                        </strong>개</p>
+                                </div>
+                                <button class="btn-primary">
+                                    <i class="fas fa-plus"></i>
+                                    가맹점 추가
+                                </button>
+                            </div>
+
+                            <div class="board-content">
+                                <% if (stores && stores.length> 0) { %>
+                                    <!-- 데스크톱 전용 테이블 -->
+                                    <div class="board-table-wrapper desktop-only">
+                                        <table class="board-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>매장명</th>
+                                                    <th>연락처</th>
+                                                    <th>주소</th>
+                                                    <th>상태</th>
+                                                    <th>관리</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <% stores.forEach(store=> { %>
+                                                    <tr class="board-row">
+                                                        <td class="store-name-cell">
+                                                            <%= store.name %>
+                                                        </td>
+                                                        <td>
+                                                            <%= store.phone || '-' %>
+                                                        </td>
+                                                        <td>
+                                                            <%= store.address %>
+                                                        </td>
+                                                        <td>
+                                                            <span
+                                                                class="status-badge <%= store.use_yn === 'Y' ? 'completed' : 'pending' %>">
+                                                                <%= store.use_yn==='Y' ? '노출중' : '중지' %>
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <button class="view-btn">수정</button>
+                                                        </td>
+                                                    </tr>
+                                                    <% }); %>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <!-- 모바일 전용 카드 리스트 -->
+                                    <div class="mobile-card-list mobile-only">
+                                        <% stores.forEach(store=> { %>
+                                            <div class="inquiry-card">
+                                                <div class="card-header">
+                                                    <span
+                                                        class="status-badge <%= store.use_yn === 'Y' ? 'completed' : 'pending' %>">
+                                                        <%= store.use_yn==='Y' ? '노출중' : '중지' %>
+                                                    </span>
+                                                    <span class="card-date">
+                                                        <%= store.phone || '연락처 없음' %>
+                                                    </span>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="card-name">
+                                                        <%= store.name %>
+                                                    </div>
+                                                    <div class="card-info-row">
+                                                        <span><i class="fas fa-map-marker-alt"></i>
+                                                            <%= store.address %>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="card-footer">
+                                                    <button class="view-btn-full">정보 수정</button>
+                                                </div>
+                                            </div>
+                                            <% }); %>
+                                    </div>
+                                    <% } else { %>
+                                        <div class="empty-state">
+                                            <i class="fas fa-store"></i>
+                                            <p>등록된 가맹점이 없습니다.</p>
+                                        </div>
+                                        <% } %>
                             </div>
                         </div>
-                    </div>
-                </main>
-            </div>
+                    </main>
+                </div>
     </div>
-
-    <style>
-        .franchise-container {
-            background: var(--bg-secondary);
-            padding: 2rem;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow-md);
-        }
-
-        .franchise-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid var(--border-color);
-        }
-
-        .franchise-header h2 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .btn-primary {
-            padding: 0.75rem 1.5rem;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: var(--text-white);
-            border: none;
-            border-radius: 8px;
-            font-weight: 500;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: all var(--transition);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .franchise-content {
-            min-height: 400px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-    </style>
-
-    <script>
-        // 사이드바 토글
-        function toggleSidebar() {
-            document.querySelector('.admin-sidebar').classList.toggle('collapsed');
-            document.querySelector('.main-content').classList.toggle('expanded');
-        }
-
-        // 모바일에서 메뉴 클릭 시 사이드바 닫기
-        if (window.innerWidth <= 768) {
-            document.querySelectorAll('.sidebar-menu a').forEach(link => {
-                link.addEventListener('click', () => {
-                    document.querySelector('.admin-sidebar').classList.add('collapsed');
-                });
-            });
-        }
-    </script>
 </body>
 
 </html>

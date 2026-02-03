@@ -26,107 +26,104 @@
 
 <body>
     <div class="admin-wrapper">
-        <!-- 사이드바 -->
-        <%- include('./partials/sidebar', { user, currentPage }) %>
+        <%- include('./partials/scripts') %>
 
-            <!-- 메인 콘텐츠 영역 -->
-            <div class="main-content">
-                <!-- 헤더 -->
-                <header class="admin-header">
-                    <div class="header-left">
-                        <button class="sidebar-toggle" onclick="toggleSidebar()">
-                            <i class="fas fa-bars"></i>
-                        </button>
-                        <h1 class="page-title">
-                            <%= title %>
-                        </h1>
-                    </div>
-                    <div class="header-right">
-                        <div class="user-info">
-                            <div class="user-avatar">
-                                <i class="fas fa-user-circle"></i>
-                            </div>
-                            <div class="user-details">
-                                <span class="user-name">
-                                    <%= user.name || user.adminName %>
-                                </span>
-                                <span class="user-role">
-                                    <%= user.role==='super_admin' ? '최고 관리자' : user.role==='admin' ? '관리자' : '편집자' %>
-                                </span>
-                            </div>
+            <!-- 사이드바 -->
+            <%- include('./partials/sidebar', { user, currentPage }) %>
+
+                <!-- 메인 콘텐츠 영역 -->
+                <div class="main-content">
+                    <!-- 헤더 -->
+                    <header class="admin-header">
+                        <div class="header-left">
+                            <button class="sidebar-toggle" onclick="toggleSidebar()">
+                                <i class="fas fa-bars"></i>
+                            </button>
+                            <h1 class="page-title">
+                                <%= title %>
+                            </h1>
                         </div>
-                        <a href="/console/logout" class="logout-btn" title="로그아웃">
-                            <i class="fas fa-sign-out-alt"></i>
-                        </a>
-                    </div>
-                </header>
-
-                <!-- 페이지 콘텐츠 -->
-                <main class="page-content">
-                    <div class="board-form-container">
-                        <form id="boardForm" method="POST" action="/console/board/<%= boardType %>/write">
-                            <!-- 제목 입력 -->
-                            <div class="form-group">
-                                <label for="title" class="form-label">
-                                    <i class="fas fa-heading"></i>
-                                    제목
-                                </label>
-                                <input type="text" id="title" name="title" class="form-input" placeholder="제목을 입력하세요"
-                                    required maxlength="255">
-                            </div>
-
-                            <!-- 에디터 -->
-                            <div class="form-group">
-                                <label for="editor" class="form-label">
-                                    <i class="fas fa-edit"></i>
-                                    내용
-                                </label>
-                                <div id="editor" class="quill-editor"></div>
-                                <input type="hidden" id="content" name="content">
-                            </div>
-
-                            <!-- 상위노출 (공지사항, 이벤트만) -->
-                            <% if (boardType==='notice' || boardType==='event' ) { %>
-                                <div class="form-group">
-                                    <label class="form-checkbox">
-                                        <input type="checkbox" name="top_yn" value="Y">
-                                        <span class="checkbox-label">
-                                            <i class="fas fa-thumbtack"></i>
-                                            상위 고정
-                                        </span>
-                                    </label>
-                                    <p class="form-help-text">체크하면 게시글 목록 상단에 고정됩니다.</p>
+                        <div class="header-right">
+                            <div class="user-info">
+                                <div class="user-avatar">
+                                    <i class="fas fa-user-circle"></i>
                                 </div>
-                                <% } %>
+                                <div class="user-details">
+                                    <span class="user-name">
+                                        <%= user.name || user.adminName %>
+                                    </span>
+                                    <span class="user-role">
+                                        <%= user.role==='super_admin' ? '최고 관리자' : user.role==='admin' ? '관리자' : '편집자'
+                                            %>
+                                    </span>
+                                </div>
+                            </div>
+                            <a href="/console/logout" class="logout-btn" title="로그아웃">
+                                <i class="fas fa-sign-out-alt"></i>
+                            </a>
+                        </div>
+                    </header>
 
-                                    <!-- 버튼 그룹 -->
-                                    <div class="form-actions">
-                                        <button type="button" class="btn-secondary" onclick="history.back()">
-                                            <i class="fas fa-times"></i>
-                                            취소
-                                        </button>
-                                        <button type="submit" class="btn-primary">
-                                            <i class="fas fa-check"></i>
-                                            등록
-                                        </button>
+                    <!-- 페이지 콘텐츠 -->
+                    <main class="page-content">
+                        <div class="board-form-container">
+                            <form id="boardForm" method="POST" action="/console/board/<%= boardType %>/write">
+                                <!-- 제목 입력 -->
+                                <div class="form-group">
+                                    <label for="title" class="form-label">
+                                        <i class="fas fa-heading"></i>
+                                        제목
+                                    </label>
+                                    <input type="text" id="title" name="title" class="form-input"
+                                        placeholder="제목을 입력하세요" required maxlength="255">
+                                </div>
+
+                                <!-- 에디터 -->
+                                <div class="form-group">
+                                    <label for="editor" class="form-label">
+                                        <i class="fas fa-edit"></i>
+                                        내용
+                                    </label>
+                                    <div id="editor" class="quill-editor"></div>
+                                    <input type="hidden" id="content" name="content">
+                                </div>
+
+                                <!-- 상위노출 (공지사항, 이벤트만) -->
+                                <% if (boardType==='notice' || boardType==='event' ) { %>
+                                    <div class="form-group">
+                                        <label class="form-checkbox">
+                                            <input type="checkbox" name="top_yn" value="Y">
+                                            <span class="checkbox-label">
+                                                <i class="fas fa-thumbtack"></i>
+                                                상위 고정
+                                            </span>
+                                        </label>
+                                        <p class="form-help-text">체크하면 게시글 목록 상단에 고정됩니다.</p>
                                     </div>
-                        </form>
-                    </div>
-                </main>
-            </div>
+                                    <% } %>
+
+                                        <!-- 버튼 그룹 -->
+                                        <div class="form-actions">
+                                            <button type="button" class="btn-secondary" onclick="history.back()">
+                                                <i class="fas fa-times"></i>
+                                                취소
+                                            </button>
+                                            <button type="submit" class="btn-primary">
+                                                <i class="fas fa-check"></i>
+                                                등록
+                                            </button>
+                                        </div>
+                            </form>
+                        </div>
+                    </main>
+                </div>
     </div>
 
     <!-- Quill Editor JS -->
     <script src="/lib/quill/quill.js"></script>
 
     <script>
-        // 사이드바 토글
-        function toggleSidebar() {
-            document.querySelector('.admin-sidebar').classList.toggle('collapsed');
-            document.querySelector('.main-content').classList.toggle('expanded');
-        }
-
-        // Quill 에디터 초기화 (스크립트 로딩 완료 후)
+        // Quill 에디터 초기화
         let quill;
 
         function initQuillEditor() {
@@ -180,15 +177,8 @@
             initQuillEditor();
         }
 
-        // 모바일에서 메뉴 클릭 시 사이드바 닫기
-        if (window.innerWidth <= 768) {
-            document.querySelectorAll('.sidebar-menu a').forEach(link => {
-                link.addEventListener('click', () => {
-                    document.querySelector('.admin-sidebar').classList.add('collapsed');
-                });
-            });
-        }
     </script>
+</body>
 </body>
 
 </html>

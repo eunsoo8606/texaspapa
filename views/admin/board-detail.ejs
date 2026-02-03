@@ -23,182 +23,186 @@
 
 <body>
     <div class="admin-wrapper">
-        <!-- 사이드바 -->
-        <%- include('./partials/sidebar', { user, currentPage }) %>
+        <%- include('./partials/scripts') %>
 
-            <!-- 메인 콘텐츠 영역 -->
-            <div class="main-content">
-                <!-- 헤더 -->
-                <header class="admin-header">
-                    <div class="header-left">
-                        <button class="sidebar-toggle" onclick="toggleSidebar()">
-                            <i class="fas fa-bars"></i>
-                        </button>
-                        <h1 class="page-title">
-                            <%= boardTitle %>
-                        </h1>
-                    </div>
-                    <div class="header-right">
-                        <div class="user-info">
-                            <div class="user-avatar">
-                                <i class="fas fa-user-circle"></i>
-                            </div>
-                            <div class="user-details">
-                                <span class="user-name">
-                                    <%= user.name || user.adminName %>
-                                </span>
-                                <span class="user-role">
-                                    <%= user.role==='super_admin' ? '최고 관리자' : user.role==='admin' ? '관리자' : '편집자' %>
-                                </span>
-                            </div>
+            <!-- 사이드바 -->
+            <%- include('./partials/sidebar', { user, currentPage }) %>
+
+                <!-- 메인 콘텐츠 영역 -->
+                <div class="main-content">
+                    <!-- 헤더 -->
+                    <header class="admin-header">
+                        <div class="header-left">
+                            <button class="sidebar-toggle" onclick="toggleSidebar()">
+                                <i class="fas fa-bars"></i>
+                            </button>
+                            <h1 class="page-title">
+                                <%= boardTitle %>
+                            </h1>
                         </div>
-                        <a href="/console/logout" class="logout-btn" title="로그아웃">
-                            <i class="fas fa-sign-out-alt"></i>
-                        </a>
-                    </div>
-                </header>
-
-                <!-- 페이지 콘텐츠 -->
-                <main class="page-content">
-                    <div class="board-detail-container">
-                        <!-- 게시글 헤더 -->
-                        <div class="board-detail-header">
-                            <h2 class="board-detail-title">
-                                <%= post.title %>
-                            </h2>
-                            <div class="board-detail-meta">
-                                <span class="meta-item">
-                                    <i class="fas fa-user"></i>
-                                    <%= post.author %>
-                                </span>
-                                <span class="meta-item">
-                                    <i class="fas fa-calendar"></i>
-                                    <%= new Date(post.created_at).toLocaleDateString('ko-KR') %>
-                                </span>
-                                <span class="meta-item">
-                                    <i class="fas fa-eye"></i>
-                                    <%= post.views %>
-                                </span>
-                            </div>
-                        </div>
-
-                        <!-- 게시글 내용 -->
-                        <div class="board-detail-content">
-                            <%- post.content %>
-                        </div>
-
-                        <!-- 문의게시판/고객의소리 작성자 정보 -->
-                        <% if (boardType==='inquiry' || boardType==='voice' ) { %>
-                            <% if (post.author_name) { %>
-                                <div class="inquiry-author-info"
-                                    style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin: 20px 0;">
-                                    <h4 style="margin-bottom: 15px; color: #333;">
-                                        <i class="fas fa-user-circle"></i> 작성자 정보
-                                    </h4>
-                                    <div
-                                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
-                                        <div>
-                                            <strong>이름:</strong>
-                                            <%= post.author_name %>
-                                        </div>
-                                        <div>
-                                            <strong>이메일:</strong>
-                                            <%= post.author_email %>
-                                        </div>
-                                        <div>
-                                            <strong>연락처:</strong>
-                                            <%= post.author_phone %>
-                                        </div>
-                                        <div>
-                                            <strong>상태:</strong>
-                                            <% if (post.status==='pending' ) { %>
-                                                <span style="color: #ffc107; font-weight: 600;">답변대기</span>
-                                                <% } else if (post.status==='answered' ) { %>
-                                                    <span style="color: #28a745; font-weight: 600;">답변완료</span>
-                                                    <% } %>
-                                        </div>
-                                    </div>
+                        <div class="header-right">
+                            <div class="user-info">
+                                <div class="user-avatar">
+                                    <i class="fas fa-user-circle"></i>
                                 </div>
-                                <% } %>
+                                <div class="user-details">
+                                    <span class="user-name">
+                                        <%= user.name || user.adminName %>
+                                    </span>
+                                    <span class="user-role">
+                                        <%= user.role==='super_admin' ? '최고 관리자' : user.role==='admin' ? '관리자' : '편집자'
+                                            %>
+                                    </span>
+                                </div>
+                            </div>
+                            <a href="/console/logout" class="logout-btn" title="로그아웃">
+                                <i class="fas fa-sign-out-alt"></i>
+                            </a>
+                        </div>
+                    </header>
 
-                                    <!-- 답변 표시 또는 작성 -->
-                                    <div class="reply-section" style="margin: 30px 0;">
-                                        <% if (reply) { %>
-                                            <!-- 기존 답변 표시 -->
-                                            <div class="reply-display"
-                                                style="background: #e8f5e9; padding: 25px; border-radius: 10px; border-left: 4px solid #28a745;">
-                                                <h4 style="margin-bottom: 15px; color: #28a745;">
-                                                    <i class="fas fa-comment-dots"></i> 관리자 답변
-                                                </h4>
-                                                <div class="reply-content"
-                                                    style="white-space: pre-wrap; line-height: 1.8; color: #333; margin-bottom: 15px;">
-                                                    <%= reply.reply_content %>
-                                                </div>
-                                                <div class="reply-meta"
-                                                    style="color: #666; font-size: 0.9rem; padding-top: 15px; border-top: 1px solid #c8e6c9;">
-                                                    <i class="fas fa-clock"></i>
-                                                    <%= new Date(reply.created_at).toLocaleString('ko-KR') %>
-                                                </div>
-                                                <button type="button" class="btn-secondary" onclick="showReplyForm()"
-                                                    style="margin-top: 15px;">
-                                                    <i class="fas fa-edit"></i> 답변 수정
-                                                </button>
+                    <!-- 페이지 콘텐츠 -->
+                    <main class="page-content">
+                        <div class="board-detail-container">
+                            <!-- 게시글 헤더 -->
+                            <div class="board-detail-header">
+                                <h2 class="board-detail-title">
+                                    <%= post.title %>
+                                </h2>
+                                <div class="board-detail-meta">
+                                    <span class="meta-item">
+                                        <i class="fas fa-user"></i>
+                                        <%= post.author %>
+                                    </span>
+                                    <span class="meta-item">
+                                        <i class="fas fa-calendar"></i>
+                                        <%= new Date(post.created_at).toLocaleDateString('ko-KR') %>
+                                    </span>
+                                    <span class="meta-item">
+                                        <i class="fas fa-eye"></i>
+                                        <%= post.views %>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- 게시글 내용 -->
+                            <div class="board-detail-content">
+                                <%- post.content %>
+                            </div>
+
+                            <!-- 문의게시판/고객의소리 작성자 정보 -->
+                            <% if (boardType==='inquiry' || boardType==='voice' ) { %>
+                                <% if (post.author_name) { %>
+                                    <div class="inquiry-author-info"
+                                        style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                                        <h4 style="margin-bottom: 15px; color: #333;">
+                                            <i class="fas fa-user-circle"></i> 작성자 정보
+                                        </h4>
+                                        <div
+                                            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                                            <div>
+                                                <strong>이름:</strong>
+                                                <%= post.author_name %>
                                             </div>
-                                            <% } %>
-
-                                                <!-- 답변 작성/수정 폼 -->
-                                                <div id="replyForm" class="reply-form"
-                                                    style="<%= reply ? 'display: none;' : '' %> background: #fff3cd; padding: 25px; border-radius: 10px; border-left: 4px solid #ffc107;">
-                                                    <h4 style="margin-bottom: 15px; color: #856404;">
-                                                        <i class="fas fa-pen"></i>
-                                                        <%= reply ? '답변 수정' : '답변 작성' %>
-                                                    </h4>
-                                                    <form action="/console/board/<%= boardType %>/<%= post.id %>/reply"
-                                                        method="POST">
-                                                        <textarea name="reply_content" rows="8" required
-                                                            placeholder="답변 내용을 입력하세요..."
-                                                            style="width: 100%; padding: 15px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem; font-family: inherit; resize: vertical;"><%= reply ? reply.reply_content : '' %></textarea>
-                                                        <div style="margin-top: 15px; display: flex; gap: 10px;">
-                                                            <button type="submit" class="btn-primary">
-                                                                <i class="fas fa-paper-plane"></i>
-                                                                <%= reply ? '답변 수정' : '답변 등록' %>
-                                                            </button>
-                                                            <% if (reply) { %>
-                                                                <button type="button" class="btn-secondary"
-                                                                    onclick="hideReplyForm()">
-                                                                    <i class="fas fa-times"></i> 취소
-                                                                </button>
-                                                                <% } %>
-                                                        </div>
-                                                    </form>
-                                                </div>
+                                            <div>
+                                                <strong>이메일:</strong>
+                                                <%= post.author_email %>
+                                            </div>
+                                            <div>
+                                                <strong>연락처:</strong>
+                                                <%= post.author_phone %>
+                                            </div>
+                                            <div>
+                                                <strong>상태:</strong>
+                                                <% if (post.status==='pending' ) { %>
+                                                    <span style="color: #ffc107; font-weight: 600;">답변대기</span>
+                                                    <% } else if (post.status==='answered' ) { %>
+                                                        <span style="color: #28a745; font-weight: 600;">답변완료</span>
+                                                        <% } %>
+                                            </div>
+                                        </div>
                                     </div>
                                     <% } %>
 
-                                        <!-- 버튼 그룹 -->
-                                        <div class="board-detail-actions">
-                                            <div class="action-left">
-                                                <button type="button" class="btn-secondary"
-                                                    onclick="location.href='/console/board/<%= boardType %>'">
-                                                    <i class="fas fa-list"></i>
-                                                    목록
-                                                </button>
-                                            </div>
-                                            <div class="action-right">
-                                                <button type="button" class="btn-primary"
-                                                    onclick="location.href='/console/board/<%= boardType %>/<%= post.id %>/edit'">
-                                                    <i class="fas fa-edit"></i>
-                                                    수정
-                                                </button>
-                                                <button type="button" class="btn-danger" onclick="confirmDelete()">
-                                                    <i class="fas fa-trash"></i>
-                                                    삭제
-                                                </button>
-                                            </div>
+                                        <!-- 답변 표시 또는 작성 -->
+                                        <div class="reply-section" style="margin: 30px 0;">
+                                            <% if (reply) { %>
+                                                <!-- 기존 답변 표시 -->
+                                                <div class="reply-display"
+                                                    style="background: #e8f5e9; padding: 25px; border-radius: 10px; border-left: 4px solid #28a745;">
+                                                    <h4 style="margin-bottom: 15px; color: #28a745;">
+                                                        <i class="fas fa-comment-dots"></i> 관리자 답변
+                                                    </h4>
+                                                    <div class="reply-content"
+                                                        style="white-space: pre-wrap; line-height: 1.8; color: #333; margin-bottom: 15px;">
+                                                        <%= reply.reply_content %>
+                                                    </div>
+                                                    <div class="reply-meta"
+                                                        style="color: #666; font-size: 0.9rem; padding-top: 15px; border-top: 1px solid #c8e6c9;">
+                                                        <i class="fas fa-clock"></i>
+                                                        <%= new Date(reply.created_at).toLocaleString('ko-KR') %>
+                                                    </div>
+                                                    <button type="button" class="btn-secondary"
+                                                        onclick="showReplyForm()" style="margin-top: 15px;">
+                                                        <i class="fas fa-edit"></i> 답변 수정
+                                                    </button>
+                                                </div>
+                                                <% } %>
+
+                                                    <!-- 답변 작성/수정 폼 -->
+                                                    <div id="replyForm" class="reply-form"
+                                                        style="<%= reply ? 'display: none;' : '' %> background: #fff3cd; padding: 25px; border-radius: 10px; border-left: 4px solid #ffc107;">
+                                                        <h4 style="margin-bottom: 15px; color: #856404;">
+                                                            <i class="fas fa-pen"></i>
+                                                            <%= reply ? '답변 수정' : '답변 작성' %>
+                                                        </h4>
+                                                        <form
+                                                            action="/console/board/<%= boardType %>/<%= post.id %>/reply"
+                                                            method="POST">
+                                                            <textarea name="reply_content" rows="8" required
+                                                                placeholder="답변 내용을 입력하세요..."
+                                                                style="width: 100%; padding: 15px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem; font-family: inherit; resize: vertical;"><%= reply ? reply.reply_content : '' %></textarea>
+                                                            <div style="margin-top: 15px; display: flex; gap: 10px;">
+                                                                <button type="submit" class="btn-primary">
+                                                                    <i class="fas fa-paper-plane"></i>
+                                                                    <%= reply ? '답변 수정' : '답변 등록' %>
+                                                                </button>
+                                                                <% if (reply) { %>
+                                                                    <button type="button" class="btn-secondary"
+                                                                        onclick="hideReplyForm()">
+                                                                        <i class="fas fa-times"></i> 취소
+                                                                    </button>
+                                                                    <% } %>
+                                                            </div>
+                                                        </form>
+                                                    </div>
                                         </div>
-                    </div>
-                </main>
-            </div>
+                                        <% } %>
+
+                                            <!-- 버튼 그룹 -->
+                                            <div class="board-detail-actions">
+                                                <div class="action-left">
+                                                    <button type="button" class="btn-secondary"
+                                                        onclick="location.href='/console/board/<%= boardType %>'">
+                                                        <i class="fas fa-list"></i>
+                                                        목록
+                                                    </button>
+                                                </div>
+                                                <div class="action-right">
+                                                    <button type="button" class="btn-primary"
+                                                        onclick="location.href='/console/board/<%= boardType %>/<%= post.id %>/edit'">
+                                                        <i class="fas fa-edit"></i>
+                                                        수정
+                                                    </button>
+                                                    <button type="button" class="btn-danger" onclick="confirmDelete()">
+                                                        <i class="fas fa-trash"></i>
+                                                        삭제
+                                                    </button>
+                                                </div>
+                                            </div>
+                        </div>
+                    </main>
+                </div>
     </div>
 
     <!-- 삭제 확인 모달 -->
@@ -228,52 +232,7 @@
         </div>
     </div>
 
-    <script>
-        // 사이드바 토글
-        function toggleSidebar() {
-            document.querySelector('.admin-sidebar').classList.toggle('collapsed');
-            document.querySelector('.main-content').classList.toggle('expanded');
-        }
-
-        // 답변 폼 표시
-        function showReplyForm() {
-            document.getElementById('replyForm').style.display = 'block';
-            document.querySelector('.reply-display').style.display = 'none';
-        }
-
-        // 답변 폼 숨김
-        function hideReplyForm() {
-            document.getElementById('replyForm').style.display = 'none';
-            document.querySelector('.reply-display').style.display = 'block';
-        }
-
-        // 삭제 확인 모달 열기
-        function confirmDelete() {
-            document.getElementById('deleteModal').style.display = 'flex';
-        }
-
-        // 삭제 확인 모달 닫기
-        function closeDeleteModal() {
-            document.getElementById('deleteModal').style.display = 'none';
-        }
-
-        // 모달 외부 클릭 시 닫기
-        window.onclick = function (event) {
-            const modal = document.getElementById('deleteModal');
-            if (event.target === modal) {
-                closeDeleteModal();
-            }
-        }
-
-        // 모바일에서 메뉴 클릭 시 사이드바 닫기
-        if (window.innerWidth <= 768) {
-            document.querySelectorAll('.sidebar-menu a').forEach(link => {
-                link.addEventListener('click', () => {
-                    document.querySelector('.admin-sidebar').classList.add('collapsed');
-                });
-            });
-        }
-    </script>
 </body>
+
 
 </html>

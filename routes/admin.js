@@ -138,11 +138,32 @@ router.get('/logout', (req, res) => {
 // ===========================
 router.get('/dashboard', requireAuth, async (req, res) => {
     try {
-        // 통계 데이터 조회 (추후 구현)
+        const companyId = req.session.adminUser.companyId;
+
+        // 1. 공지사항 게시글 수 조회 (boards 테이블에서 category='notice'인 행의 수)
+        const [noticeCount] = await db.query(
+            'SELECT COUNT(*) as count FROM posts p JOIN boards b ON p.board_id = b.id WHERE b.company_id = ? AND b.category = "notice"',
+            [companyId]
+        );
+
+        // 2. 가맹 문의 건수 조회 (consultation 테이블) - company_id 필터 추가
+        const [inquiryCount] = await db.query(
+            'SELECT COUNT(*) as count FROM consultation WHERE company_id = ?',
+            [companyId]
+        );
+
+        // 3. 가맹점 수 조회 (가맹점 테이블이 따로 없다면 현재 본인 회사를 1로 표시하거나, 
+        // 계열 브랜드/매장 테이블이 있다면 해당 테이블에서 company_id로 조회하도록 설계)
+        // 일단 본인 회사 정보가 있는지를 확인하는 용도로 유지
+        const [franchiseCount] = await db.query(
+            'SELECT COUNT(*) as count FROM company WHERE company_id = ?',
+            [companyId]
+        );
+
         const stats = {
-            totalPosts: 0,
-            totalInquiries: 0,
-            totalFranchises: 0,
+            totalPosts: noticeCount[0].count,
+            totalInquiries: inquiryCount[0].count,
+            totalFranchises: franchiseCount[0].count,
             recentActivities: []
         };
 
@@ -703,12 +724,26 @@ router.post('/board/:type/:id/reply', requireAuth, async (req, res) => {
 // ===========================
 // 가맹점 관리 (인증 필요)
 // ===========================
-router.get('/franchise', requireAuth, (req, res) => {
-    res.render('admin/franchise', {
-        title: '가맹점 관리',
-        user: req.session.adminUser,
-        currentPage: 'franchise'
-    });
+router.get('/franchise', requireAuth, async (req, res) => {
+    try {
+        const companyId = req.session.adminUser.companyId;
+
+        // stores 테이블에서 본인 브랜드에 해당하는 가맹점 조회
+        const [stores] = await db.query(
+            'SELECT * FROM stores WHERE company_id = ? ORDER BY id DESC',
+            [companyId]
+        );
+
+        res.render('admin/franchise', {
+            title: '가맹점 관리',
+            user: req.session.adminUser,
+            currentPage: 'franchise',
+            stores
+        });
+    } catch (error) {
+        console.error('가맹점 조회 오류:', error);
+        res.status(500).send('가맹점 정보를 불러오는 중 오류가 발생했습니다.');
+    }
 });
 
 // ===========================

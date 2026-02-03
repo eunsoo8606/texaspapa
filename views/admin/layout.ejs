@@ -23,6 +23,9 @@
 
 <body>
     <div class="admin-wrapper">
+        <!-- 사이드바 오버레이 (모바일용) -->
+        <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
         <!-- 사이드바 -->
         <%- include('./partials/sidebar', { user, currentPage }) %>
 
@@ -66,20 +69,52 @@
     </div>
 
     <script>
-        // 사이드바 토글
+        // 사이드바 토글 함수
         function toggleSidebar() {
-            document.querySelector('.admin-sidebar').classList.toggle('collapsed');
-            document.querySelector('.main-content').classList.toggle('expanded');
+            const sidebar = document.querySelector('.admin-sidebar');
+            const content = document.querySelector('.main-content');
+            const overlay = document.querySelector('.sidebar-overlay');
+
+            console.log('Toggle Sidebar Triggered');
+
+            if (!sidebar) {
+                console.error('Sidebar element not found');
+                return;
+            }
+
+            const isMobile = window.innerWidth <= 768;
+            console.log('Current mode:', isMobile ? 'Mobile' : 'Desktop');
+
+            if (isMobile) {
+                sidebar.classList.toggle('active');
+                if (overlay) overlay.classList.toggle('active');
+                console.log('Mobile classes toggled:', sidebar.classList.contains('active'));
+            } else {
+                sidebar.classList.toggle('collapsed');
+                if (content) content.classList.toggle('expanded');
+                console.log('Desktop classes toggled:', sidebar.classList.contains('collapsed'));
+            }
         }
 
-        // 모바일에서 메뉴 클릭 시 사이드바 닫기
-        if (window.innerWidth <= 768) {
-            document.querySelectorAll('.sidebar-menu a').forEach(link => {
-                link.addEventListener('click', () => {
-                    document.querySelector('.admin-sidebar').classList.add('collapsed');
+        // 전역에서도 접근 가능하도록 보장
+        window.toggleSidebar = toggleSidebar;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Admin Layout Loaded');
+
+            // 메뉴 클릭 시 닫기 (모바일 전용)
+            const menuItems = document.querySelectorAll('.menu-item');
+            menuItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    if (window.innerWidth <= 768) {
+                        const sidebar = document.querySelector('.admin-sidebar');
+                        const overlay = document.querySelector('.sidebar-overlay');
+                        if (sidebar) sidebar.classList.remove('active');
+                        if (overlay) overlay.classList.remove('active');
+                    }
                 });
             });
-        }
+        });
     </script>
 </body>
 
