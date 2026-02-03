@@ -1,0 +1,239 @@
+/* =========================================
+   Community Section (Notice, Event, FAQ, etc.)
+   ========================================= */
+
+/* 커뮤니티 히어로 (전체 너비) */
+.community-hero {
+    position: relative;
+    text-align: center;
+    padding: 180px 0;
+    background: linear-gradient(to right, rgba(1, 59, 141, 0.6), rgba(0, 37, 94, 0.65)),
+        url('/images/community_hero_background.png') center/cover no-repeat;
+    overflow: hidden;
+    margin: 0;
+}
+
+.community-title {
+    font-family: var(--font-heading);
+    font-size: 5.5rem;
+    font-weight: 900;
+    color: #fff;
+    margin: 0;
+    letter-spacing: 3px;
+    position: relative;
+    z-index: 1;
+    text-shadow: 0 6px 30px rgba(0, 0, 0, 0.4);
+}
+
+.community-section {
+    position: relative;
+    padding: 60px 0 120px 0;
+    background-color: #fff;
+    min-height: 600px;
+}
+
+.community-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+/* 탭 내비게이션 */
+.community-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    border-bottom: 2px solid #eee;
+    padding: 0 0 0 0;
+    margin-bottom: 50px;
+}
+
+.tab-item {
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #999;
+    text-decoration: none;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.tab-item:hover {
+    color: var(--primary-blue);
+}
+
+.tab-item.active {
+    color: var(--primary-blue);
+}
+
+.tab-item.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: var(--primary-blue);
+}
+
+/* Notice List Style */
+.notice-list {
+    width: 100%;
+    border-top: 2px solid var(--primary-blue);
+}
+
+.notice-item {
+    display: flex;
+    align-items: center;
+    padding: 25px 15px;
+    border-bottom: 1px solid #eee;
+    transition: background-color 0.2s ease;
+}
+
+.notice-item:hover {
+    background-color: #f9f9f9;
+}
+
+.ni-num {
+    width: 80px;
+    font-size: 0.9rem;
+    color: #999;
+    text-align: center;
+}
+
+.ni-content {
+    flex: 1;
+    padding: 0 20px;
+}
+
+.ni-title {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: #333;
+    display: block;
+    margin-bottom: 5px;
+    text-decoration: none;
+}
+
+.ni-title:hover {
+    color: var(--primary-blue);
+}
+
+.ni-date {
+    font-size: 0.9rem;
+    color: #bbb;
+}
+
+.ni-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    margin-right: 10px;
+    background: #eee;
+    color: #777;
+}
+
+.ni-badge.important {
+    background-color: var(--primary-blue);
+    color: #fff;
+}
+
+/* 문의하기 버튼 */
+.write-btn {
+    display: inline-block;
+    padding: 12px 30px;
+    background: linear-gradient(135deg, #0a33b5 0%, #0846d8 100%);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(10, 51, 181, 0.3);
+}
+
+.write-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(10, 51, 181, 0.4);
+}
+
+.write-btn i {
+    margin-right: 5px;
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 50px;
+}
+
+.pg-btn {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: #777;
+    transition: all 0.2s ease;
+}
+
+.pg-btn.active,
+.pg-btn:hover {
+    background-color: var(--primary-blue);
+    color: #fff;
+    border-color: var(--primary-blue);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .community-hero {
+        padding: 120px 0;
+    }
+
+    .community-title {
+        font-size: 3.2rem;
+        letter-spacing: 1px;
+    }
+
+    .community-tabs {
+        overflow-x: auto;
+        justify-content: flex-start;
+        -webkit-overflow-scrolling: touch;
+        gap: 0;
+        scrollbar-width: none;
+        /* Firefox */
+        -ms-overflow-style: none;
+        /* IE and Edge */
+    }
+
+    .community-tabs::-webkit-scrollbar {
+        display: none;
+        /* Chrome, Safari, Opera */
+    }
+
+    .tab-item {
+        flex-shrink: 0;
+        padding: 12px 20px;
+        font-size: 1rem;
+    }
+
+    .ni-num {
+        display: none;
+    }
+
+    .write-btn-container {
+        text-align: center !important;
+        margin-bottom: 15px !important;
+    }
+
+    .write-btn {
+        width: 100%;
+        text-align: center;
+    }
+}

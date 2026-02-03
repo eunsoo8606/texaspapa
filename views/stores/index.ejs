@@ -1,0 +1,236 @@
+<%- include('../layouts/layout', { title: '가맹점 찾기 - 텍사스파파' , activePage: 'brand' , head: ` <!-- 추가적인 헤드 정보 (필요시) -->
+    <style>
+        /* 지도 및 사이드바 전용 스타일 보정 (필요시) */
+    </style>
+    `,
+    body: `
+    <main class="store-map-page">
+        <div class="store-map-wrapper">
+            <!-- 사이드바 (검색 및 리스트) -->
+            <div class="store-sidebar">
+                <div class="sidebar-header">
+                    <h2 class="sidebar-title">매장 찾기</h2>
+                    <div class="search-box">
+                        <input type="text" id="store-search" placeholder="매장명 또는 주소 검색하기">
+                        <button type="button" id="search-btn"><i class="fas fa-search"></i></button>
+                    </div>
+                    <div class="filter-options">
+                        <button class="filter-btn active" data-filter="all">전체</button>
+                        <button class="filter-btn" data-filter="seoul">서울</button>
+                        <button class="filter-btn" data-filter="gyeonggi">경기</button>
+                        <button class="filter-btn" data-filter="other">기타</button>
+                    </div>
+                </div>
+
+                <div class="store-list-container">
+                    <ul class="store-list" id="store-list">
+                        <!-- 자바스크립트로 동적 생성됨 -->
+                    </ul>
+                    <div class="no-result" id="no-result" style="display: none;">
+                        <p>검색 결과가 없습니다.</p>
+                    </div>
+                </div>
+
+                <button class="sidebar-toggle-btn mobile-only">
+                    <i class="fas fa-chevron-up"></i> 목록 보기
+                </button>
+            </div>
+
+            <!-- 지도 영역 -->
+            <div class="map-container">
+                <div id="map"></div>
+                <!-- API 키 미등록 시 안내 -->
+                <div id="map-placeholder">
+                    <div class="placeholder-content">
+                        <i class="fas fa-map-marked-alt"></i>
+                        <p>카카오 지도 API 키 등록이 필요합니다.</p>
+                        <small>store_map.ejs 파일 하단의 스크립트 부분을 확인해주세요.</small>
+                    </div>
+                </div>
+                <!-- 데이터 전달용 JSON 스크립트 태그 -->
+                <script id="stores-data" type="application/json">${JSON.stringify(stores)}</script>
+            </div>
+        </div>
+    </main>
+
+    <!-- 카카오 지도 API -->
+    <script type="text/javascript"
+        src="//dapi.kakao.com/v2/maps/sdk.js?appkey=6cfe1538ff177afffbb05683d64b8188"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // JSON 스크립트 태그에서 데이터 읽기
+            const storesDataElement = document.getElementById('stores-data');
+            if (!storesDataElement) return;
+
+            const storeData = JSON.parse(storesDataElement.textContent);
+
+            const mapContainer = document.getElementById('map');
+            const placeholder = document.getElementById('map-placeholder');
+            const storeList = document.getElementById('store-list');
+            const searchInput = document.getElementById('store-search');
+            const searchBtn = document.getElementById('search-btn');
+            const noResult = document.getElementById('no-result');
+            const filterBtns = document.querySelectorAll('.filter-btn');
+
+            let map;
+            let markers = [];
+            let selectedInfowindow = null;
+
+            if (typeof kakao !== 'undefined' && kakao.maps) {
+                placeholder.style.display = 'none';
+                kakao.maps.load(() => {
+                    initMap();
+                });
+            } else {
+                renderStoreList(storeData);
+            }
+
+            function initMap() {
+                const mapOption = {
+                    center: new kakao.maps.LatLng(37.566826, 126.9786567),
+                    level: 9
+                };
+
+                map = new kakao.maps.Map(mapContainer, mapOption);
+                const zoomControl = new kakao.maps.ZoomControl();
+                map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+
+                createMarkers(storeData);
+                renderStoreList(storeData);
+            }
+
+            function createMarkers(stores) {
+                markers.forEach(m => m.setMap(null));
+                markers = [];
+
+                stores.forEach((store, index) => {
+                    const position = new kakao.maps.LatLng(store.lat, store.lng);
+                    const marker = new kakao.maps.Marker({
+                        position: position,
+                        title: store.name
+                    });
+
+                    marker.setMap(map);
+                    markers.push(marker);
+
+                    kakao.maps.event.addListener(marker, 'click', () => {
+                        selectStore(store, marker);
+                    });
+                });
+            }
+
+            function renderStoreList(stores) {
+                storeList.innerHTML = '';
+                if (stores.length === 0) {
+                    noResult.style.display = 'block';
+                    return;
+                }
+                noResult.style.display = 'none';
+
+                stores.forEach((store, index) => {
+                    const li = document.createElement('li');
+                    li.className = 'store-item';
+                    li.innerHTML = \`
+                        <div class="store-info">
+                            <h3 class="store-name">\${store.name}</h3>
+                            <p class="store-address">\${store.address}</p>
+                            <p class="store-phone"><i class="fas fa-phone-alt"></i> \${store.phone}</p>
+                        </div>
+                        <button class="view-map-btn"><i class="fas fa-map-marker-alt"></i></button>
+                    \`;
+
+                    li.addEventListener('click', () => {
+                        const targetMarker = markers.find(m => m.getTitle() === store.name);
+                        if (targetMarker) selectStore(store, targetMarker);
+                        
+                        document.querySelectorAll('.store-item').forEach(item => item.classList.remove('active'));
+                        li.classList.add('active');
+                    });
+                    storeList.appendChild(li);
+                });
+            }
+
+            function selectStore(store, marker) {
+                if (!map) return;
+                const moveLatLon = new kakao.maps.LatLng(store.lat, store.lng);
+                map.panTo(moveLatLon);
+                map.setLevel(4);
+
+                if (selectedInfowindow) selectedInfowindow.close();
+
+                const content = \`
+                    <div class="custom-infowindow">
+                        <div class="info-header">
+                            <h4>\${store.name}</h4>
+                            <button class="close-btn" onclick="closeInfowindow()">×</button>
+                        </div>
+                        <div class="info-body">
+                            <p class="address">\${store.address}</p>
+                            <p class="phone">\${store.phone}</p>
+                            <a href="https://map.kakao.com/link/to/\${store.name},\${store.lat},\${store.lng}" target="_blank" class="nav-link">길찾기</a>
+                        </div>
+                    </div>
+                \`;
+
+                window.closeInfowindow = () => { if (selectedInfowindow) selectedInfowindow.close(); };
+
+                const infowindow = new kakao.maps.InfoWindow({ content: content, removable: true });
+                infowindow.open(map, marker);
+                selectedInfowindow = infowindow;
+
+                const listItems = document.querySelectorAll('.store-item');
+                listItems.forEach(item => {
+                    if (item.querySelector('.store-name').textContent === store.name) {
+                        item.classList.add('active');
+                        item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    } else {
+                        item.classList.remove('active');
+                    }
+                });
+            }
+
+            function filterStores() {
+                const keyword = searchInput.value.trim().toLowerCase();
+                const activeFilter = document.querySelector('.filter-btn.active').dataset.filter;
+
+                const filtered = storeData.filter(store => {
+                    const matchKeyword = store.name.toLowerCase().includes(keyword) || store.address.toLowerCase().includes(keyword);
+                    let matchRegion = true;
+                    if (activeFilter === 'seoul') matchRegion = store.address.includes('서울');
+                    else if (activeFilter === 'gyeonggi') matchRegion = store.address.includes('경기') || store.address.includes('인천');
+                    else if (activeFilter === 'other') matchRegion = !store.address.includes('서울') && !store.address.includes('경기') && !store.address.includes('인천');
+                    return matchKeyword && matchRegion;
+                });
+                renderStoreList(filtered);
+            }
+
+            if (searchBtn) searchBtn.addEventListener('click', filterStores);
+            searchInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') filterStores(); });
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    filterStores();
+                });
+            });
+
+            const sidebarToggleBtn = document.querySelector('.sidebar-toggle-btn');
+            const sidebar = document.querySelector('.store-sidebar');
+            if (sidebarToggleBtn) {
+                sidebarToggleBtn.addEventListener('click', () => {
+                    sidebar.classList.toggle('expanded');
+                    const icon = sidebarToggleBtn.querySelector('i');
+                    if (sidebar.classList.contains('expanded')) {
+                        icon.className = 'fas fa-chevron-down';
+                        sidebarToggleBtn.innerHTML = '<i class="fas fa-chevron-down"></i> 지도 보기';
+                    } else {
+                        icon.className = 'fas fa-chevron-up';
+                        sidebarToggleBtn.innerHTML = '<i class="fas fa-chevron-up"></i> 목록 보기';
+                    }
+                });
+            }
+        });
+    </script>
+    `
+    }) %>

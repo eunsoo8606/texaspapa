@@ -12,9 +12,9 @@
 }
 
 .location-container {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 40px;
 }
 
 .location-header {
@@ -44,9 +44,10 @@
     position: relative;
     border-radius: 30px;
     overflow: hidden;
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1);
-    margin-bottom: 80px;
-    background: #f8f9fa;
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.15);
+    margin-bottom: 100px;
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 #map {
@@ -216,8 +217,34 @@
     color: #fff;
 }
 
-/* GSAP Animations */
-.fade-up {
+/* Inline Copy Button in Info Card */
+.inline-copy-btn {
+    background: transparent;
+    border: none;
+    color: #999;
+    cursor: pointer;
+    padding: 2px 8px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.inline-copy-btn:hover {
+    color: #013b8d;
+    background: #f0f4f8;
+}
+
+.inline-copy-btn.success {
+    color: #28a745;
+    background: #e8f5e9;
+}
+
+.addr-text {
+    flex: 1;
+}
+
+/* GSAP Animations - Scope to location-page only */
+.location-page .fade-up {
     opacity: 0;
     transform: translateY(30px);
 }

@@ -417,6 +417,10 @@
                     <span class="detail-value">${item.experience || '-'}</span>
                 </div>
                 <div class="detail-row">
+                    <span class="detail-label">창업경로</span>
+                    <span class="detail-value">${item.path || '-'}</span>
+                </div>
+                <div class="detail-row">
                     <span class="detail-label">신청일(IP)</span>
                     <span class="detail-value">${new Date(item.created_at).toLocaleString()} (${item.create_ip || 'unknown'})</span>
                 </div>

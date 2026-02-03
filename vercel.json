@@ -1,15 +1,13 @@
 {
     "version": 2,
-    "builds": [
+    "rewrites": [
         {
-            "src": "app.js",
-            "use": "@vercel/node"
-        }
-    ],
-    "routes": [
+            "source": "/(css|js|images|videos|dist|lib|favicon.ico|robots.txt|sitemap.xml|rss.xml|site.webmanifest|google.*.html|naver.*.html)(.*)",
+            "destination": "/public/$1$2"
+        },
         {
-            "src": "/(.*)",
-            "dest": "app.js"
+            "source": "/(.*)",
+            "destination": "/app.js"
         }
     ]
 }

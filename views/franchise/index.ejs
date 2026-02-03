@@ -1,4 +1,4 @@
-<%- include('layouts/layout', { title: '텍사스파파 | 스마트한 창업의 시작' ,
+<%- include('../layouts/layout', { title: '텍사스파파 | 스마트한 창업의 시작' ,
     head: '<link rel="preload" as="image" href="/images/gamang_main_img.webp" fetchpriority="high">' ,
     activePage: 'franchise' , body: ` <main class="sub-page">
     <!-- 창업 경쟁력 섹션 -->
@@ -1396,6 +1396,10 @@
 
                 try {
                     // 폼 데이터 수집
+                    const selectedPaths = Array.from(document.querySelectorAll('input[name="inquiry_path"]:checked'))
+                        .map(cb => cb.value)
+                        .join(', ');
+
                     const formData = {
                         name: document.getElementById('user_name').value,
                         phone: document.getElementById('user_phone').value,
@@ -1403,6 +1407,7 @@
                         region: document.getElementById('hope_area').value,
                         budget: document.getElementById('hope_package').value,
                         experience: document.querySelector('input[name="startup_type"]:checked')?.value || '',
+                        path: selectedPaths,
                         message: document.getElementById('user_message').value
                     };
 

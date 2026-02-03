@@ -1,0 +1,371 @@
+/* Evolution of Profit: 3-Step Cinematic Sequence */
+.profit-evolution-section {
+    position: relative;
+    width: 100%;
+    background-color: #000;
+    overflow: hidden;
+}
+
+.evo-sticky-wrapper {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    height: 100svh;
+    width: 100%;
+    overflow: hidden;
+}
+
+.evo-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+/* Day 1: 타 저가 커피 (Step 01) */
+.layer-step-1 {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/images/comparision_bg1.webp') no-repeat center;
+    background-size: cover;
+    z-index: 1;
+}
+
+/* Day 2: 타 크레페 브랜드 (Step 02) */
+.layer-step-2 {
+    background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.6)), url('/images/comparision_bg2.png') no-repeat center;
+    background-size: cover;
+    z-index: 2;
+    clip-path: inset(0 0 0 100%);
+}
+
+/* Day 3: Texas Papa (Step 03 - Winner) */
+.layer-step-3 {
+    background: linear-gradient(rgba(1, 59, 141, 0.9), rgba(0, 37, 94, 0.95)), url('/images/img5.webp') no-repeat center;
+    background-size: cover;
+    z-index: 3;
+    clip-path: inset(0 0 0 100%);
+}
+
+.eco-content-box {
+    position: relative;
+    width: 100%;
+    max-width: 1400px;
+    padding: 0 8%;
+    z-index: 10;
+}
+
+/* Step Typography */
+.evo-step-badge {
+    display: inline-block;
+    padding: 8px 16px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: 2px;
+    margin-bottom: 25px;
+    text-transform: uppercase;
+}
+
+.layer-step-3 .evo-step-badge {
+    background: #ffd700;
+    color: #013b8d;
+    border: none;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+}
+
+.evo-tag {
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    margin-bottom: 15px;
+    display: block;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.evo-main-title {
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 50px;
+    color: #fff;
+}
+
+.layer-step-3 .evo-main-title {
+    color: #fff;
+    text-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.evo-metrics-grid {
+    display: flex;
+    gap: 40px;
+}
+
+.evo-metric {
+    flex: 1;
+    max-width: 300px;
+}
+
+.m-label {
+    font-size: 1rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.5);
+    display: block;
+    margin-bottom: 15px;
+}
+
+.m-value {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: #fff;
+    font-family: var(--font-heading);
+}
+
+.layer-step-3 .m-label {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.layer-step-3 .m-value {
+    color: #ffd700;
+}
+
+/* Winner Stamp on Layer 3 */
+.winner-stamp-evo {
+    position: absolute;
+    top: 15%;
+    right: 18%;
+    width: 200px;
+    height: 200px;
+    background: url('/images/winner_stamp.png') no-repeat;
+    background-size: 210% 210%;
+    background-position: -5px -5px;
+    transform: rotate(-15deg) scale(3);
+    opacity: 0;
+    z-index: 20;
+    filter: drop-shadow(0 15px 40px rgba(0, 0, 0, 0.4));
+}
+
+/* Split Visual Divider - Again for 3-Step */
+.evo-divider {
+    position: absolute;
+    top: 0;
+    width: 3px;
+    height: 100%;
+    background: #fff;
+    z-index: 100;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.divider-handle {
+    width: 50px;
+    height: 50px;
+    background: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #013b8d;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Mobile Responsive */
+@media (max-width: 1024px) {
+    .evo-sticky-wrapper {
+        height: auto;
+        position: relative;
+    }
+
+    .evo-layer {
+        position: relative;
+        height: auto;
+        padding: 80px 0;
+        clip-path: none !important;
+        transform: none !important;
+    }
+
+    .evo-metrics-grid {
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .evo-main-title {
+        font-size: 2.8rem;
+    }
+
+    .winner-stamp-evo {
+        width: 150px;
+        height: 150px;
+        top: 10px;
+        right: 10px;
+        transform: rotate(-10deg);
+        opacity: 0;
+    }
+}
+
+/* Trust Summary Section Styles (Standalone - Premium Blue) */
+.trust-summary-section {
+    position: relative;
+    padding: 160px 0;
+    background-color: #013b8d;
+    /* Check Point 섹션과 동일한 블루 */
+    overflow: hidden;
+    z-index: 1;
+}
+
+/* 배경 장식 요소 */
+.trust-bg-decor {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.decor-circle {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
+}
+
+.decor-circle.d1 {
+    width: 600px;
+    height: 600px;
+    top: -200px;
+    right: -100px;
+}
+
+.decor-circle.d2 {
+    width: 400px;
+    height: 400px;
+    bottom: -100px;
+    left: -100px;
+}
+
+.trust-summary-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 8%;
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    align-items: center;
+    gap: 80px;
+}
+
+.summary-quotes-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    text-align: left;
+}
+
+.summary-quote-item {
+    font-size: clamp(1.5rem, 3vw, 2.3rem);
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.4;
+    word-break: keep-all;
+    margin: 0;
+    opacity: 0;
+    transform: translateY(40px);
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.summary-hashtags-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 60px;
+}
+
+.main-hashtag-group {
+    transform: rotate(-6deg) translateX(60px);
+    text-align: right;
+    opacity: 0;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.main-hashtag-group:hover {
+    transform: rotate(-3deg) scale(1.05) !important;
+}
+
+.main-hashtag-group .hashtag {
+    font-size: clamp(4rem, 9vw, 8.5rem);
+    font-weight: 950;
+    color: #ffeb3b;
+    /* Check Point YELLOW 강조 */
+    margin: 0;
+    letter-spacing: -3px;
+    line-height: 1;
+    text-shadow: 0 15px 50px rgba(0, 0, 0, 0.4);
+}
+
+.main-hashtag-group .sub-note {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.7);
+    margin-top: 15px;
+    display: block;
+    letter-spacing: 1px;
+}
+
+.sub-hashtags-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 20px;
+}
+
+.sub-hash {
+    font-size: clamp(2.2rem, 5vw, 4.2rem);
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: -1px;
+    opacity: 0;
+    transform: translateY(25px);
+    text-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 1024px) {
+    .trust-summary-section {
+        padding: 100px 0;
+    }
+
+    .trust-summary-container {
+        grid-template-columns: 1fr;
+        gap: 60px;
+        text-align: center;
+    }
+
+    .summary-quotes-wrap {
+        align-items: center;
+        text-align: center;
+    }
+
+    .summary-hashtags-wrap {
+        align-items: center;
+    }
+
+    .sub-hashtags-group {
+        align-items: center;
+    }
+
+    .main-hashtag-group {
+        transform: rotate(-3deg) translateX(0) !important;
+        text-align: center;
+    }
+
+    .main-hashtag-group .hashtag {
+        font-size: 4.5rem;
+    }
+}

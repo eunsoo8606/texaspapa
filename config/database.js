@@ -14,8 +14,6 @@ const pool = mysql.createPool({
     keepAliveInitialDelay: 0,
     // 서버리스 환경을 위한 추가 설정
     connectTimeout: 10000, // 10초 연결 타임아웃
-    acquireTimeout: 10000, // 10초 획득 타임아웃
-    timeout: 60000, // 60초 쿼리 타임아웃
 });
 
 // 연결 테스트 (개발 환경에서만 실행)

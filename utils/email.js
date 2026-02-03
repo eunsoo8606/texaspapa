@@ -113,6 +113,7 @@ async function sendConsultationNotification(consultation) {
                         ${consultation.region ? `<p style="margin: 5px 0; color: #666;"><strong>희망 지역:</strong> ${consultation.region}</p>` : ''}
                         ${consultation.budget ? `<p style="margin: 5px 0; color: #666;"><strong>예산 규모:</strong> ${consultation.budget}</p>` : ''}
                         ${consultation.experience ? `<p style="margin: 5px 0; color: #666;"><strong>창업 경험:</strong> ${consultation.experience}</p>` : ''}
+                        ${consultation.path ? `<p style="margin: 5px 0; color: #666;"><strong>창업 경로:</strong> ${consultation.path}</p>` : ''}
                     </div>
                     
                     ${consultation.message ? `

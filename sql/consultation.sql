@@ -8,6 +8,7 @@ CREATE TABLE `consultation` (
     `budget` VARCHAR(50) NULL DEFAULT NULL COMMENT '예산 규모' COLLATE 'utf8mb4_unicode_ci',
     `experience` VARCHAR(20) NULL DEFAULT NULL COMMENT '창업 경험 (있음/없음)' COLLATE 'utf8mb4_unicode_ci',
     `message` TEXT NULL DEFAULT NULL COMMENT '문의 내용' COLLATE 'utf8mb4_unicode_ci',
+    `path` VARCHAR(255) NULL DEFAULT NULL COMMENT '창업 경로' COLLATE 'utf8mb4_unicode_ci',
     `status` VARCHAR(20) NOT NULL DEFAULT 'pending' COMMENT '상태 (pending/processing/completed)' COLLATE 'utf8mb4_unicode_ci',
     `create_ip` VARCHAR(50) NULL DEFAULT NULL COMMENT '신청 IP' COLLATE 'utf8mb4_unicode_ci',
     `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '신청일',

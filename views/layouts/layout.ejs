@@ -37,7 +37,7 @@
     <meta name="twitter:image" content="<%= locals.ogImage || '/images/logo.webp' %>">
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" href="/images/logo.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.png">
@@ -53,10 +53,9 @@
                 href="https://texaspapa.co.kr/rss.xml">
 
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-            <link rel="stylesheet" href="/css/style.css">
-            <link rel="stylesheet" href="/css/company.css">
-            <link rel="stylesheet" href="/css/menu.css">
-            <link rel="stylesheet" href="/css/comparison.css">
+            <!-- Webpack Bundled CSS -->
+            <link rel="stylesheet" href="/dist/bundle.css">
+
             <!-- JS Libraries -->
             <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
@@ -64,8 +63,7 @@
             <link
                 href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&family=Outfit:wght@400;700&display=swap"
                 rel="stylesheet">
-            <%- head %>
-                <link rel="stylesheet" href="/css/location.css">
+            <%- locals.head || '' %>
 </head>
 
 <body>
