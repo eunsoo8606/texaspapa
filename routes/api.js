@@ -66,4 +66,28 @@ router.post('/consultation', async (req, res) => {
     }
 });
 
+// 이벤트 로그 수집 API (클릭 추적 등)
+router.post('/log/event', async (req, res) => {
+    const { eventName, targetInfo } = req.body;
+    const pageUrl = req.headers.referer || null;
+    const sessionId = req.sessionID;
+
+    try {
+        if (!eventName) {
+            return res.status(400).json({ success: false });
+        }
+
+        await db.query(
+            `INSERT INTO event_logs (company_id, session_id, event_name, page_url, target_info) 
+             VALUES (?, ?, ?, ?, ?)`,
+            [2, sessionId, eventName, pageUrl, targetInfo ? JSON.stringify(targetInfo) : null]
+        );
+
+        res.json({ success: true });
+    } catch (error) {
+        console.error('이벤트 로그 저장 오류:', error);
+        res.status(500).json({ success: false });
+    }
+});
+
 module.exports = router;

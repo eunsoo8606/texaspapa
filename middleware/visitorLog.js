@@ -21,6 +21,7 @@ const visitorLog = async (req, res, next) => {
         const referrer = req.headers.referer || req.headers.referrer || null;
         const pageUrl = req.originalUrl;
         const userAgent = req.headers['user-agent'];
+        const sessionId = req.sessionID; // express-session의 세션 ID 활용
 
         // 3. UTM 파라미터 추출
         const { utm_source, utm_medium, utm_campaign, utm_term, utm_content } = req.query;
@@ -29,11 +30,11 @@ const visitorLog = async (req, res, next) => {
         // company_id는 기본값 2 (텍사스파파)
         const query = `
             INSERT INTO visitor_logs 
-            (company_id, ip, referrer, page_url, user_agent, utm_source, utm_medium, utm_campaign, utm_term, utm_content) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            (company_id, session_id, ip, referrer, page_url, user_agent, utm_source, utm_medium, utm_campaign, utm_term, utm_content) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
         const params = [
-            2, ip, referrer, pageUrl, userAgent,
+            2, sessionId, ip, referrer, pageUrl, userAgent,
             utm_source || null,
             utm_medium || null,
             utm_campaign || null,
