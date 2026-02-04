@@ -19,6 +19,74 @@
 
     <!-- Admin Dashboard CSS -->
     <link rel="stylesheet" href="/css/admin-dashboard.css">
+
+    <style>
+        /* 삭제 확인 모달 전역 스타일 */
+        .admin-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .admin-modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #fff;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            animation: modalSlide 0.3s ease-out;
+        }
+
+        @keyframes modalSlide {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #eee;
+            background: #f8f9fb;
+        }
+
+        .modal-body {
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .modal-footer {
+            padding: 1.2rem;
+            border-top: 1px solid #eee;
+            text-align: right;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .text-danger {
+            color: #dc3545;
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 
 <body>
@@ -206,7 +274,7 @@
     </div>
 
     <!-- 삭제 확인 모달 -->
-    <div id="deleteModal" class="modal">
+    <div id="deleteModal" class="admin-modal">
         <div class="modal-content">
             <div class="modal-header">
                 <h3>
@@ -232,6 +300,48 @@
         </div>
     </div>
 
+    <script>
+        // 삭제 확인 모달 열기
+        function confirmDelete() {
+            const modal = document.getElementById('deleteModal');
+            if (modal) {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden'; // 스크롤 방지
+            }
+        }
+
+        // 삭제 확인 모달 닫기
+        function closeDeleteModal() {
+            const modal = document.getElementById('deleteModal');
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = ''; // 스크롤 복구
+            }
+        }
+
+        // 모달 외부 클릭 시 닫기
+        window.onclick = function (event) {
+            const modal = document.getElementById('deleteModal');
+            if (event.target == modal) {
+                closeDeleteModal();
+            }
+        }
+
+        // 답변 폼 제어 (문의사항/고객의소리 전용)
+        function showReplyForm() {
+            const form = document.getElementById('replyForm');
+            const display = document.querySelector('.reply-display');
+            if (form) form.style.display = 'block';
+            if (display) display.style.display = 'none';
+        }
+
+        function hideReplyForm() {
+            const form = document.getElementById('replyForm');
+            const display = document.querySelector('.reply-display');
+            if (form) form.style.display = 'none';
+            if (display) display.style.display = 'block';
+        }
+    </script>
 </body>
 
 

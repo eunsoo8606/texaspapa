@@ -64,8 +64,14 @@ app.use(session({
     rolling: true // 요청마다 세션 만료 시간 갱신
 }));
 
+// 방문자 로그 수집 미들웨어
+const visitorLog = require('./middleware/visitorLog');
+
 // 정적 파일 경로 설정
 app.use(express.static(path.join(__dirname, 'public')));
+
+// 모든 페이지 뷰에 대한 방문자 로그 기록 (정적 파일 제외 로직은 미들웨어 내부에 포함)
+app.use(visitorLog);
 
 // 라우터 가져오기 및 등록
 const mainRouter = require('./routes/main');
