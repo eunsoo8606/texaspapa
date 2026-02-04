@@ -19,6 +19,64 @@
 
     <!-- Admin Dashboard CSS -->
     <link rel="stylesheet" href="/css/admin-dashboard.css">
+
+    <style>
+        /* 삭제 버튼 스타일 데스크톱용 */
+        .delete-btn-table {
+            padding: 0.5rem 1rem;
+            background: #fff5f5;
+            color: #ff4757;
+            border: 1px solid rgba(255, 71, 87, 0.3);
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            margin-left: 5px;
+        }
+
+        .delete-btn-table:hover {
+            background: #ff4757;
+            color: #ffffff;
+            border-color: #ff4757;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(255, 71, 87, 0.2);
+        }
+
+        /* 삭제 버튼 스타일 모바일용 */
+        .delete-btn-mobile {
+            width: 50px !important;
+            height: 46px;
+            /* view-btn-full 패딩 0.8rem에 맞춤 */
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            background: #fff5f5 !important;
+            color: #ff4757 !important;
+            border: 1px solid rgba(255, 71, 87, 0.3) !important;
+            border-radius: 8px !important;
+            cursor: pointer;
+            flex: none !important;
+        }
+
+        .delete-btn-mobile:hover {
+            background: #ff4757 !important;
+            color: #ffffff !important;
+        }
+
+        .view-btn,
+        .view-btn-full,
+        .view-btn:hover,
+        .view-btn:focus,
+        .view-btn-full:hover,
+        .view-btn-full:focus {
+            text-decoration: none !important;
+            outline: none;
+        }
+    </style>
 </head>
 
 <body>
@@ -71,10 +129,11 @@
                                             <%= stores ? stores.length : 0 %>
                                         </strong>개</p>
                                 </div>
-                                <button class="btn-primary">
+                                <a href="/console/franchise/add" class="btn-primary"
+                                    style="text-decoration: none; display: flex; align-items: center; justify-content: center;">
                                     <i class="fas fa-plus"></i>
                                     가맹점 추가
-                                </button>
+                                </a>
                             </div>
 
                             <div class="board-content">
@@ -110,7 +169,13 @@
                                                             </span>
                                                         </td>
                                                         <td>
-                                                            <button class="view-btn">수정</button>
+                                                            <div style="display: flex; gap: 5px;">
+                                                                <a href="/console/franchise/edit/<%= store.id %>"
+                                                                    class="view-btn">수정</a>
+                                                                <button
+                                                                    onclick="deleteStore(<%= store.id %>, '<%= store.name %>')"
+                                                                    class="delete-btn-table">삭제</button>
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                     <% }); %>
@@ -141,8 +206,14 @@
                                                         </span>
                                                     </div>
                                                 </div>
-                                                <div class="card-footer">
-                                                    <button class="view-btn-full">정보 수정</button>
+                                                <div class="card-footer"
+                                                    style="display: flex; gap: 10px; align-items: stretch;">
+                                                    <a href="/console/franchise/edit/<%= store.id %>"
+                                                        class="view-btn-full"
+                                                        style="flex: 1; text-decoration: none; display: flex; align-items: center; justify-content: center; margin: 0;">정보
+                                                        수정</a>
+                                                    <button onclick="deleteStore(<%= store.id %>, '<%= store.name %>')"
+                                                        class="delete-btn-mobile"><i class="fas fa-trash"></i></button>
                                                 </div>
                                             </div>
                                             <% }); %>
@@ -158,6 +229,17 @@
                     </main>
                 </div>
     </div>
+    <script>
+        function deleteStore(id, name) {
+            if (confirm(`'${name}' 매장을 정말 삭제하시겠습니까?`)) {
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = `/console/franchise/delete/${id}`;
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
+    </script>
 </body>
 
 </html>

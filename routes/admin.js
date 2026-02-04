@@ -746,6 +746,81 @@ router.get('/franchise', requireAuth, async (req, res) => {
     }
 });
 
+// 가맹점 추가 페이지
+router.get('/franchise/add', requireAuth, (req, res) => {
+    res.render('admin/franchise-write', {
+        title: '가맹점 추가',
+        user: req.session.adminUser,
+        currentPage: 'franchise',
+        mode: 'add',
+        store: null
+    });
+});
+
+// 가맹점 추가 처리
+router.post('/franchise/add', requireAuth, async (req, res) => {
+    const { name, address, phone, lat, lng, use_yn } = req.body;
+    try {
+        const companyId = req.session.adminUser.companyId;
+        await db.query(
+            'INSERT INTO stores (company_id, name, address, phone, lat, lng, use_yn) VALUES (?, ?, ?, ?, ?, ?, ?)',
+            [companyId, name, address, phone, lat, lng, use_yn || 'Y']
+        );
+        res.redirect('/console/franchise');
+    } catch (error) {
+        console.error('가맹점 추가 오류:', error);
+        res.status(500).send('가맹점 추가 중 오류가 발생했습니다.');
+    }
+});
+
+// 가맹점 수정 페이지
+router.get('/franchise/edit/:id', requireAuth, async (req, res) => {
+    const { id } = req.params;
+    try {
+        const [stores] = await db.query('SELECT * FROM stores WHERE id = ?', [id]);
+        if (stores.length === 0) return res.status(404).send('매장을 찾을 수 없습니다.');
+
+        res.render('admin/franchise-write', {
+            title: '가맹점 수정',
+            user: req.session.adminUser,
+            currentPage: 'franchise',
+            mode: 'edit',
+            store: stores[0]
+        });
+    } catch (error) {
+        console.error('가맹점 수정 페이지 로드 오류:', error);
+        res.status(500).send('수정 페이지를 불러오는 중 오류가 발생했습니다.');
+    }
+});
+
+// 가맹점 수정 처리
+router.post('/franchise/edit/:id', requireAuth, async (req, res) => {
+    const { id } = req.params;
+    const { name, address, phone, lat, lng, use_yn } = req.body;
+    try {
+        await db.query(
+            'UPDATE stores SET name = ?, address = ?, phone = ?, lat = ?, lng = ?, use_yn = ? WHERE id = ?',
+            [name, address, phone, lat, lng, use_yn || 'Y', id]
+        );
+        res.redirect('/console/franchise');
+    } catch (error) {
+        console.error('가맹점 수정 처리 오류:', error);
+        res.status(500).send('가맹점 정보 수정 중 오류가 발생했습니다.');
+    }
+});
+
+// 가맹점 삭제 처리
+router.post('/franchise/delete/:id', requireAuth, async (req, res) => {
+    const { id } = req.params;
+    try {
+        await db.query('DELETE FROM stores WHERE id = ?', [id]);
+        res.redirect('/console/franchise');
+    } catch (error) {
+        console.error('가맹점 삭제 오류:', error);
+        res.status(500).send('가맹점 삭제 중 오류가 발생했습니다.');
+    }
+});
+
 // ===========================
 // 초기 관리자 계정 생성 (개발용)
 // ===========================
