@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const path = require('path');
+const db = require('../config/database');
+const { generateSitemapXml, generateRssXml } = require('../utils/xmlGenerator');
 
 // 메인 페이지 (프랜차이즈)
 router.get('/', (req, res) => {
@@ -80,15 +82,81 @@ router.get('/location', (req, res) => {
     });
 });
 
-// SEO 파일 제공
-router.get('/sitemap.xml', (req, res) => {
-    res.type('application/xml');
-    res.sendFile(path.join(__dirname, '../public', 'sitemap.xml'));
+// SEO 파일 제공 (동적 생성)
+router.get('/sitemap.xml', async (req, res) => {
+    try {
+        const today = new Date().toISOString().split('T')[0];
+        const baseUrl = 'https://texaspapa.co.kr';
+
+        const urls = [
+            { loc: `${baseUrl}/`, lastmod: today, changefreq: 'daily', priority: '1.0' },
+            { loc: `${baseUrl}/company`, lastmod: today, changefreq: 'monthly', priority: '0.8' },
+            { loc: `${baseUrl}/stores`, lastmod: today, changefreq: 'weekly', priority: '0.9' },
+            { loc: `${baseUrl}/location`, lastmod: today, changefreq: 'weekly', priority: '0.8' },
+            { loc: `${baseUrl}/menu`, lastmod: today, changefreq: 'weekly', priority: '0.9' },
+            { loc: `${baseUrl}/franchise`, lastmod: today, changefreq: 'weekly', priority: '0.95' },
+            { loc: `${baseUrl}/community/notice`, lastmod: today, changefreq: 'daily', priority: '0.8' },
+            { loc: `${baseUrl}/community/event`, lastmod: today, changefreq: 'weekly', priority: '0.7' },
+            { loc: `${baseUrl}/community/faq`, lastmod: today, changefreq: 'monthly', priority: '0.7' },
+            { loc: `${baseUrl}/community/voice`, lastmod: today, changefreq: 'weekly', priority: '0.6' },
+            { loc: `${baseUrl}/community/inquiry`, lastmod: today, changefreq: 'weekly', priority: '0.6' }
+        ];
+
+        const xml = generateSitemapXml(urls);
+        res.header('Content-Type', 'application/xml');
+        res.send(xml);
+    } catch (error) {
+        console.error('사이트맵 생성 오류:', error);
+        res.status(500).send('Internal Server Error');
+    }
 });
 
-router.get('/rss.xml', (req, res) => {
-    res.type('application/xml');
-    res.sendFile(path.join(__dirname, '../public', 'rss.xml'));
+router.get('/rss.xml', async (req, res) => {
+    try {
+        const baseUrl = 'https://texaspapa.co.kr';
+
+        // 최신 공지사항 및 이벤트 10개 조회
+        const [posts] = await db.query(
+            `SELECT p.post_no, p.title, p.content, p.create_dt, b.category 
+             FROM posts p 
+             JOIN boards b ON p.board_id = b.id 
+             WHERE b.company_id = 2 AND b.category IN ('notice', 'event')
+             ORDER BY p.create_dt DESC 
+             LIMIT 10`
+        );
+
+        const channel = {
+            title: '텍사스파파 크레페 - Texas Papa Crepe',
+            link: baseUrl,
+            description: '텍사스파파 크레페 프랜차이즈 - 소자본 창업, 높은 수익률, 낮은 원가율로 성공적인 디저트 창업을 시작하세요',
+            lastBuildDate: new Date().toUTCString(),
+            items: posts.map(post => ({
+                title: post.title,
+                link: `${baseUrl}/community/${post.category}`, // 상세 페이지 구현 전이므로 목록으로 링크
+                description: post.content.replace(/<[^>]*>?/gm, '').substring(0, 200) + '...', // HTML 태그 제거 및 요약
+                pubDate: new Date(post.create_dt).toUTCString(),
+                guid: `${baseUrl}/community/${post.category}/${post.post_no}`
+            }))
+        };
+
+        // 기본 항목 추가 (홈페이지 등)
+        if (channel.items.length === 0) {
+            channel.items.push({
+                title: '텍사스파파 크레페 프랜차이즈 가맹점 모집',
+                link: `${baseUrl}/franchise`,
+                description: '원가율 20%! 소자본으로 시작 가능한 텍사스파파 크레페 프랜차이즈.',
+                pubDate: new Date('2026-01-29').toUTCString(),
+                guid: `${baseUrl}/franchise`
+            });
+        }
+
+        const xml = generateRssXml(channel);
+        res.header('Content-Type', 'application/xml');
+        res.send(xml);
+    } catch (error) {
+        console.error('RSS 생성 오류:', error);
+        res.status(500).send('Internal Server Error');
+    }
 });
 
 module.exports = router;

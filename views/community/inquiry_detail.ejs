@@ -7,163 +7,163 @@
     <title>
         <%= post.title %> | Texas Papa
     </title>
-    <link rel="icon" type="image/png" href="/images/logo.png">
+    <%- include('../partials/favicons') %>
 
-    <!-- Google Fonts -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Outfit:wght@400;500;600;700&display=swap"
-        rel="stylesheet">
+        <!-- Google Fonts -->
+        <link
+            href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Outfit:wght@400;500;600;700&display=swap"
+            rel="stylesheet">
 
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/css/community.css">
+        <!-- CSS -->
+        <link rel="stylesheet" href="/css/style.css">
+        <link rel="stylesheet" href="/css/community.css">
 
-    <style>
-        .inquiry-detail-container {
-            max-width: 900px;
-            margin: 100px auto 50px;
-            padding: 0 20px;
-        }
-
-        .inquiry-header {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
-            margin-bottom: 20px;
-        }
-
-        .inquiry-title {
-            font-size: 1.8rem;
-            color: #1a1a1a;
-            margin-bottom: 20px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #f0f0f0;
-        }
-
-        .inquiry-meta {
-            display: flex;
-            gap: 30px;
-            color: #666;
-            font-size: 0.95rem;
-        }
-
-        .inquiry-meta-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .inquiry-meta-item i {
-            color: #ff6b35;
-        }
-
-        .inquiry-content {
-            background: white;
-            padding: 40px 30px;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
-            margin-bottom: 20px;
-            line-height: 1.8;
-            color: #333;
-            min-height: 200px;
-            white-space: pre-wrap;
-        }
-
-        .inquiry-reply {
-            background: #f8f9fa;
-            padding: 30px;
-            border-radius: 15px;
-            border-left: 4px solid #28a745;
-            margin-bottom: 20px;
-        }
-
-        .reply-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 15px;
-            color: #28a745;
-            font-weight: 600;
-        }
-
-        .reply-header i {
-            font-size: 1.2rem;
-        }
-
-        .reply-content {
-            color: #333;
-            line-height: 1.8;
-            white-space: pre-wrap;
-        }
-
-        .reply-meta {
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid #e0e0e0;
-            color: #999;
-            font-size: 0.9rem;
-        }
-
-        .no-reply {
-            background: #fff3cd;
-            padding: 30px;
-            border-radius: 15px;
-            border-left: 4px solid #ffc107;
-            text-align: center;
-            color: #856404;
-            margin-bottom: 20px;
-        }
-
-        .no-reply i {
-            font-size: 2rem;
-            margin-bottom: 10px;
-            display: block;
-        }
-
-        .btn-list {
-            display: inline-block;
-            padding: 12px 30px;
-            background: #f5f5f5;
-            color: #666;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-
-        .btn-list:hover {
-            background: #e0e0e0;
-        }
-
-        .btn-list i {
-            margin-right: 5px;
-        }
-
-        @media (max-width: 768px) {
+        <style>
             .inquiry-detail-container {
-                margin: 80px auto 30px;
+                max-width: 900px;
+                margin: 100px auto 50px;
+                padding: 0 20px;
             }
 
-            .inquiry-header,
-            .inquiry-content,
-            .inquiry-reply {
-                padding: 20px;
+            .inquiry-header {
+                background: white;
+                padding: 30px;
+                border-radius: 15px;
+                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+                margin-bottom: 20px;
             }
 
             .inquiry-title {
-                font-size: 1.4rem;
+                font-size: 1.8rem;
+                color: #1a1a1a;
+                margin-bottom: 20px;
+                padding-bottom: 20px;
+                border-bottom: 2px solid #f0f0f0;
             }
 
             .inquiry-meta {
-                flex-direction: column;
-                gap: 10px;
+                display: flex;
+                gap: 30px;
+                color: #666;
+                font-size: 0.95rem;
             }
-        }
-    </style>
+
+            .inquiry-meta-item {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .inquiry-meta-item i {
+                color: #ff6b35;
+            }
+
+            .inquiry-content {
+                background: white;
+                padding: 40px 30px;
+                border-radius: 15px;
+                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+                margin-bottom: 20px;
+                line-height: 1.8;
+                color: #333;
+                min-height: 200px;
+                white-space: pre-wrap;
+            }
+
+            .inquiry-reply {
+                background: #f8f9fa;
+                padding: 30px;
+                border-radius: 15px;
+                border-left: 4px solid #28a745;
+                margin-bottom: 20px;
+            }
+
+            .reply-header {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                margin-bottom: 15px;
+                color: #28a745;
+                font-weight: 600;
+            }
+
+            .reply-header i {
+                font-size: 1.2rem;
+            }
+
+            .reply-content {
+                color: #333;
+                line-height: 1.8;
+                white-space: pre-wrap;
+            }
+
+            .reply-meta {
+                margin-top: 15px;
+                padding-top: 15px;
+                border-top: 1px solid #e0e0e0;
+                color: #999;
+                font-size: 0.9rem;
+            }
+
+            .no-reply {
+                background: #fff3cd;
+                padding: 30px;
+                border-radius: 15px;
+                border-left: 4px solid #ffc107;
+                text-align: center;
+                color: #856404;
+                margin-bottom: 20px;
+            }
+
+            .no-reply i {
+                font-size: 2rem;
+                margin-bottom: 10px;
+                display: block;
+            }
+
+            .btn-list {
+                display: inline-block;
+                padding: 12px 30px;
+                background: #f5f5f5;
+                color: #666;
+                text-decoration: none;
+                border-radius: 8px;
+                font-weight: 600;
+                transition: all 0.3s;
+            }
+
+            .btn-list:hover {
+                background: #e0e0e0;
+            }
+
+            .btn-list i {
+                margin-right: 5px;
+            }
+
+            @media (max-width: 768px) {
+                .inquiry-detail-container {
+                    margin: 80px auto 30px;
+                }
+
+                .inquiry-header,
+                .inquiry-content,
+                .inquiry-reply {
+                    padding: 20px;
+                }
+
+                .inquiry-title {
+                    font-size: 1.4rem;
+                }
+
+                .inquiry-meta {
+                    flex-direction: column;
+                    gap: 10px;
+                }
+            }
+        </style>
 </head>
 
 <body>
