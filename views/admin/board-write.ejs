@@ -129,19 +129,58 @@
         function initQuillEditor() {
             if (typeof Quill !== 'undefined') {
                 try {
+                    // 이미지 처리 핸들러
+                    const imageHandler = () => {
+                        const input = document.createElement('input');
+                        input.setAttribute('type', 'file');
+                        input.setAttribute('accept', 'image/*');
+                        input.click();
+
+                        input.onchange = async () => {
+                            const file = input.files[0];
+                            if (!file) return;
+
+                            const formData = new FormData();
+                            formData.append('image', file);
+
+                            try {
+                                const response = await fetch('/console/api/upload/image', {
+                                    method: 'POST',
+                                    body: formData
+                                });
+
+                                const result = await response.json();
+                                if (result.success) {
+                                    const range = quill.getSelection();
+                                    quill.insertEmbed(range.index, 'image', result.url);
+                                } else {
+                                    alert(result.message || '이미지 업로드에 실패했습니다.');
+                                }
+                            } catch (error) {
+                                console.error('이미지 업로드 오류:', error);
+                                alert('서버와의 통신 중 오류가 발생했습니다.');
+                            }
+                        };
+                    };
+
                     quill = new Quill('#editor', {
                         theme: 'snow',
                         placeholder: '내용을 입력하세요...',
                         modules: {
-                            toolbar: [
-                                [{ 'header': [1, 2, 3, false] }],
-                                ['bold', 'italic', 'underline', 'strike'],
-                                [{ 'color': [] }, { 'background': [] }],
-                                [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                                [{ 'align': [] }],
-                                ['link', 'image'],
-                                ['clean']
-                            ]
+                            toolbar: {
+                                container: [
+                                    [{ 'header': [1, 2, 3, false] }],
+                                    ['bold', 'italic', 'underline', 'strike'],
+                                    [{ 'color': [] }, { 'background': [] }],
+                                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                                    [{ 'align': [] }],
+                                    ['link', 'image'],
+                                    ['clean']
+                                ],
+                                handlers: {
+                                    image: imageHandler
+                                }
+                            }
                         }
                     });
 

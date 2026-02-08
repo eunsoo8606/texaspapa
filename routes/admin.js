@@ -1,9 +1,52 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
+const path = require('path');
+const multer = require('multer');
 const router = express.Router();
 const db = require('../config/database');
 const { requireAuth, redirectIfAuthenticated } = require('../middleware/auth');
 const { decrypt, formatPhone } = require('../utils/crypto');
+
+// ===========================
+// 이미지 업로드 설정 (Multer)
+// ===========================
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'public/uploads/board/');
+    },
+    filename: (req, file, cb) => {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        cb(null, 'board-' + uniqueSuffix + path.extname(file.originalname));
+    }
+});
+
+const upload = multer({
+    storage: storage,
+    limits: { fileSize: 5 * 1024 * 1024 }, // 5MB 제한
+    fileFilter: (req, file, cb) => {
+        const allowedTypes = /jpeg|jpg|png|gif|webp/;
+        const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
+        const mimetype = allowedTypes.test(file.mimetype);
+        if (extname && mimetype) {
+            return cb(null, true);
+        }
+        cb(new Error('이미지 파일만 업로드 가능합니다. (jpg, png, gif, webp)'));
+    }
+});
+
+// 이미지 업로드 API
+router.post('/api/upload/image', requireAuth, upload.single('image'), (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ success: false, message: '파일이 업로드되지 않았습니다.' });
+        }
+        const imageUrl = `/uploads/board/${req.file.filename}`;
+        res.json({ success: true, url: imageUrl });
+    } catch (error) {
+        console.error('이미지 업로드 오류:', error);
+        res.status(500).json({ success: false, message: '서버 오류가 발생했습니다.' });
+    }
+});
 
 // ===========================
 // 로그인 페이지
