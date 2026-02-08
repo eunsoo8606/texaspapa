@@ -187,6 +187,49 @@
                         }
                     });
 
+                    // 드래그 앤 드롭 및 붙여넣기 이미지 처리
+                    const handleImageUpload = async (file) => {
+                        if (!file || !file.type.match(/^image\//)) return;
+
+                        const formData = new FormData();
+                        formData.append('image', file);
+
+                        try {
+                            const response = await fetch('/console/api/upload/image', {
+                                method: 'POST',
+                                body: formData
+                            });
+                            const result = await response.json();
+                            if (result.success) {
+                                const range = quill.getSelection() || { index: quill.getLength() };
+                                quill.insertEmbed(range.index, 'image', result.url);
+                            }
+                        } catch (error) {
+                            console.error('이미지 업로드 오류:', error);
+                        }
+                    };
+
+                    // 붙여넣기 핸들러
+                    quill.root.addEventListener('paste', (e) => {
+                        const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+                        for (let item of items) {
+                            if (item.type.indexOf('image') !== -1) {
+                                e.preventDefault();
+                                const file = item.getAsFile();
+                                handleImageUpload(file);
+                            }
+                        }
+                    });
+
+                    // 드롭 핸들러
+                    quill.root.addEventListener('drop', (e) => {
+                        const files = e.dataTransfer.files;
+                        if (files.length > 0) {
+                            e.preventDefault();
+                            handleImageUpload(files[0]);
+                        }
+                    });
+
                     // 기존 내용 로드
                     const existingContent = `<%- post.content %>`;
                     quill.root.innerHTML = existingContent;

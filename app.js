@@ -15,9 +15,9 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('trust proxy', 1);
 
 // 미들웨어 설정
-app.use(compression());
 app.use(express.urlencoded({ limit: '50mb', extended: true })); // POST 데이터 파싱
 app.use(express.json({ limit: '50mb' })); // JSON 데이터 파싱
+app.use(compression());
 
 // MySQL 세션 스토어 설정 (Vercel 서버리스 환경 대응)
 const sessionStoreOptions = {
