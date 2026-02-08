@@ -159,27 +159,58 @@ router.post('/:tab/write', async (req, res) => {
     }
 });
 
-// 비밀번호 확인 페이지/게시글 상세 이동
+// 게시글 상세 조회 이동
 router.get('/:tab/:id', async (req, res) => {
     const { tab, id } = req.params;
 
-    if (tab === 'inquiry' || tab === 'voice') {
-        const titles = {
-            voice: '고객의소리',
-            inquiry: '문의게시판'
-        };
+    const titles = {
+        notice: '공지사항',
+        event: '이벤트',
+        faq: 'FAQ',
+        voice: '고객의소리',
+        inquiry: '문의게시판'
+    };
 
-        return res.render('community/password_check', {
-            title: `비밀번호 확인 | Texas Papa`,
+    try {
+        if (tab === 'inquiry' || tab === 'voice') {
+            return res.render('community/password_check', {
+                title: `비밀번호 확인 | Texas Papa`,
+                activePage: 'community',
+                boardType: tab,
+                boardTitle: titles[tab],
+                postNo: id,
+                error: null
+            });
+        }
+
+        // 일반 게시판 (공지사항, 이벤트, FAQ) 상세 조회
+        // 조회수 증가
+        await db.query('UPDATE posts SET views = views + 1 WHERE post_no = ?', [id]);
+
+        // 게시글 데이터 조회
+        const [posts] = await db.query(
+            'SELECT * FROM posts WHERE post_no = ?',
+            [id]
+        );
+
+        if (posts.length === 0) {
+            return res.status(404).send('게시글을 찾을 수 없습니다.');
+        }
+
+        const post = posts[0];
+
+        res.render('community/detail', {
+            title: `${post.title} | Texas Papa`,
             activePage: 'community',
-            boardType: tab,
+            currentTab: tab,
             boardTitle: titles[tab],
-            postNo: id,
-            error: null
+            post: post
         });
-    }
 
-    res.redirect(`/community/${tab}`);
+    } catch (error) {
+        console.error('게시글 상세 조회 오류:', error);
+        res.status(500).send('게시글을 불러오는 중 오류가 발생했습니다.');
+    }
 });
 
 // 비밀번호 검증 및 상세 조회

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= post.title %> | Texas Papa
+    </title>
+    <%- include('../partials/favicons') %>
+
+        <!-- Google Fonts -->
+        <link
+            href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Outfit:wght@400;500;600;700&display=swap"
+            rel="stylesheet">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="/css/style.css">
+        <link rel="stylesheet" href="/css/community.css">
+
+        <style>
+            .board-detail-container {
+                max-width: 1000px;
+                margin: 120px auto 80px;
+                padding: 0 20px;
+            }
+
+            .detail-header {
+                background: #fff;
+                padding: 40px;
+                border-radius: 20px 20px 0 0;
+                border-bottom: 1px solid #eee;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            }
+
+            .detail-category {
+                display: inline-block;
+                padding: 5px 15px;
+                background: #013b8d;
+                color: #fff;
+                border-radius: 30px;
+                font-size: 0.85rem;
+                font-weight: 600;
+                margin-bottom: 20px;
+            }
+
+            .detail-title {
+                font-size: 2.2rem;
+                color: #1a1a1a;
+                line-height: 1.3;
+                margin-bottom: 25px;
+                word-break: keep-all;
+            }
+
+            .detail-meta {
+                display: flex;
+                gap: 25px;
+                color: #888;
+                font-size: 0.95rem;
+                flex-wrap: wrap;
+            }
+
+            .meta-item {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .meta-item i {
+                color: #013b8d;
+            }
+
+            .detail-body {
+                background: #fff;
+                padding: 60px 40px;
+                border-radius: 0 0 20px 20px;
+                min-height: 400px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+                line-height: 1.8;
+                font-size: 1.1rem;
+                color: #333;
+            }
+
+            .detail-body img {
+                max-width: 100%;
+                height: auto;
+                border-radius: 10px;
+                margin: 20px 0;
+            }
+
+            .detail-actions {
+                margin-top: 40px;
+                text-align: center;
+                display: flex;
+                justify-content: center;
+                gap: 15px;
+            }
+
+            .btn-list {
+                display: inline-flex;
+                align-items: center;
+                gap: 10px;
+                padding: 15px 40px;
+                background: #1a1a1a;
+                color: #fff;
+                text-decoration: none;
+                border-radius: 50px;
+                font-weight: 600;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+
+            .btn-list:hover {
+                background: #013b8d;
+                transform: translateY(-3px);
+                box-shadow: 0 10px 20px rgba(1, 59, 141, 0.3);
+            }
+
+            @media (max-width: 768px) {
+                .board-detail-container {
+                    margin: 100px auto 50px;
+                }
+
+                .detail-header {
+                    padding: 30px 20px;
+                }
+
+                .detail-title {
+                    font-size: 1.6rem;
+                }
+
+                .detail-body {
+                    padding: 40px 20px;
+                    font-size: 1rem;
+                }
+
+                .detail-meta {
+                    gap: 15px;
+                    font-size: 0.85rem;
+                }
+            }
+        </style>
+</head>
+
+<body>
+    <%- include('../partials/nav', { activePage: activePage }) %>
+
+        <main class="board-detail-container">
+            <article class="detail-post">
+                <header class="detail-header">
+                    <span class="detail-category">
+                        <%= boardTitle %>
+                    </span>
+                    <h1 class="detail-title">
+                        <%= post.title %>
+                    </h1>
+                    <div class="detail-meta">
+                        <div class="meta-item">
+                            <i class="fas fa-user"></i>
+                            <span>
+                                <%= post.writer %>
+                            </span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-calendar"></i>
+                            <span>
+                                <%= new Date(post.create_dt).toLocaleDateString('ko-KR') %>
+                            </span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-eye"></i>
+                            <span>
+                                <%= post.views %> views
+                            </span>
+                        </div>
+                    </div>
+                </header>
+
+                <div class="detail-body">
+                    <%- post.content %>
+                </div>
+            </article>
+
+            <div class="detail-actions">
+                <a href="/community/<%= currentTab %>" class="btn-list">
+                    <i class="fas fa-list"></i> 목록으로 돌아가기
+                </a>
+            </div>
+        </main>
+
+        <%- include('../partials/footer', { isGate: false }) %>
+</body>
+
+</html>
