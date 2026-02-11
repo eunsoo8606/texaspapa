@@ -195,11 +195,9 @@ router.get('/dashboard', requireAuth, async (req, res) => {
             [companyId]
         );
 
-        // 3. 가맹점 수 조회 (가맹점 테이블이 따로 없다면 현재 본인 회사를 1로 표시하거나, 
-        // 계열 브랜드/매장 테이블이 있다면 해당 테이블에서 company_id로 조회하도록 설계)
-        // 일단 본인 회사 정보가 있는지를 확인하는 용도로 유지
+        // 3. 가맹점 수 조회 (stores 테이블에서 company_id로 조회)
         const [franchiseCount] = await db.query(
-            'SELECT COUNT(*) as count FROM company WHERE company_id = ?',
+            'SELECT COUNT(*) as count FROM stores WHERE company_id = ?',
             [companyId]
         );
 
