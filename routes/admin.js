@@ -907,4 +907,172 @@ router.get('/setup', async (req, res) => {
     }
 });
 
+// ===========================
+// 팝업 관리 (인증 필요)
+// ===========================
+
+// 팝업 이미지 업로드 설정 (Multer)
+const popupStorage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'public/uploads/popup/');
+    },
+    filename: (req, file, cb) => {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        cb(null, 'popup-' + uniqueSuffix + path.extname(file.originalname));
+    }
+});
+
+const uploadPopup = multer({
+    storage: popupStorage,
+    limits: { fileSize: 5 * 1024 * 1024 }, // 5MB 제한
+    fileFilter: (req, file, cb) => {
+        const allowedTypes = /jpeg|jpg|png|gif|webp/;
+        const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
+        const mimetype = allowedTypes.test(file.mimetype);
+        if (extname || mimetype) {
+            return cb(null, true);
+        }
+        cb(new Error('이미지 파일만 업로드 가능합니다. (jpg, png, gif, webp)'));
+    }
+});
+
+// 팝업 목록
+router.get('/popup', requireAuth, async (req, res) => {
+    try {
+        const companyId = req.session.adminUser.companyId;
+        const [popups] = await db.query(
+            'SELECT * FROM popups WHERE company_id = ? ORDER BY created_at DESC',
+            [companyId]
+        );
+
+        res.render('admin/popup-list', {
+            title: '팝업 관리',
+            user: req.session.adminUser,
+            currentPage: 'popup',
+            popups
+        });
+    } catch (error) {
+        console.error('팝업 목록 조회 오류:', error);
+        res.status(500).send('팝업 목록을 불러오는 중 오류가 발생했습니다.');
+    }
+});
+
+// 팝업 등록 페이지
+router.get('/popup/add', requireAuth, (req, res) => {
+    res.render('admin/popup-write', {
+        title: '팝업 등록',
+        user: req.session.adminUser,
+        currentPage: 'popup',
+        mode: 'add',
+        popup: null
+    });
+});
+
+// 팝업 등록 처리
+router.post('/popup/add', requireAuth, uploadPopup.single('popup_file'), async (req, res) => {
+    let { title, content, image_url, link_url, target, width, height, pos_top, pos_left, start_date, end_date, is_active } = req.body;
+
+    // 파일 업로드 시 경로 수정
+    if (req.file) {
+        image_url = '/uploads/popup/' + req.file.filename;
+    }
+
+    try {
+        const companyId = req.session.adminUser.companyId;
+        await db.query(
+            `INSERT INTO popups 
+            (company_id, title, content, image_url, link_url, target, width, height, pos_top, pos_left, start_date, end_date, is_active) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            [companyId, title, content, image_url, link_url, target, width || 400, height || 500, pos_top || 100, pos_left || 100, start_date || null, end_date || null, is_active === 'on' ? 1 : 0]
+        );
+        res.redirect('/console/popup');
+    } catch (error) {
+        console.error('팝업 등록 오류:', error);
+        res.status(500).send('팝업 등록 중 오류가 발생했습니다.');
+    }
+});
+
+// 팝업 수정 페이지
+router.get('/popup/edit/:id', requireAuth, async (req, res) => {
+    const { id } = req.params;
+    try {
+        const companyId = req.session.adminUser.companyId;
+        const [popups] = await db.query(
+            'SELECT * FROM popups WHERE id = ? AND company_id = ?',
+            [id, companyId]
+        );
+
+        if (popups.length === 0) {
+            return res.status(404).send('팝업을 찾을 수 없습니다.');
+        }
+
+        res.render('admin/popup-write', {
+            title: '팝업 수정',
+            user: req.session.adminUser,
+            currentPage: 'popup',
+            mode: 'edit',
+            popup: popups[0]
+        });
+    } catch (error) {
+        console.error('팝업 조회 오류:', error);
+        res.status(500).send('팝업 정보를 불러오는 중 오류가 발생했습니다.');
+    }
+});
+
+// 팝업 수정 처리
+router.post('/popup/edit/:id', requireAuth, uploadPopup.single('popup_file'), async (req, res) => {
+    const { id } = req.params;
+    let { title, content, image_url, link_url, target, width, height, pos_top, pos_left, start_date, end_date, is_active } = req.body;
+
+    // 파일 업로드 시 경로 수정
+    if (req.file) {
+        image_url = '/uploads/popup/' + req.file.filename;
+    }
+
+    try {
+        const companyId = req.session.adminUser.companyId;
+        await db.query(
+            `UPDATE popups SET 
+            title = ?, content = ?, image_url = ?, link_url = ?, target = ?, 
+            width = ?, height = ?, pos_top = ?, pos_left = ?, 
+            start_date = ?, end_date = ?, is_active = ? 
+            WHERE id = ? AND company_id = ?`,
+            [title, content, image_url, link_url, target, width || 400, height || 500, pos_top || 100, pos_left || 100, start_date || null, end_date || null, is_active === 'on' ? 1 : 0, id, companyId]
+        );
+        res.redirect('/console/popup');
+    } catch (error) {
+        console.error('팝업 수정 오류:', error);
+        res.status(500).send('팝업 수정 중 오류가 발생했습니다.');
+    }
+});
+
+// 팝업 삭제
+router.post('/popup/delete/:id', requireAuth, async (req, res) => {
+    const { id } = req.params;
+    try {
+        const companyId = req.session.adminUser.companyId;
+        await db.query('DELETE FROM popups WHERE id = ? AND company_id = ?', [id, companyId]);
+        res.redirect('/console/popup');
+    } catch (error) {
+        console.error('팝업 삭제 오류:', error);
+        res.status(500).send('팝업 삭제 중 오류가 발생했습니다.');
+    }
+});
+
+// 팝업 상태 토글 (AJAX)
+router.post('/popup/status', requireAuth, async (req, res) => {
+    const { id, is_active } = req.body;
+    try {
+        const companyId = req.session.adminUser.companyId;
+        await db.query(
+            'UPDATE popups SET is_active = ? WHERE id = ? AND company_id = ?',
+            [is_active ? 1 : 0, id, companyId]
+        );
+        res.json({ success: true });
+    } catch (error) {
+        console.error('팝업 상태 변경 오류:', error);
+        res.status(500).json({ success: false, message: '상태 변경 중 오류가 발생했습니다.' });
+    }
+});
+
 module.exports = router;

@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= title %> | Texas Papa 관리자
+    </title>
+    <link rel="icon" type="image/png" href="/images/logo.png">
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Outfit:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Admin Dashboard CSS -->
+    <link rel="stylesheet" href="/css/admin-dashboard.css">
+    <link rel="stylesheet" href="/css/admin-board.css">
+</head>
+
+<body>
+    <div class="admin-wrapper">
+        <%- include('./partials/scripts') %>
+
+            <!-- 사이드바 -->
+            <%- include('./partials/sidebar', { user, currentPage }) %>
+
+                <!-- 메인 콘텐츠 영역 -->
+                <div class="main-content">
+                    <!-- 헤더 -->
+                    <header class="admin-header">
+                        <div class="header-left">
+                            <button class="sidebar-toggle" onclick="toggleSidebar()">
+                                <i class="fas fa-bars"></i>
+                            </button>
+                            <h1 class="page-title">
+                                <%= title %>
+                            </h1>
+                        </div>
+                        <div class="header-right">
+                            <div class="user-info">
+                                <div class="user-avatar">
+                                    <i class="fas fa-user-circle"></i>
+                                </div>
+                                <div class="user-details">
+                                    <span class="user-name">
+                                        <%= user.name || user.adminName %>
+                                    </span>
+                                    <span class="user-role">
+                                        <%= user.role==='super_admin' ? '최고 관리자' : user.role==='admin' ? '관리자' : '편집자'
+                                            %>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </header>
+
+                    <!-- 페이지 콘텐츠 -->
+                    <main class="page-content">
+                        <div class="board-container">
+                            <div class="board-header">
+                                <div class="header-actions">
+                                    <a href="/console/popup/add" class="btn-write">
+                                        <i class="fas fa-plus"></i> 새 팝업 등록
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="popup-list-wrapper">
+                                <!-- 데스크탑 테이블 뷰 -->
+                                <div class="desktop-view">
+                                    <table class="admin-table">
+                                        <thead>
+                                            <tr>
+                                                <th>상태</th>
+                                                <th>이미지</th>
+                                                <th>제목</th>
+                                                <th>노출 기간</th>
+                                                <th>크기/위치</th>
+                                                <th>관리</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% if (popups.length===0) { %>
+                                                <tr>
+                                                    <td colspan="6" class="empty-msg">등록된 팝업이 없습니다.</td>
+                                                </tr>
+                                                <% } else { %>
+                                                    <% popups.forEach(popup=> {
+                                                        const now = new Date();
+                                                        const startDate = popup.start_date ? new Date(popup.start_date)
+                                                        : null;
+                                                        const endDate = popup.end_date ? new Date(popup.end_date) :
+                                                        null;
+                                                        let statusClass = 'pending';
+                                                        let statusText = '대기';
+
+                                                        if (popup.is_active === 0) {
+                                                        statusClass = 'inactive';
+                                                        statusText = '비활성';
+                                                        } else if (endDate && now > endDate) {
+                                                        statusClass = 'expired';
+                                                        statusText = '종료';
+                                                        } else if (!startDate || now >= startDate) {
+                                                        statusClass = 'active';
+                                                        statusText = '노출중';
+                                                        }
+                                                        %>
+                                                        <tr>
+                                                            <td>
+                                                                <span class="badge badge-<%= statusClass %>">
+                                                                    <%= statusText %>
+                                                                </span>
+                                                            </td>
+                                                            <td>
+                                                                <div class="list-thumb">
+                                                                    <% if (popup.image_url) { %>
+                                                                        <img src="<%= popup.image_url %>" alt="썸네일">
+                                                                        <% } else { %>
+                                                                            <i class="fas fa-image"></i>
+                                                                            <% } %>
+                                                                </div>
+                                                            </td>
+                                                            <td class="td-title">
+                                                                <a href="/console/popup/edit/<%= popup.id %>"
+                                                                    class="popup-link">
+                                                                    <%= popup.title %>
+                                                                </a>
+                                                            </td>
+                                                            <td class="td-date">
+                                                                <span class="date-range">
+                                                                    <%= popup.start_date ? new
+                                                                        Date(popup.start_date).toLocaleDateString()
+                                                                        : '미지정' %>
+                                                                        <i class="fas fa-long-arrow-alt-right"></i>
+                                                                        <%= popup.end_date ? new
+                                                                            Date(popup.end_date).toLocaleDateString()
+                                                                            : '미지정' %>
+                                                                </span>
+                                                            </td>
+                                                            <td class="td-dimen">
+                                                                <span class="info-label">크기:</span>
+                                                                <%= popup.width %>x<%= popup.height %><br>
+                                                                        <span class="info-label">위치:</span> T:<%=
+                                                                            popup.pos_top %>, L:<%= popup.pos_left %>
+                                                            </td>
+                                                            <td>
+                                                                <div class="row-actions">
+                                                                    <button
+                                                                        class="btn-action btn-status <%= popup.is_active ? 'on' : 'off' %>"
+                                                                        onclick="togglePopupStatus(<%= popup.id %>, <%= popup.is_active %>)"
+                                                                        title="<%= popup.is_active ? '비활성화' : '활성화' %>">
+                                                                        <i class="fas fa-power-off"></i>
+                                                                    </button>
+                                                                    <a href="/console/popup/edit/<%= popup.id %>"
+                                                                        class="btn-action btn-edit" title="수정">
+                                                                        <i class="fas fa-edit"></i>
+                                                                    </a>
+                                                                    <form action="/console/popup/delete/<%= popup.id %>"
+                                                                        method="POST" class="inline-form"
+                                                                        onsubmit="return confirm('정말 삭제하시겠습니까?');">
+                                                                        <button type="submit"
+                                                                            class="btn-action btn-delete" title="삭제">
+                                                                            <i class="fas fa-trash-alt"></i>
+                                                                        </button>
+                                                                    </form>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <% }) %>
+                                                            <% } %>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <!-- 모바일 카드 뷰 -->
+                                <div class="mobile-view">
+                                    <% if (popups.length===0) { %>
+                                        <div class="empty-msg">등록된 팝업이 없습니다.</div>
+                                        <% } else { %>
+                                            <div class="popup-grid">
+                                                <% popups.forEach(popup=> {
+                                                    const now = new Date();
+                                                    const startDate = popup.start_date ? new Date(popup.start_date) :
+                                                    null;
+                                                    const endDate = popup.end_date ? new Date(popup.end_date) : null;
+                                                    let statusClass = 'pending';
+                                                    let statusText = '대기';
+
+                                                    if (popup.is_active === 0) {
+                                                    statusClass = 'inactive';
+                                                    statusText = '비활성';
+                                                    } else if (endDate && now > endDate) {
+                                                    statusClass = 'expired';
+                                                    statusText = '종료';
+                                                    } else if (!startDate || now >= startDate) {
+                                                    statusClass = 'active';
+                                                    statusText = '노출중';
+                                                    }
+                                                    %>
+                                                    <div class="popup-card">
+                                                        <div class="card-header">
+                                                            <span class="badge badge-<%= statusClass %>">
+                                                                <%= statusText %>
+                                                            </span>
+                                                            <div class="card-actions">
+                                                                <button
+                                                                    class="btn-action btn-status <%= popup.is_active ? 'on' : 'off' %>"
+                                                                    onclick="togglePopupStatus(<%= popup.id %>, <%= popup.is_active %>)">
+                                                                    <i class="fas fa-power-off"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <div class="card-thumb">
+                                                                <% if (popup.image_url) { %>
+                                                                    <img src="<%= popup.image_url %>" alt="썸네일">
+                                                                    <% } else { %>
+                                                                        <i class="fas fa-image"></i>
+                                                                        <% } %>
+                                                            </div>
+                                                            <div class="card-info">
+                                                                <h3 class="card-title">
+                                                                    <%= popup.title %>
+                                                                </h3>
+                                                                <p class="card-meta">
+                                                                    <i class="far fa-calendar-alt"></i>
+                                                                    <%= popup.start_date ? new
+                                                                        Date(popup.start_date).toLocaleDateString()
+                                                                        : '미지정' %> ~
+                                                                        <%= popup.end_date ? new
+                                                                            Date(popup.end_date).toLocaleDateString()
+                                                                            : '미지정' %>
+                                                                </p>
+                                                                <p class="card-meta">
+                                                                    <i class="fas fa-expand"></i>
+                                                                    <%= popup.width %>x<%= popup.height %>
+                                                                            <span class="divider">|</span>
+                                                                            <i class="fas fa-arrows-alt"></i> T:<%=
+                                                                                popup.pos_top %>, L:<%= popup.pos_left
+                                                                                    %>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-footer">
+                                                            <a href="/console/popup/edit/<%= popup.id %>"
+                                                                class="btn-card-edit">수정하기</a>
+                                                            <form action="/console/popup/delete/<%= popup.id %>"
+                                                                method="POST"
+                                                                onsubmit="return confirm('정말 삭제하시겠습니까?');">
+                                                                <button type="submit"
+                                                                    class="btn-card-delete">삭제</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                    <% }) %>
+                                            </div>
+                                            <% } %>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+                </div>
+    </div>
+
+    <style>
+        .popup-list-wrapper {
+            margin-top: 20px;
+        }
+
+        /* 뱃지 포인트 컬러 */
+        .badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-active {
+            background: #e6fffa;
+            color: #38b2ac;
+            border: 1px solid #b2f5ea;
+        }
+
+        .badge-pending {
+            background: #fffaf0;
+            color: #ed8936;
+            border: 1px solid #feebc8;
+        }
+
+        .badge-expired {
+            background: #fff5f5;
+            color: #e53e3e;
+            border: 1px solid #fed7d7;
+        }
+
+        .badge-inactive {
+            background: #edf2f7;
+            color: #718096;
+            border: 1px solid #e2e8f0;
+        }
+
+        /* 테이블 공통 스타일 */
+        .admin-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+        }
+
+        .admin-table th {
+            background: #f8fafc;
+            padding: 15px 20px;
+            font-weight: 600;
+            color: #64748b;
+            text-align: center;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 13px;
+        }
+
+        .admin-table td {
+            padding: 15px 20px;
+            vertical-align: middle;
+            border-bottom: 1px solid #f1f5f9;
+            text-align: center;
+        }
+
+        .list-thumb {
+            width: 60px;
+            height: 50px;
+            background: #f1f5f9;
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .list-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .list-thumb i {
+            color: #cbd5e1;
+            font-size: 20px;
+        }
+
+        .popup-link {
+            font-weight: 600;
+            color: #1e293b;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .popup-link:hover {
+            color: #ff5a5f;
+        }
+
+        .date-range {
+            font-size: 13px;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .date-range i {
+            color: #cbd5e1;
+            font-size: 12px;
+        }
+
+        .td-dimen {
+            font-size: 12px;
+            color: #94a3b8;
+            line-height: 1.5;
+        }
+
+        .info-label {
+            color: #64748b;
+            font-weight: 600;
+        }
+
+        .row-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .btn-action {
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            background: #fff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            color: #64748b;
+        }
+
+        .btn-action:hover {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+            color: #1e293b;
+        }
+
+        .btn-status.on {
+            color: #38b2ac;
+            background: #e6fffa;
+            border-color: #b2f5ea;
+        }
+
+        .btn-status.on:hover {
+            background: #b2f5ea;
+        }
+
+        .btn-status.off {
+            color: #94a3b8;
+            background: #f1f5f9;
+            border-color: #e2e8f0;
+        }
+
+        .btn-edit:hover {
+            background: #ebf8ff;
+            color: #3182ce;
+            border-color: #bee3f8;
+        }
+
+        .btn-delete:hover {
+            background: #fff5f5;
+            color: #e53e3e;
+            border-color: #fed7d7;
+        }
+
+        /* 모바일 뷰 초기화 */
+        .mobile-view {
+            display: none;
+        }
+
+        /* 프리미엄 새 팝업 등록 버튼 스타일 */
+        .btn-write {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #ff5a5f 0%, #ff7b5f 100%);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 14px;
+            box-shadow: 0 4px 15px rgba(255, 90, 95, 0.3);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .btn-write:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 6px 20px rgba(255, 90, 95, 0.4);
+            color: #fff;
+        }
+
+        .header-actions {
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        /* Responsive */
+        @media (max-width: 991px) {
+            .desktop-view {
+                display: none;
+            }
+
+            .mobile-view {
+                display: block;
+            }
+
+            .popup-grid {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .popup-card {
+                background: #fff;
+                border-radius: 16px;
+                overflow: hidden;
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+                border: 1px solid #e2e8f0;
+            }
+
+            .card-header {
+                padding: 15px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border-bottom: 1px solid #f1f5f9;
+            }
+
+            .card-body {
+                padding: 20px;
+                display: flex;
+                gap: 15px;
+                align-items: flex-start;
+            }
+
+            .card-thumb {
+                width: 80px;
+                height: 100px;
+                border-radius: 8px;
+                background: #f8fafc;
+                overflow: hidden;
+                flex-shrink: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: 1px solid #f1f5f9;
+            }
+
+            .card-thumb img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+            .card-thumb i {
+                font-size: 24px;
+                color: #cbd5e1;
+            }
+
+            .card-info {
+                flex: 1;
+                overflow: hidden;
+            }
+
+            .card-title {
+                font-size: 16px;
+                font-weight: 700;
+                color: #1e293b;
+                margin-bottom: 8px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .card-meta {
+                font-size: 12px;
+                color: #64748b;
+                margin-bottom: 5px;
+                display: flex;
+                align-items: center;
+                gap: 5px;
+            }
+
+            .card-meta i {
+                width: 14px;
+                text-align: center;
+            }
+
+            .divider {
+                margin: 0 5px;
+                color: #e2e8f0;
+            }
+
+            .card-footer {
+                padding: 15px;
+                display: grid;
+                grid-template-columns: 2fr 1fr;
+                gap: 10px;
+                background: #f8fafc;
+                border-top: 1px solid #f1f5f9;
+            }
+
+            .btn-card-edit {
+                background: #1e293b;
+                color: #fff;
+                text-align: center;
+                padding: 10px;
+                border-radius: 8px;
+                font-size: 14px;
+                font-weight: 600;
+                text-decoration: none;
+            }
+
+            .btn-card-delete {
+                background: #fff;
+                color: #e53e3e;
+                border: 1px solid #fed7d7;
+                padding: 10px;
+                border-radius: 8px;
+                font-size: 14px;
+                font-weight: 600;
+                width: 100%;
+                cursor: pointer;
+            }
+
+            .inline-form {
+                display: block;
+                width: 100%;
+            }
+        }
+    </style>
+
+    <script>
+        async function togglePopupStatus(id, currentStatus) {
+            try {
+                const response = await fetch('/console/popup/status', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        id,
+                        is_active: !currentStatus
+                    })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    location.reload();
+                } else {
+                    alert('상태 변경 중 오류가 발생했습니다.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('서버 통신 오류가 발생했습니다.');
+            }
+        }
+    </script>
+</body>
+
+</html>

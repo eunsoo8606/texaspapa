@@ -1,0 +1,175 @@
+<% if (locals.popups && popups.length> 0) { %>
+    <div id="popup-area" class="popup-wrapper">
+        <% popups.forEach(popup=> { %>
+            <div id="popup-<%= popup.id %>" class="popup-container"
+                style="width: <%= popup.width %>px; height: auto; top: <%= popup.pos_top %>px; left: <%= popup.pos_left %>px;">
+                <div class="popup-body">
+                    <button class="popup-x-btn" onclick="closePopup(<%= popup.id %>)">&times;</button>
+                    <% if (popup.link_url) { %>
+                        <a href="<%= popup.link_url %>" target="<%= popup.target %>">
+                            <% } %>
+
+                                <% if (popup.image_url) { %>
+                                    <img src="<%= popup.image_url %>" alt="<%= popup.title %>"
+                                        style="width: 100%; height: auto; display: block; object-fit: cover;">
+                                    <% } else if (popup.content) { %>
+                                        <div class="popup-text-content">
+                                            <%- popup.content %>
+                                        </div>
+                                        <% } %>
+
+                                            <% if (popup.link_url) { %>
+                        </a>
+                        <% } %>
+                </div>
+                <div class="popup-footer">
+                    <label class="popup-close-today">
+                        <input type="checkbox" onclick="closePopupToday(<%= popup.id %>)"> 오늘 하루 다시 보지 않기
+                    </label>
+                    <button class="popup-close-btn" onclick="closePopup(<%= popup.id %>)">닫기</button>
+                </div>
+            </div>
+            <% }) %>
+    </div>
+
+    <style>
+        .popup-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            z-index: 10000;
+        }
+
+        .popup-container {
+            position: fixed;
+            background: #fff;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4);
+            border-radius: 12px;
+            overflow: hidden;
+            display: none;
+            z-index: 10001;
+            animation: fadeInPopup 0.3s ease-out;
+        }
+
+        @keyframes fadeInPopup {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .popup-body {
+            position: relative;
+            width: 100%;
+        }
+
+        .popup-x-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            background: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            font-size: 20px;
+            line-height: 1;
+            cursor: pointer;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .popup-x-btn:hover {
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        .popup-text-content {
+            padding: 30px;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .popup-footer {
+            height: 48px;
+            background: #1a1a1a;
+            color: #efefef;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            font-size: 14px;
+        }
+
+        .popup-close-today {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            user-select: none;
+        }
+
+        .popup-close-btn {
+            background: none;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            font-weight: 600;
+            padding: 5px 10px;
+        }
+
+        @media (max-width: 768px) {
+            .popup-container {
+                left: 5% !important;
+                right: 5% !important;
+                width: 90% !important;
+                top: 20% !important;
+                max-width: 360px;
+            }
+        }
+    </style>
+
+    <script id="popup-data" type="application/json"><%- JSON.stringify(popups) %></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const popupDataEl = document.getElementById('popup-data');
+            if (!popupDataEl) return;
+
+            try {
+                const popups = JSON.parse(popupDataEl.textContent);
+                popups.forEach(popup => {
+                    const isHidden = localStorage.getItem('popup_hide_' + popup.id);
+                    const now = new Date().getTime();
+
+                    if (!isHidden || now > parseInt(isHidden)) {
+                        const el = document.getElementById('popup-' + popup.id);
+                        if (el) el.style.display = 'block';
+                    }
+                });
+            } catch (e) {
+                console.error('Popup Data Parse Error:', e);
+            }
+        });
+
+        function closePopup(id) {
+            document.getElementById('popup-' + id).style.display = 'none';
+        }
+
+        function closePopupToday(id) {
+            const tomorrow = new Date();
+            tomorrow.setHours(24, 0, 0, 0);
+            localStorage.setItem('popup_hide_' + id, tomorrow.getTime());
+            closePopup(id);
+        }
+    </script>
+    <% } %>

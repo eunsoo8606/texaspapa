@@ -1,0 +1,93 @@
+<div id="privacy-modal" class="privacy-modal">
+    <div class="modal-overlay"></div>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>개인정보처리방침</h3>
+            <button type="button" class="modal-close" id="close-privacy">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="privacy-text">
+                <p>텍사스파파(이하 “회사”)는 「개인정보보호법」, 「정보통신망 이용촉진 및 정보보호 등에 관한 법률」(이하 “정보통신망법”) 등 관련 법령상의 개인정보 보호규정을
+                    준수하며,
+                    개인정보보호법에 의거한 개인정보처리방침을 정하여 이용자 권익 보호에 최선을 다하고 있습니다.</p>
+
+                <h4>1. 개인정보 수집 및 이용 현황</h4>
+                <p>회사는 서비스 제공을 위한 최소한의 범위 내에서 이용자의 동의 하에 개인정보를 수집하며, 수집한 모든 개인정보는 고지한 목적 범위 내에서만 사용됩니다. 창업 상담
+                    신청을 위해
+                    수집하는 항목은 다음과 같습니다.</p>
+                <ul>
+                    <li>필수항목: 성함, 연락처</li>
+                    <li>선택항목: 창업 희망 지역, 창업 희망 비용, 창업 형태, 창업 경로, 문의 사항</li>
+                </ul>
+
+                <h4>2. 개인정보 제3자 제공</h4>
+                <p>회사는 고지한 범위 내에서만 개인정보를 이용하며, 원칙적으로 이용자의 개인정보를 제3자에게 제공하지 않습니다. 다만, 법령의 규정에 의거하거나 수사 기관의 요구가 있는
+                    경우
+                    등 예외적인 상황에 한하여 제공될 수 있습니다.</p>
+
+                <h4>3. 개인정보 처리위탁</h4>
+                <p>회사는 개인정보의 처리와 관련하여 필요한 경우 업무를 위탁할 수 있으며, 관계법령에 따라 위탁 처리되는 개인정보가 안전하게 관리될 수 있도록 필요한 조치를 취하고
+                    있습니다.
+                </p>
+
+                <h4>4. 개인정보 보유 및 이용기간</h4>
+                <p>회사는 수집·이용 목적이 달성된 후에는 해당 정보를 지체 없이 파기합니다. 단, 관계 법령의 규정에 의하여 보존할 필요가 있는 경우 회사는 해당 법령에서 정한 일정
+                    기간 동안
+                    회원 정보를 보관합니다.</p>
+
+                <h4>5. 개인정보 파기절차 및 방법</h4>
+                <p>이용자의 개인정보는 수집 및 이용목적이 달성되면 지체없이 파기합니다. 전자적 파일 형태의 정보는 복구 및 재생할 수 없는 기술적 방법을 사용하여 삭제하며, 종이에
+                    출력된
+                    개인정보는 분쇄하거나 소각하여 파기합니다.</p>
+
+                <h4>6. 이용자의 권리 및 행사방법</h4>
+                <p>이용자는 정보주체로서 홈페이지를 통해 언제든지 자신의 개인정보를 조회하거나 수정할 수 있으며 수집 및 이용 동의를 철회할 수 있습니다.</p>
+
+                <h4>7. 개인정보 보호책임자</h4>
+                <p>회사의 서비스를 이용하시면서 발생한 모든 개인정보보호 관련 민원은 개인정보 보호책임자 또는 고객센터를 통해 문의하실 수 있습니다.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function () {
+        const modal = document.getElementById('privacy-modal');
+        if (!modal) return;
+
+        const openModal = () => {
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            if (typeof gsap !== 'undefined') {
+                gsap.fromTo("#privacy-modal .modal-content", { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: "power3.out" });
+            }
+        };
+
+        const closeModal = () => {
+            if (typeof gsap !== 'undefined') {
+                gsap.to("#privacy-modal .modal-content", {
+                    y: 50, opacity: 0, duration: 0.3, ease: "power3.in", onComplete: () => {
+                        modal.classList.remove('active');
+                        document.body.style.overflow = '';
+                    }
+                });
+            } else {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        };
+
+        // Attach listeners globally using delegation or specific selectors
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('#open-privacy') || e.target.closest('.open-privacy-footer')) {
+                e.preventDefault();
+                openModal();
+            }
+            if (e.target.closest('#close-privacy') || e.target.classList.contains('modal-overlay')) {
+                closeModal();
+            }
+        });
+    })();
+</script>

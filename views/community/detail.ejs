@@ -7,6 +7,13 @@
     <title>
         <%= post.title %> | Texas Papa
     </title>
+    <meta name="description" content="<%= locals.description %>">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="<%= post.title %> | Texas Papa">
+    <meta property="og:description" content="<%= locals.description %>">
+    <meta property="og:type" content="article">
+
     <%- include('../partials/favicons') %>
 
         <!-- Google Fonts -->

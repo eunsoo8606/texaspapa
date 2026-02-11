@@ -74,7 +74,9 @@
                         <!-- Footer 파셜 통합 (Gate 페이지가 아닐 때만 노출) -->
                         <% if (!locals.isGate) { %>
                             <%- include('../partials/footer', { isGate: false }) %>
-                                <% } %>
+                                <%- include('../partials/privacy-modal') %>
+                                    <%- include('../partials/popups') %>
+                                        <% } %>
     </div>
 </body>
 

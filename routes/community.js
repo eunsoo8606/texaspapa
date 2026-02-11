@@ -20,6 +20,14 @@ router.get('/:tab?', async (req, res) => {
         inquiry: '문의게시판'
     };
 
+    const descriptions = {
+        notice: '텍사스파파의 새로운 소식과 공지사항을 확인하세요. 성공 창업을 위한 최신 정보를 제공합니다.',
+        event: '텍사스파파에서 진행 중인 다양한 이벤트와 혜택을 만나보세요.',
+        faq: '텍사스파파 창업에 대해 자주 묻는 질문들을 모았습니다. 궁금한 점을 해결해 드립니다.',
+        voice: '고객님의 소중한 의견을 듣습니다. 텍사스파파에 대한 칭찬, 건의, 불편사항을 남겨주세요.',
+        inquiry: '텍사스파파 창업 상담 및 1:1 문의 게시판입니다. 전문가가 친절하게 답변해 드립니다.'
+    };
+
     try {
         // boards 테이블에서 해당 게시판 ID 조회 (company_id 2번 - Texas Papa)
         const [boardResult] = await db.query(
@@ -55,6 +63,7 @@ router.get('/:tab?', async (req, res) => {
 
         res.render('community/index', {
             title: `${titles[tab] || '커뮤니티'} | Texas Papa`,
+            description: descriptions[tab] || '텍사스파파 크레페 프랜차이즈 커뮤니티 공간입니다.',
             activePage: 'community',
             currentTab: tab,
             posts: posts,
@@ -69,6 +78,7 @@ router.get('/:tab?', async (req, res) => {
         console.error('커뮤니티 조회 오류:', error);
         res.render('community/index', {
             title: `${titles[tab] || '커뮤니티'} | Texas Papa`,
+            description: descriptions[tab] || '텍사스파파 크레페 프랜차이즈 커뮤니티 공간입니다.',
             activePage: 'community',
             currentTab: tab,
             posts: [],
@@ -199,8 +209,12 @@ router.get('/:tab/:id', async (req, res) => {
 
         const post = posts[0];
 
+        // HTML 태그 제거 및 요약 (SEO용)
+        const plainContent = post.content.replace(/<[^>]*>?/gm, '').substring(0, 160);
+
         res.render('community/detail', {
             title: `${post.title} | Texas Papa`,
+            description: plainContent || `${post.title} - 텍사스파파 커뮤니티`,
             activePage: 'community',
             currentTab: tab,
             boardTitle: titles[tab],
@@ -256,6 +270,7 @@ router.post('/:tab/:id/verify', async (req, res) => {
 
         res.render('community/inquiry_detail', {
             title: `${post.title} | Texas Papa`,
+            description: `${post.title} - 문의 내용과 답변을 확인하세요.`,
             activePage: 'community',
             boardType: tab,
             post: post,

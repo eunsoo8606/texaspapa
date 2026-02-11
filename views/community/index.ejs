@@ -7,6 +7,14 @@
     <title>
         <%= title %>
     </title>
+    <meta name="description" content="<%= locals.description || '텍사스파파 - 소자본 크레페 창업의 새로운 기준' %>">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="<%= title %>">
+    <meta property="og:description" content="<%= locals.description || '텍사스파파 - 소자본 크레페 창업의 새로운 기준' %>">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://texaspapa.co.kr/community/<%= locals.currentTab %>">
+
     <%- include('../partials/favicons') %>
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
