@@ -183,28 +183,143 @@ router.get('/dashboard', requireAuth, async (req, res) => {
     try {
         const companyId = req.session.adminUser.companyId;
 
-        // 1. 공지사항 게시글 수 조회 (boards 테이블에서 category='notice'인 행의 수)
+        // 1. 공지사항 게시글 수 조회 (회사 ID 2로 고정 - 텍사스파파)
         const [noticeCount] = await db.query(
-            'SELECT COUNT(*) as count FROM posts p JOIN boards b ON p.board_id = b.id WHERE b.company_id = ? AND b.category = "notice"',
-            [companyId]
+            'SELECT COUNT(*) as count FROM posts p JOIN boards b ON p.board_id = b.id WHERE b.company_id = 2 AND b.category = "notice"',
+            []
         );
 
-        // 2. 가맹 문의 건수 조회 (consultation 테이블) - company_id 필터 추가
+        // 2. 가맹 문의 건수 조회 (회사 ID 2로 고정)
         const [inquiryCount] = await db.query(
-            'SELECT COUNT(*) as count FROM consultation WHERE company_id = ?',
-            [companyId]
+            'SELECT COUNT(*) as count FROM consultation WHERE company_id = 2',
+            []
         );
 
-        // 3. 가맹점 수 조회 (stores 테이블에서 company_id로 조회)
+        // 3. 가맹점 수 조회 (회사 ID 2로 고정)
         const [franchiseCount] = await db.query(
-            'SELECT COUNT(*) as count FROM stores WHERE company_id = ?',
-            [companyId]
+            'SELECT COUNT(*) as count FROM stores WHERE company_id = 2',
+            []
         );
+
+        // 4. 오늘 방문자 수 조회 (IP 기준 중복 제거, 회사 ID 2로 고정)
+        const [visitorCount] = await db.query(
+            'SELECT COUNT(DISTINCT ip) as count FROM visitor_logs WHERE company_id = 2 AND DATE(created_at) = CURDATE()',
+            []
+        );
+
+        // 5. 오늘 유입 경로별 통계 조회 (Top 5)
+        const [sourceStats] = await db.query(
+            `SELECT 
+                CASE 
+                    WHEN utm_source IS NOT NULL AND utm_source != '' THEN utm_source
+                    WHEN referrer LIKE '%naver.com%' THEN '네이버'
+                    WHEN referrer LIKE '%google.com%' THEN '구글'
+                    WHEN referrer LIKE '%daum.net%' THEN '다음'
+                    WHEN referrer LIKE '%instagram.com%' THEN '인터넷강좌'
+                    WHEN referrer LIKE '%facebook.com%' THEN '페이스북'
+                    WHEN referrer LIKE '%youtube.com%' THEN '유튜브'
+                    WHEN referrer IS NULL OR referrer = '' OR referrer = 'null' THEN '직접입력/기타'
+                    ELSE SUBSTRING_INDEX(REPLACE(REPLACE(referrer, 'http://', ''), 'https://', ''), '/', 1)
+                END as source,
+                COUNT(DISTINCT ip) as count
+            FROM visitor_logs 
+            WHERE company_id = 2 AND DATE(created_at) = CURDATE()
+            GROUP BY source
+            ORDER BY count DESC
+            LIMIT 5`,
+            []
+        );
+
+        // 6. 최근 30일간 일별 방문자 통계 조회
+        const [dailyStats] = await db.query(
+            `SELECT 
+                DATE_FORMAT(created_at, '%Y-%m-%d') as date,
+                COUNT(DISTINCT ip) as count
+            FROM visitor_logs 
+            WHERE company_id = 2 
+            AND created_at >= DATE_SUB(CURDATE(), INTERVAL 29 DAY)
+            GROUP BY date
+            ORDER BY date ASC`,
+            []
+        );
+
+        // 7. 오늘 시간대별 방문 분포 조회 (0-23시)
+        const [hourlyStats] = await db.query(
+            `SELECT 
+                HOUR(created_at) as hour,
+                COUNT(DISTINCT ip) as count
+            FROM visitor_logs 
+            WHERE company_id = 2 AND DATE(created_at) = CURDATE()
+            GROUP BY hour
+            ORDER BY hour ASC`,
+            []
+        );
+
+        // 8. 오늘 인기 페이지 TOP 5 조회 (관리자 및 시스템 페이지 제외)
+        const [pageStatsRaw] = await db.query(
+            `SELECT 
+                page_url,
+                COUNT(*) as view_count
+            FROM visitor_logs 
+            WHERE company_id = 2 
+            AND DATE(created_at) = CURDATE()
+            AND page_url NOT LIKE '/console%'
+            AND page_url NOT LIKE '%sitemap.xml%'
+            AND page_url NOT LIKE '%/.well-known/%'
+            AND page_url NOT LIKE '%.php%'
+            AND page_url NOT LIKE '%robots.txt%'
+            GROUP BY page_url
+            ORDER BY view_count DESC
+            LIMIT 10`, // 매핑 후 TOP 5를 추리기 위해 일단 10개 조회
+            []
+        );
+
+        // URL -> 메뉴명 매핑 (상세화)
+        const menuMapping = {
+            '/': '홈 (메인)',
+            '/brand': '브랜드 소개',
+            '/company': '브랜드 소개',
+            '/menu': '메뉴 소개',
+            '/franchise': '가맹 문의/신청',
+            '/location': '매장 안내',
+            '/board/notice': '공지사항',
+            '/community/notice': '공지사항',
+            '/board/event': '이벤트',
+            '/community/event': '이벤트'
+        };
+
+        const pageStatsMap = new Map();
+
+        pageStatsRaw.forEach(page => {
+            // 쿼리 스트링 제거 (예: /menu?cat=crepe -> /menu)
+            const cleanUrl = page.page_url.split('?')[0];
+            const displayName = menuMapping[cleanUrl] || (cleanUrl === '' ? '홈 (메인)' : cleanUrl);
+
+            if (pageStatsMap.has(displayName)) {
+                pageStatsMap.set(displayName, pageStatsMap.get(displayName) + page.view_count);
+            } else {
+                pageStatsMap.set(displayName, page.view_count);
+            }
+        });
+
+        // 다시 배열로 변환 후 상위 5개 추출
+        const pageStats = Array.from(pageStatsMap.entries())
+            .map(([display, count]) => ({
+                page_display: display,
+                view_count: count
+            }))
+            .sort((a, b) => b.view_count - a.view_count)
+            .slice(0, 5);
 
         const stats = {
             totalPosts: noticeCount[0].count,
             totalInquiries: inquiryCount[0].count,
             totalFranchises: franchiseCount[0].count,
+            todayVisitors: visitorCount[0].count,
+            visitorSources: sourceStats,
+            dailyVisitors: dailyStats,
+            hourlyVisitors: hourlyStats,
+            popularPages: pageStats,
             recentActivities: []
         };
 

@@ -17,6 +17,9 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <!-- Admin Dashboard CSS -->
     <link rel="stylesheet" href="/css/admin-dashboard.css">
 </head>
@@ -64,7 +67,7 @@
                     <!-- 페이지 콘텐츠 -->
                     <main class="page-content">
                         <div class="dashboard-container">
-                            <!-- 통계 카드 -->
+                            <!-- 1. 통계 카드 -->
                             <div class="stats-grid">
                                 <div class="stat-card">
                                     <div class="stat-icon blue">
@@ -107,13 +110,15 @@
                                         <i class="fas fa-users"></i>
                                     </div>
                                     <div class="stat-info">
-                                        <h3 class="stat-value">0</h3>
+                                        <h3 class="stat-value">
+                                            <%= stats.todayVisitors.toLocaleString() %>
+                                        </h3>
                                         <p class="stat-label">오늘 방문자</p>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- 빠른 액세스 -->
+                            <!-- 2. 빠른 액세스 (순서 상향 조정) -->
                             <div class="quick-actions">
                                 <h2 class="section-title">빠른 액세스</h2>
                                 <div class="action-grid">
@@ -136,13 +141,107 @@
                                 </div>
                             </div>
 
-                            <!-- 최근 활동 -->
+                            <!-- 3. 분석 데이터 영역 (2컬럼 레이아웃) -->
+                            <div class="analytics-grid">
+                                <!-- 방문자 추이 차트 -->
+                                <div class="analytics-card main-chart">
+                                    <h2 class="section-title">방문자 추이 (최근 30일)</h2>
+                                    <div class="chart-container" id="visitor-chart-card"
+                                        data-daily='<%- JSON.stringify(stats.dailyVisitors || []) %>'>
+                                        <canvas id="visitorChart"></canvas>
+                                    </div>
+                                </div>
+
+                                <!-- 시간대별 분포 차트 -->
+                                <div class="analytics-card sub-chart">
+                                    <h2 class="section-title">오늘 시간대별 분포</h2>
+                                    <div class="chart-container" id="hourly-chart-card"
+                                        data-hourly='<%- JSON.stringify(stats.hourlyVisitors || []) %>'>
+                                        <canvas id="hourlyChart"></canvas>
+                                    </div>
+                                </div>
+
+                                <!-- 유입 경로 통계 -->
+                                <div class="analytics-card">
+                                    <h2 class="section-title">오늘 유입 경로 (Top 5)</h2>
+                                    <div class="source-list">
+                                        <% if (stats.visitorSources && stats.visitorSources.length> 0) { %>
+                                            <% stats.visitorSources.forEach(source=> { %>
+                                                <div class="source-item">
+                                                    <div class="source-info">
+                                                        <span class="source-name">
+                                                            <% if (source.source==='네이버' ) { %>
+                                                                <i class="fab fa-neos" style="color: #03cf5d;"></i>
+                                                                <% } else if (source.source==='구글' ) { %>
+                                                                    <i class="fab fa-google"
+                                                                        style="color: #4285f4;"></i>
+                                                                    <% } else if (source.source==='유튜브' ) { %>
+                                                                        <i class="fab fa-youtube"
+                                                                            style="color: #ff0000;"></i>
+                                                                        <% } else if (source.source==='페이스북' ) { %>
+                                                                            <i class="fab fa-facebook"
+                                                                                style="color: #1877f2;"></i>
+                                                                            <% } else { %>
+                                                                                <i class="fas fa-link"
+                                                                                    style="color: #6366f1;"></i>
+                                                                                <% } %>
+                                                                                    <%= source.source %>
+                                                        </span>
+                                                        <span class="source-count">
+                                                            <%= source.count %>명
+                                                        </span>
+                                                    </div>
+                                                    <div class="source-bar-container">
+                                                        <div class="source-bar"
+                                                            style="width: <%= stats.todayVisitors > 0 ? (source.count / stats.todayVisitors * 100) : 0 %>%">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <% }) %>
+                                                    <% } else { %>
+                                                        <div class="empty-state">
+                                                            <p>집계된 유입 경로 데이터가 없습니다.</p>
+                                                        </div>
+                                                        <% } %>
+                                    </div>
+                                </div>
+
+                                <!-- 인기 페이지 통계 -->
+                                <div class="analytics-card">
+                                    <h2 class="section-title">오늘 인기 페이지 (Top 5)</h2>
+                                    <div class="page-list">
+                                        <% if (stats.popularPages && stats.popularPages.length> 0) { %>
+                                            <% stats.popularPages.forEach((page, index)=> { %>
+                                                <div class="page-item">
+                                                    <div class="page-rank">
+                                                        <%= index + 1 %>
+                                                    </div>
+                                                    <div class="page-info">
+                                                        <span class="page-url">
+                                                            <%= page.page_display %>
+                                                        </span>
+                                                        <span class="page-views">
+                                                            <%= page.view_count %>회 방문
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <% }) %>
+                                                    <% } else { %>
+                                                        <div class="empty-state">
+                                                            <p>집계된 페이지 뷰 데이터가 없습니다.</p>
+                                                        </div>
+                                                        <% } %>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 5. 최근 활동 -->
                             <div class="recent-activities">
                                 <h2 class="section-title">최근 활동</h2>
                                 <div class="activity-list">
                                     <% if (stats.recentActivities.length===0) { %>
                                         <div class="empty-state">
-                                            <i class="fas fa-inbox"></i>
+                                            <i class="fas fa-history"></i>
                                             <p>최근 활동이 없습니다.</p>
                                         </div>
                                         <% } else { %>
@@ -165,6 +264,178 @@
                                 </div>
                             </div>
                         </div>
+
+                        <style>
+                            .analytics-grid {
+                                display: grid;
+                                grid-template-columns: repeat(2, 1fr);
+                                gap: 25px;
+                                margin-bottom: 35px;
+                            }
+
+                            .analytics-card {
+                                background: #fff;
+                                padding: 25px;
+                                border-radius: 12px;
+                                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+                            }
+
+                            .analytics-card.main-chart,
+                            .analytics-card.sub-chart {
+                                min-height: 400px;
+                            }
+
+                            .chart-container {
+                                height: 320px;
+                                position: relative;
+                            }
+
+                            .source-item,
+                            .page-item {
+                                margin-bottom: 18px;
+                            }
+
+                            .source-item:last-child,
+                            .page-item:last-child {
+                                margin-bottom: 0;
+                            }
+
+                            .source-info,
+                            .page-info {
+                                display: flex;
+                                justify-content: space-between;
+                                align-items: center;
+                                margin-bottom: 8px;
+                                font-weight: 500;
+                            }
+
+                            .source-name,
+                            .page-url {
+                                display: flex;
+                                align-items: center;
+                                gap: 10px;
+                                font-size: 0.9rem;
+                                color: #333;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                white-space: nowrap;
+                            }
+
+                            .source-count,
+                            .page-views {
+                                font-family: 'Outfit', sans-serif;
+                                color: #6366f1;
+                                font-size: 0.85rem;
+                                flex-shrink: 0;
+                            }
+
+                            .page-item {
+                                display: flex;
+                                align-items: center;
+                                gap: 15px;
+                                background: #f8fafc;
+                                padding: 12px;
+                                border-radius: 8px;
+                            }
+
+                            .page-rank {
+                                width: 24px;
+                                height: 24px;
+                                background: #6366f1;
+                                color: #fff;
+                                border-radius: 50%;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                font-size: 0.8rem;
+                                font-weight: bold;
+                                flex-shrink: 0;
+                            }
+
+                            .page-info {
+                                flex-grow: 1;
+                                margin-bottom: 0;
+                            }
+
+                            .source-bar-container {
+                                height: 6px;
+                                background: #f1f3f9;
+                                border-radius: 10px;
+                                overflow: hidden;
+                            }
+
+                            .source-bar {
+                                height: 100%;
+                                background: linear-gradient(90deg, #6366f1, #8b5cf6);
+                                border-radius: 10px;
+                                transition: width 0.8s ease;
+                            }
+
+                            .empty-state {
+                                text-align: center;
+                                padding: 30px 0;
+                                color: #94a3b8;
+                            }
+
+                            @media (max-width: 1024px) {
+                                .analytics-grid {
+                                    grid-template-columns: 1fr;
+                                }
+                            }
+                        </style>
+
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function () {
+                                // 1. 방문자 추이 차트 (Line)
+                                const visitorCard = document.getElementById('visitor-chart-card');
+                                const dailyData = JSON.parse(visitorCard.dataset.daily || '[]');
+                                if (dailyData.length > 0) {
+                                    const labels = dailyData.map(item => item.date.substring(5));
+                                    const counts = dailyData.map(item => item.count);
+                                    new Chart(document.getElementById('visitorChart').getContext('2d'), {
+                                        type: 'line',
+                                        data: {
+                                            labels: labels,
+                                            datasets: [{
+                                                label: '방문자 수',
+                                                data: counts,
+                                                borderColor: '#6366f1',
+                                                backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                                                fill: true,
+                                                tension: 0.4,
+                                                borderWidth: 3
+                                            }]
+                                        },
+                                        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+                                    });
+                                }
+
+                                // 2. 시간대별 분포 차트 (Bar)
+                                const hourlyCard = document.getElementById('hourly-chart-card');
+                                const hourlyDataRaw = JSON.parse(hourlyCard.dataset.hourly || '[]');
+                                const hourlyData = new Array(24).fill(0);
+                                hourlyDataRaw.forEach(item => { hourlyData[item.hour] = item.count; });
+
+                                new Chart(document.getElementById('hourlyChart').getContext('2d'), {
+                                    type: 'bar',
+                                    data: {
+                                        labels: Array.from({ length: 24 }, (_, i) => `${i}시`),
+                                        datasets: [{
+                                            label: '시각별 방문자',
+                                            data: hourlyData,
+                                            backgroundColor: '#8b5cf6',
+                                            borderRadius: 4
+                                        }]
+                                    },
+                                    options: {
+                                        responsive: true,
+                                        maintainAspectRatio: false,
+                                        plugins: { legend: { display: false } },
+                                        scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+                                    }
+                                });
+                            });
+                        </script>
                     </main>
                 </div>
     </div>
