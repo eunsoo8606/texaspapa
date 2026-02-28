@@ -281,6 +281,7 @@ router.get('/dashboard', requireAuth, async (req, res) => {
             '/company': '브랜드 소개',
             '/menu': '메뉴 소개',
             '/franchise': '가맹 문의/신청',
+            '/stores': '가맹점 현황',
             '/location': '매장 안내',
             '/board/notice': '공지사항',
             '/community/notice': '공지사항',
