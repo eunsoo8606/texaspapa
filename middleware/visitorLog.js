@@ -16,17 +16,33 @@ const visitorLog = async (req, res, next) => {
             return next();
         }
 
-        // 2. 방문 정보 추출
+        // 2. 봇/크롤러 트래픽 제외 (검색엔진 봇은 방문자 통계에서 제외)
+        const userAgent = (req.headers['user-agent'] || '').toLowerCase();
+        const botPatterns = [
+            'bot', 'crawler', 'spider', 'scraper', 'slurp',
+            'googlebot', 'bingbot', 'yeti', 'daumoa', 'baidu',
+            'ahrefsbot', 'semrushbot', 'mj12bot', 'dotbot',
+            'petalbot', 'bytespider', 'gptbot', 'chatgpt',
+            'facebookexternalhit', 'twitterbot', 'kakaotalk-scrap',
+            'headlesschrome', 'phantomjs', 'wget', 'curl',
+            'python-requests', 'go-http-client', 'java/', 'httpclient'
+        ];
+        const isBot = botPatterns.some(pattern => userAgent.includes(pattern));
+
+        if (isBot) {
+            return next();
+        }
+
+        // 3. 방문 정보 추출
         const ip = req.headers['x-forwarded-for'] || req.ip;
         const referrer = req.headers.referer || req.headers.referrer || null;
         const pageUrl = req.originalUrl;
-        const userAgent = req.headers['user-agent'];
         const sessionId = req.sessionID; // express-session의 세션 ID 활용
 
-        // 3. UTM 파라미터 추출
+        // 4. UTM 파라미터 추출
         const { utm_source, utm_medium, utm_campaign, utm_term, utm_content } = req.query;
 
-        // 4. DB 저장 (비동기로 진행하되 응답을 차단하지 않음)
+        // 5. DB 저장 (비동기로 진행하되 응답을 차단하지 않음)
         // company_id는 기본값 2 (텍사스파파)
         const query = `
             INSERT INTO visitor_logs 
@@ -34,7 +50,7 @@ const visitorLog = async (req, res, next) => {
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
         const params = [
-            2, sessionId, ip, referrer, pageUrl, userAgent,
+            2, sessionId, ip, referrer, pageUrl, req.headers['user-agent'],
             utm_source || null,
             utm_medium || null,
             utm_campaign || null,
