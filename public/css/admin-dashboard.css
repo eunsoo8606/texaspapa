@@ -958,10 +958,16 @@ body {
 }
 
 .quill-editor .ql-editor {
-    min-height: 350px;
+    min-height: 400px;
     padding: 1.5rem;
+    font-size: 1rem;
+    line-height: 1.6;
 }
 
+/* Quill 에디터 링크 툴팁 z-index 상향 (가려짐 방지) */
+.ql-snow .ql-tooltip {
+    z-index: 2100 !important;
+}
 .quill-editor .ql-editor.ql-blank::before {
     color: var(--text-light);
     font-style: normal;
@@ -1107,6 +1113,19 @@ body {
     height: auto;
     border-radius: 8px;
     margin: 1rem 0;
+}
+
+/* Quill 동영상(iframe) 반응형 처리 */
+.ql-editor iframe.ql-video,
+.board-detail-content iframe.ql-video {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 16 / 9;
+    margin: 1.5rem 0 !important;
+    border: none;
+    border-radius: 8px;
+    background-color: #000;
 }
 
 .board-detail-content ul,

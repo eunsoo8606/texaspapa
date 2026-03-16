@@ -19,6 +19,18 @@ body {
     height: 100%;
 }
 
+/* Quill 동영상(iframe) 글로벌 반응형 처리 */
+iframe.ql-video {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 16 / 9;
+    margin: 1.5rem 0 !important;
+    border: none;
+    border-radius: 8px;
+    background-color: #000;
+}
+
 body {
     position: relative;
     font-family: var(--font-main);

@@ -32,9 +32,9 @@ router.post('/consultation', async (req, res) => {
         const encryptedPhone = encrypt(strippedPhone);
 
         await db.query(
-            `INSERT INTO consultation (name, phone, email, region, budget, experience, path, message, create_ip, created_at) 
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())`,
-            [encryptedName, encryptedPhone, encryptedEmail, region, budget, experience, path, message, createIp]
+            `INSERT INTO consultation (company_id, name, phone, email, region, budget, experience, path, message, create_ip, created_at) 
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())`,
+            [2, encryptedName, encryptedPhone, encryptedEmail, region, budget, experience, path, message, createIp]
         );
 
         try {
