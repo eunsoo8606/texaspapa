@@ -443,8 +443,66 @@ body {
     align-items: center;
     gap: 1.5rem;
     flex: 0 0 auto;
-    width: 200px;
+    width: auto;
     justify-content: flex-end;
+}
+
+/* 상단 헤더 문의하기 버튼 (톤앤매너 맞춤) */
+.header-inquiry-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 10px 22px !important;
+    background: var(--text-black) !important;
+    color: var(--text-white) !important;
+    border: 1px solid var(--text-black) !important;
+    font-size: 0.95rem !important;
+    font-family: var(--font-heading) !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.5px !important;
+    border-radius: 4px !important;
+    text-decoration: none !important;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    white-space: nowrap !important;
+    box-shadow: none !important;
+}
+
+.header-inquiry-btn:hover {
+    background: transparent !important;
+    color: var(--text-black) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
+}
+
+@media (max-width: 1024px) {
+    .header-inquiry-btn {
+        padding: 8px 16px;
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-inquiry-btn {
+        padding: 8px;
+        border-radius: 50%;
+        width: 36px;
+        height: 36px;
+        border-color: transparent;
+        background-color: #f5f5f5;
+        color: #333;
+    }
+    .header-inquiry-btn:hover {
+        background-color: #e0e0e0;
+        transform: none;
+        box-shadow: none;
+    }
+    .header-inquiry-btn .inquiry-text {
+        display: none;
+    }
+    .header-inquiry-btn i {
+        margin: 0 !important;
+        font-size: 1.1rem;
+    }
 }
 
 .menu-toggle {
