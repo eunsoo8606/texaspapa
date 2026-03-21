@@ -121,6 +121,7 @@
 
     <!-- Quill Editor JS -->
     <script src="/lib/quill/quill.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quill-blot-formatter@1.0.5/dist/quill-blot-formatter.min.js"></script>
 
     <script>
         // Quill 에디터 초기화
@@ -129,6 +130,11 @@
         function initQuillEditor() {
             if (typeof Quill !== 'undefined') {
                 try {
+                    // 등록 (이미지 리사이즈)
+                    if (typeof QuillBlotFormatter !== 'undefined') {
+                        Quill.register('modules/blotFormatter', QuillBlotFormatter.default);
+                    }
+
                     // 이미지 처리 핸들러
                     const imageHandler = () => {
                         const input = document.createElement('input');
@@ -167,6 +173,7 @@
                         theme: 'snow',
                         placeholder: '내용을 입력하세요...',
                         modules: {
+                            blotFormatter: {}, // 이미지 크기 조절 모듈 활성화
                             toolbar: {
                                 container: [
                                     [{ 'header': [1, 2, 3, false] }],

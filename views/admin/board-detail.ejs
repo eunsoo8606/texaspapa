@@ -19,6 +19,8 @@
 
     <!-- Admin Dashboard CSS -->
     <link rel="stylesheet" href="/css/admin-dashboard.css">
+    <!-- Quill Editor CSS -->
+    <link href="/lib/quill/quill.snow.css" rel="stylesheet">
 
     <style>
         /* 삭제 확인 모달 전역 스타일 */
@@ -154,8 +156,10 @@
                             </div>
 
                             <!-- 게시글 내용 -->
-                            <div class="board-detail-content">
-                                <%- post.content %>
+                            <div class="board-detail-content ql-snow">
+                                <div class="ql-editor" style="padding: 0;">
+                                    <%- post.content %>
+                                </div>
                             </div>
 
                             <!-- 문의게시판/고객의소리 작성자 정보 -->

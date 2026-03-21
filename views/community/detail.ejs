@@ -27,6 +27,8 @@
         <!-- CSS -->
         <link rel="stylesheet" href="/css/style.css">
         <link rel="stylesheet" href="/css/community.css">
+        <!-- Quill Editor CSS (글머리기호, 들여쓰기 렌더링용) -->
+        <link href="/lib/quill/quill.snow.css" rel="stylesheet">
 
         <style>
             .board-detail-container {
@@ -196,8 +198,10 @@
                     </div>
                 </header>
 
-                <div class="detail-body">
-                    <%- post.content %>
+                <div class="detail-body ql-snow">
+                    <div class="ql-editor" style="padding: 0;">
+                        <%- post.content %>
+                    </div>
                 </div>
             </article>
 
