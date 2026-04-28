@@ -69,6 +69,15 @@ router.get('/franchise', (req, res) => {
     });
 });
 
+// 창업 문의 완료 페이지
+router.get('/franchise/complete', (req, res) => {
+    res.render('franchise/complete', {
+        title: '접수 완료 - 텍사스파파',
+        description: '상담 접수가 완료되었습니다. 빠른 시간 내에 연락드리겠습니다.',
+        activePage: 'franchise'
+    });
+});
+
 // 오시는 길
 router.get('/location', (req, res) => {
     res.render('brand/location', {

@@ -1453,9 +1453,7 @@
                         const result = await response.json();
 
                         if (result.success) {
-                            alert(result.message);
-                            inquiryForm.reset();
-
+                            window.location.href = '/franchise/complete';
                         } else {
                             alert(result.message || '상담 신청 중 오류가 발생했습니다.');
                         }
