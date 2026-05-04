@@ -422,7 +422,7 @@ router.get('/board/:type', requireAuth, async (req, res) => {
         const formattedPosts = posts.map(post => ({
             id: post.post_no,
             title: post.title,
-            author: post.writer,
+            author: decrypt(post.writer), // 작성자명 복호화 (암호화되어 저장된 경우 대비)
             views: post.views || 0,
             created_at: post.create_dt
         }));
@@ -554,7 +554,8 @@ router.get('/board/:type/:id', requireAuth, async (req, res) => {
 
         // posts 테이블에서 게시글 조회
         const [posts] = await db.query(
-            `SELECT post_no, title, content, writer, create_dt, top_yn, views 
+            `SELECT post_no, title, content, writer, create_dt, top_yn, views, 
+                    author_name, author_email, author_phone, status 
              FROM posts 
              WHERE post_no = ? AND board_id = ?`,
             [id, boardId]
@@ -568,7 +569,7 @@ router.get('/board/:type/:id', requireAuth, async (req, res) => {
             id: posts[0].post_no,
             title: posts[0].title,
             content: posts[0].content,
-            author: posts[0].writer,
+            author: decrypt(posts[0].writer),
             created_at: posts[0].create_dt,
             top_yn: posts[0].top_yn,
             views: posts[0].views || 0,

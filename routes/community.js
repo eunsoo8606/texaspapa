@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../config/database');
 const bcrypt = require('bcrypt');
-const { encrypt, stripPhone } = require('../utils/crypto');
+const { encrypt, decrypt, stripPhone, formatPhone } = require('../utils/crypto');
 const { sendInquiryNotification } = require('../utils/email');
 
 // 커뮤니티 목록 조회
@@ -66,7 +66,7 @@ router.get('/:tab?', async (req, res) => {
             description: descriptions[tab] || '텍사스파파 크레페 프랜차이즈 커뮤니티 공간입니다.',
             activePage: 'community',
             currentTab: tab,
-            posts: posts,
+            posts: posts.map(post => ({ ...post, writer: decrypt(post.writer) })),
             pagination: {
                 currentPage: page,
                 totalPages: totalPages,
@@ -136,16 +136,14 @@ router.post('/:tab/write', async (req, res) => {
         const passwordHash = await bcrypt.hash(password, 10);
         const createIp = req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
+        // 암호화 제거: 평문 그대로 저장
         const strippedPhone = stripPhone(author_phone);
-        const encryptedName = encrypt(author_name);
-        const encryptedEmail = encrypt(author_email);
-        const encryptedPhone = encrypt(strippedPhone);
 
         await db.query(
             `INSERT INTO posts 
             (board_id, title, content, writer, author_name, author_email, author_phone, password, status, create_ip, create_dt, views, top_yn) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?, NOW(), 0, 'N')`,
-            [boardId, title, content, author_name, encryptedName, encryptedEmail, encryptedPhone, passwordHash, createIp]
+            [boardId, title, content, author_name, author_name, author_email, strippedPhone, passwordHash, createIp]
         );
 
         try {
@@ -268,12 +266,19 @@ router.post('/:tab/:id/verify', async (req, res) => {
 
         const reply = replies.length > 0 ? replies[0] : null;
 
+        const formattedPost = {
+            ...post,
+            author_name: decrypt(post.author_name),
+            author_email: decrypt(post.author_email),
+            author_phone: formatPhone(decrypt(post.author_phone))
+        };
+
         res.render('community/inquiry_detail', {
             title: `${post.title} | Texas Papa`,
             description: `${post.title} - 문의 내용과 답변을 확인하세요.`,
             activePage: 'community',
             boardType: tab,
-            post: post,
+            post: formattedPost,
             reply: reply
         });
 

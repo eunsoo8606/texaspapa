@@ -35,7 +35,7 @@ function decrypt(text) {
     try {
         const textParts = text.split(':');
         const iv = Buffer.from(textParts.shift(), 'hex');
-        const encryptedText = Buffer.from(textParts.join(':'), 'hex');
+        const encryptedText = textParts.join(':');
         const decipher = crypto.createDecipheriv(ALGORITHM, ENCRYPTION_KEY, iv);
         let decrypted = decipher.update(encryptedText, 'hex', 'utf8');
         decrypted += decipher.final('utf8');

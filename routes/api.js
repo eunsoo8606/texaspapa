@@ -26,15 +26,13 @@ router.post('/consultation', async (req, res) => {
 
         const createIp = req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
+        // 암호화 제거: 평문 그대로 저장
         const strippedPhone = stripPhone(phone);
-        const encryptedName = encrypt(name);
-        const encryptedEmail = encrypt(email);
-        const encryptedPhone = encrypt(strippedPhone);
 
         await db.query(
             `INSERT INTO consultation (company_id, name, phone, email, region, budget, experience, path, message, create_ip, created_at) 
              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())`,
-            [2, encryptedName, encryptedPhone, encryptedEmail, region, budget, experience, path, message, createIp]
+            [2, name, strippedPhone, email, region, budget, experience, path, message, createIp]
         );
 
         try {
