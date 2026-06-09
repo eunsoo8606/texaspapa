@@ -84,9 +84,9 @@ router.post('/login', async (req, res) => {
         console.log('📊 데이터베이스 조회 시작...');
         const [users] = await db.query(
             `SELECT * FROM admins 
-             WHERE (admin_id = ? OR admin_name = ?) 
+             WHERE username = ? 
              AND is_active = 1`,
-            [username, username]
+            [username]
         );
 
         // 사용자가 없거나 비활성화된 경우
@@ -99,7 +99,7 @@ router.post('/login', async (req, res) => {
         }
 
         const user = users[0];
-        console.log('✅ 사용자 찾음:', user.admin_id);
+        console.log('✅ 사용자 찾음:', user.username);
 
         // 비밀번호 검증 (bcrypt)
         console.log('🔑 비밀번호 검증 중...');
@@ -118,7 +118,7 @@ router.post('/login', async (req, res) => {
         // 세션에 사용자 정보 저장 (비밀번호는 저장하지 않음)
         req.session.adminUser = {
             id: user.id,
-            adminId: user.admin_id,
+            adminId: user.username,
             adminName: user.admin_name,
             name: user.name,
             email: user.email,
@@ -1004,7 +1004,7 @@ router.get('/setup', async (req, res) => {
         // 데이터베이스에 삽입
         await db.query(
             `INSERT INTO admins 
-            (admin_id, admin_name, password, email, name, role, is_active) 
+            (username, admin_name, password, email, name, role, is_active) 
             VALUES (?, ?, ?, ?, ?, 'super_admin', 1)`,
             [adminId, adminName, passwordHash, email, name]
         );
