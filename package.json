@@ -11,6 +11,7 @@
     },
     "dependencies": {
         "@vercel/blob": "^2.4.0",
+        "@vercel/speed-insights": "^2.0.0",
         "bcrypt": "^5.1.1",
         "dotenv": "^16.3.1",
         "ejs": "^3.1.9",
