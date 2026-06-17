@@ -7,18 +7,8 @@ const db = require('../config/database');
 const { requireAuth, redirectIfAuthenticated } = require('../middleware/auth');
 const { decrypt, formatPhone } = require('../utils/crypto');
 
-// ===========================
-// 이미지 업로드 설정 (Multer)
-// ===========================
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'public/uploads/board/');
-    },
-    filename: (req, file, cb) => {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        cb(null, 'board-' + uniqueSuffix + path.extname(file.originalname));
-    }
-});
+// 이미지 업로드 설정 (Multer - Vercel 서버리스 대응을 위해 메모리 스토리지 사용)
+const storage = multer.memoryStorage();
 
 const upload = multer({
     storage: storage,
@@ -35,13 +25,20 @@ const upload = multer({
 });
 
 // 이미지 업로드 API
-router.post('/api/upload/image', requireAuth, upload.single('image'), (req, res) => {
+router.post('/api/upload/image', requireAuth, upload.single('image'), async (req, res) => {
     try {
         if (!req.file) {
             return res.status(400).json({ success: false, message: '파일이 업로드되지 않았습니다.' });
         }
-        const imageUrl = `/uploads/board/${req.file.filename}`;
-        res.json({ success: true, url: imageUrl });
+        
+        // Vercel Blob 업로드 처리
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        const filename = 'board-' + uniqueSuffix + path.extname(req.file.originalname);
+        const blob = await put(filename, req.file.buffer, {
+            access: 'public',
+        });
+        
+        res.json({ success: true, url: blob.url });
     } catch (error) {
         console.error('이미지 업로드 오류:', error);
         res.status(500).json({ success: false, message: '서버 오류가 발생했습니다.' });
@@ -1026,16 +1023,9 @@ router.get('/setup', async (req, res) => {
 // 팝업 관리 (인증 필요)
 // ===========================
 
-// 팝업 이미지 업로드 설정 (Multer)
-const popupStorage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'public/uploads/popup/');
-    },
-    filename: (req, file, cb) => {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        cb(null, 'popup-' + uniqueSuffix + path.extname(file.originalname));
-    }
-});
+// 팝업 이미지 업로드 설정 (Multer - Vercel 서버리스 환경 대응을 위해 메모리 스토리지 사용)
+const { put } = require('@vercel/blob');
+const popupStorage = multer.memoryStorage();
 
 const uploadPopup = multer({
     storage: popupStorage,
@@ -1087,12 +1077,17 @@ router.get('/popup/add', requireAuth, (req, res) => {
 router.post('/popup/add', requireAuth, uploadPopup.single('popup_file'), async (req, res) => {
     let { title, content, image_url, link_url, target, width, height, pos_top, pos_left, start_date, end_date, is_active } = req.body;
 
-    // 파일 업로드 시 경로 수정
-    if (req.file) {
-        image_url = '/uploads/popup/' + req.file.filename;
-    }
-
     try {
+        // Vercel Blob 업로드 처리
+        if (req.file) {
+            const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+            const filename = 'popup-' + uniqueSuffix + path.extname(req.file.originalname);
+            const blob = await put(filename, req.file.buffer, {
+                access: 'public',
+            });
+            image_url = blob.url;
+        }
+
         const companyId = req.session.adminUser.companyId || 2;
         await db.query(
             `INSERT INTO popups 
@@ -1139,12 +1134,17 @@ router.post('/popup/edit/:id', requireAuth, uploadPopup.single('popup_file'), as
     const { id } = req.params;
     let { title, content, image_url, link_url, target, width, height, pos_top, pos_left, start_date, end_date, is_active } = req.body;
 
-    // 파일 업로드 시 경로 수정
-    if (req.file) {
-        image_url = '/uploads/popup/' + req.file.filename;
-    }
-
     try {
+        // Vercel Blob 업로드 처리
+        if (req.file) {
+            const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+            const filename = 'popup-' + uniqueSuffix + path.extname(req.file.originalname);
+            const blob = await put(filename, req.file.buffer, {
+                access: 'public',
+            });
+            image_url = blob.url;
+        }
+
         const companyId = req.session.adminUser.companyId || 2;
         await db.query(
             `UPDATE popups SET 

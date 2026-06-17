@@ -302,7 +302,7 @@ body {
     }
 }
 
-.sub-nav .logo {
+.sub-nav .logo-main {
     display: flex;
     align-items: center;
     text-decoration: none;
@@ -311,7 +311,7 @@ body {
     height: 80px;
 }
 
-.sub-nav .logo img {
+.sub-nav .logo-main img {
     height: 45px;
     width: auto;
     object-fit: contain;
@@ -320,21 +320,21 @@ body {
 }
 
 @media (max-width: 1024px) {
-    .sub-nav .logo {
+    .sub-nav .logo-main {
         margin-left: 0;
     }
-    .sub-nav .logo img {
+    .sub-nav .logo-main img {
         height: 35px;
     }
 }
 
 @media (max-width: 480px) {
-    .sub-nav .logo {
+    .sub-nav .logo-main {
         height: 60px;
         margin-left: 0;
     }
 
-    .sub-nav .logo img {
+    .sub-nav .logo-main img {
         height: 30px;
         transform: none;
     }
