@@ -1,0 +1,8 @@
+# 쿼터 도둑 방지용 제외 설정
+node_modules/
+dist/
+build/
+.git/
+*.log
+*.mp4
+*.png

@@ -312,28 +312,31 @@ body {
 }
 
 .sub-nav .logo img {
-    height: 145px;
+    height: 45px;
     width: auto;
     object-fit: contain;
-    transform: scale(1.3);
+    transform: none;
     transform-origin: center;
 }
 
 @media (max-width: 1024px) {
     .sub-nav .logo {
-        margin-left: -20px;
+        margin-left: 0;
+    }
+    .sub-nav .logo img {
+        height: 35px;
     }
 }
 
 @media (max-width: 480px) {
     .sub-nav .logo {
         height: 60px;
-        margin-left: -30px;
+        margin-left: 0;
     }
 
     .sub-nav .logo img {
-        height: 120px;
-        transform: scale(1.2);
+        height: 30px;
+        transform: none;
     }
 }
 
