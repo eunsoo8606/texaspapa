@@ -123,7 +123,7 @@ router.post('/login', async (req, res) => {
             name: user.name,
             email: user.email,
             role: user.role,
-            companyId: user.company_id
+            companyId: user.company_id || 2 // admins 테이블에 company_id 컬럼이 없는 경우 기본값 2(텍사스파파) 설정
         };
 
         console.log('💾 세션에 사용자 정보 저장:', req.session.adminUser);
@@ -1054,7 +1054,7 @@ const uploadPopup = multer({
 // 팝업 목록
 router.get('/popup', requireAuth, async (req, res) => {
     try {
-        const companyId = req.session.adminUser.companyId;
+        const companyId = req.session.adminUser.companyId || 2;
         const [popups] = await db.query(
             'SELECT * FROM popups WHERE company_id = ? ORDER BY created_at DESC',
             [companyId]
@@ -1093,7 +1093,7 @@ router.post('/popup/add', requireAuth, uploadPopup.single('popup_file'), async (
     }
 
     try {
-        const companyId = req.session.adminUser.companyId;
+        const companyId = req.session.adminUser.companyId || 2;
         await db.query(
             `INSERT INTO popups 
             (company_id, title, content, image_url, link_url, target, width, height, pos_top, pos_left, start_date, end_date, is_active) 
@@ -1111,7 +1111,7 @@ router.post('/popup/add', requireAuth, uploadPopup.single('popup_file'), async (
 router.get('/popup/edit/:id', requireAuth, async (req, res) => {
     const { id } = req.params;
     try {
-        const companyId = req.session.adminUser.companyId;
+        const companyId = req.session.adminUser.companyId || 2;
         const [popups] = await db.query(
             'SELECT * FROM popups WHERE id = ? AND company_id = ?',
             [id, companyId]
@@ -1145,7 +1145,7 @@ router.post('/popup/edit/:id', requireAuth, uploadPopup.single('popup_file'), as
     }
 
     try {
-        const companyId = req.session.adminUser.companyId;
+        const companyId = req.session.adminUser.companyId || 2;
         await db.query(
             `UPDATE popups SET 
             title = ?, content = ?, image_url = ?, link_url = ?, target = ?, 
@@ -1165,7 +1165,7 @@ router.post('/popup/edit/:id', requireAuth, uploadPopup.single('popup_file'), as
 router.post('/popup/delete/:id', requireAuth, async (req, res) => {
     const { id } = req.params;
     try {
-        const companyId = req.session.adminUser.companyId;
+        const companyId = req.session.adminUser.companyId || 2;
         await db.query('DELETE FROM popups WHERE id = ? AND company_id = ?', [id, companyId]);
         res.redirect('/console/popup');
     } catch (error) {
@@ -1178,7 +1178,7 @@ router.post('/popup/delete/:id', requireAuth, async (req, res) => {
 router.post('/popup/status', requireAuth, async (req, res) => {
     const { id, is_active } = req.body;
     try {
-        const companyId = req.session.adminUser.companyId;
+        const companyId = req.session.adminUser.companyId || 2;
         await db.query(
             'UPDATE popups SET is_active = ? WHERE id = ? AND company_id = ?',
             [is_active ? 1 : 0, id, companyId]
