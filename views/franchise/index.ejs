@@ -79,9 +79,20 @@
         }
 
         @keyframes pulse-red {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 77, 79, 0.7); }
-            70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(255, 77, 79, 0); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 77, 79, 0); }
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 77, 79, 0.7);
+            }
+
+            70% {
+                transform: scale(1.05);
+                box-shadow: 0 0 0 10px rgba(255, 77, 79, 0);
+            }
+
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 77, 79, 0);
+            }
         }
 
         /* 창업 절차 V2 스타일 */
@@ -90,20 +101,23 @@
             margin: 0 auto;
             padding: 40px 20px;
         }
+
         .phase-card {
             background: #fff;
             border-radius: 20px;
             margin-bottom: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
             overflow: hidden;
             border: 1px solid #eee;
             transition: all 0.3s ease;
         }
+
         .phase-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
             border-color: #ff9800;
         }
+
         .phase-header {
             padding: 30px 40px;
             display: flex;
@@ -112,11 +126,13 @@
             cursor: pointer;
             background: #fff;
         }
+
         .phase-info {
             display: flex;
             align-items: center;
             gap: 25px;
         }
+
         .phase-num {
             font-size: 14px;
             font-weight: 800;
@@ -126,11 +142,13 @@
             border-radius: 50px;
             letter-spacing: 1px;
         }
+
         .phase-title {
             font-size: 24px;
             font-weight: 800;
             color: #1a1a1a;
         }
+
         .phase-duration {
             font-size: 15px;
             color: #666;
@@ -141,13 +159,17 @@
             align-items: center;
             gap: 8px;
         }
-        .phase-duration i { color: #ff9800; }
-        
+
+        .phase-duration i {
+            color: #ff9800;
+        }
+
         .phase-toggle-icon {
             font-size: 20px;
             color: #ccc;
             transition: transform 0.3s ease;
         }
+
         .phase-card.active .phase-toggle-icon {
             transform: rotate(180deg);
             color: #ff9800;
@@ -159,10 +181,12 @@
             transition: max-height 0.5s cubic-bezier(0, 1, 0, 1);
             background: #fafafa;
         }
+
         .phase-card.active .phase-content {
             max-height: 1000px;
             transition: max-height 1s ease-in-out;
         }
+
         .sub-steps-grid {
             padding: 40px;
             display: grid;
@@ -170,26 +194,31 @@
             gap: 30px;
             border-top: 1px dashed #eee;
         }
+
         .sub-step-item {
             display: flex;
             flex-direction: column;
             gap: 12px;
         }
+
         .sub-step-num {
             font-size: 12px;
             font-weight: 700;
             color: #999;
         }
+
         .sub-step-title {
             font-size: 18px;
             font-weight: 800;
             color: #333;
         }
+
         .sub-step-desc {
             font-size: 14px;
             color: #777;
             line-height: 1.5;
         }
+
         .sub-step-icon {
             font-size: 24px;
             color: #ff9800;
@@ -197,11 +226,31 @@
         }
 
         @media (max-width: 768px) {
-            .phase-header { padding: 25px 20px; flex-direction: column; align-items: flex-start; gap: 15px; }
-            .phase-title { font-size: 20px; }
-            .phase-duration { align-self: flex-start; }
-            .phase-toggle-icon { position: absolute; right: 20px; top: 30px; }
-            .sub-steps-grid { grid-template-columns: 1fr; padding: 30px 20px; }
+            .phase-header {
+                padding: 25px 20px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .phase-title {
+                font-size: 20px;
+            }
+
+            .phase-duration {
+                align-self: flex-start;
+            }
+
+            .phase-toggle-icon {
+                position: absolute;
+                right: 20px;
+                top: 30px;
+            }
+
+            .sub-steps-grid {
+                grid-template-columns: 1fr;
+                padding: 30px 20px;
+            }
         }
     </style>` ,
     activePage: 'franchise' , body: ` <main class="sub-page">
@@ -211,9 +260,9 @@
             <div class="competence-container">
                 <div class="competence-text">
                     <h2 class="competence-title fade-up">국내최초 크레페 프랜차이즈</h2>
-                    <h1 class="competence-highlight fade-up delay-1">최단기간 <span class="point-color">30호점</span> 돌파!</h1>
+                    <h1 class="competence-highlight fade-up delay-1">최단기간 <span class="point-color">40호점</span> 돌파!</h1>
                     <p class="competence-desc fade-up delay-2">
-                        점주추천·입소문으로 2년만에 30호점 돌파 <br />
+                        점주추천·입소문으로 1년 6개월만에 40호점 돌파 <br />
                         <br />
                         빠른 성장에는 분명한 이유가 있습니다.
                         <br />
@@ -233,7 +282,7 @@
                         </div>
                         <div class="core-content">
                             <span class="core-label">성공 확산</span>
-                            <div class="core-number"><span class="counter" data-target="30">0</span></div>
+                            <div class="core-number"><span class="counter" data-target="40">0</span></div>
                             <span class="core-unit">가맹점 수</span>
                         </div>
                     </div>
@@ -256,8 +305,8 @@
                         </div>
                         <div class="nexus-node n3 active" style="--angle: 90deg; --dist: 200px;">
                             <div class="node-content">
-                                <span class="node-year">2025.12</span>
-                                <span class="node-title">30호점 돌파(업계 1위)</span>
+                                <span class="node-year">2026.06</span>
+                                <span class="node-title">40호점 돌파(업계 1위)</span>
                             </div>
                             <div class="node-dot pulsing"></div>
                         </div>
@@ -392,15 +441,28 @@
                         </div>
 
                         <div class="story-node-row">
-                            <div class="story-card left" data-rel="지인">
-                                <h3 class="node-branch">구로디지털점</h3>
+                            <div class="story-card left" data-rel="다점포">
+                                <h3 class="node-branch">동춘점</h3>
                                 <i class="fas fa-store node-icon"></i>
                             </div>
-                            <div class="story-card right" data-rel="지인">
-                                <h3 class="node-branch">성남태평점</h3>
+                            <div class="story-card right" data-rel="다점포">
+                                <h3 class="node-branch">송도점</h3>
                                 <i class="fas fa-store node-icon"></i>
                             </div>
                         </div>
+
+                        <div class="story-node-row">
+                            <div class="story-card left" data-rel="다점포">
+                                <h3 class="node-branch">안산중앙점</h3>
+                                <i class="fas fa-store node-icon"></i>
+                            </div>
+                            <div class="story-card right" data-rel="다점포">
+                                <h3 class="node-branch">배곧점</h3>
+                                <i class="fas fa-store node-icon"></i>
+                            </div>
+                        </div>
+
+
 
                         <!-- 대기 중인 점포들 (준비 중 느낌) -->
                         <div class="story-node-row">
@@ -726,7 +788,7 @@
             </div>
         </section>
         <!-- 섹션 5: 창업비용 및 지원 혜택 (Multi-Package Tabs) -->
-        <section id="startup-cost" class="startup-cost-section">
+        <!-- <section id="startup-cost" class="startup-cost-section">
             <div class="startup-container">
                 <div class="startup-header fade-up">
                     <span class="support-tag">텍사스파파 창업 패키지</span>
@@ -734,7 +796,7 @@
                     <p class="startup-sub-title">매장 상황과 예산에 최적화된 4가지 창업 솔루션을 확인하세요.</p>
                 </div>
 
-                <!-- 패키지 탭 메뉴 -->
+                
                 <div class="package-tabs-wrapper fade-up">
                     <div class="package-nav">
                         <button class="nav-btn active" data-pkg="trans" style="position: relative; overflow: visible;">
@@ -766,7 +828,7 @@
                     </div>
                 </div>
 
-                <!-- 상세 테이블 영역 -->
+                
                 <div class="startup-table-content fade-up">
                     <div class="table-responsive">
                         <table class="premium-cost-table">
@@ -778,12 +840,12 @@
                                 </tr>
                             </thead>
                             <tbody id="package-table-body">
-                                <!-- JS로 데이터 삽입 -->
+                                
                             </tbody>
                         </table>
                     </div>
 
-                    <!-- 총 금액 하단 영역 -->
+                    
                     <div class="total-cost-footer">
                         <div class="total-label">총 금액</div>
                         <div class="total-value-box">
@@ -794,7 +856,6 @@
                         <div class="total-info" id="total-info-text">단위 : 만 원 (10평 미만 기준)</div>
                     </div>
 
-                    <!-- 유의사항 -->
                     <div class="cost-notes">
                         <p id="exclusion-text">*별도사항 : 철거, 전기증설, 소방, 냉난방기, 어닝, 가구, 설비 공사, 지방 경비 등 (매장 상황에 따라 다를 수 있음)
                         </p>
@@ -802,7 +863,7 @@
                     </div>
                 </div>
             </div>
-        </section>
+        </section> -->
         <!-- 섹션 6: 창업 절차 (Startup Procedure) -->
         <section id="procedure" class="procedure-section">
             <div class="procedure-container">
@@ -1477,7 +1538,7 @@
             // 창업 절차 아코디언 기능
             window.togglePhase = (el) => {
                 const isActive = el.classList.contains('active');
-                
+
                 // 다른 활성 카드 닫기
                 document.querySelectorAll('.phase-card').forEach(card => {
                     card.classList.remove('active');
