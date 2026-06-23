@@ -65,6 +65,20 @@
             transform: rotate(0deg) !important;
         }
 
+        @media screen and (max-width: 768px) {
+            .trans-badge {
+                position: static !important;
+                display: block !important;
+                width: max-content !important;
+                margin-bottom: 10px !important;
+            }
+            .type-card.trans .type-tag {
+                display: block !important;
+                width: max-content !important;
+                margin-bottom: 15px !important;
+            }
+        }
+
         .promo-badge {
             display: inline-block;
             background: #ff4d4f;
@@ -231,10 +245,19 @@
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 15px;
+                position: relative;
+            }
+
+            .phase-info {
+                gap: 15px !important;
+                width: 100%;
+                padding-right: 35px;
+                box-sizing: border-box;
             }
 
             .phase-title {
                 font-size: 20px;
+                word-break: keep-all;
             }
 
             .phase-duration {
@@ -1117,7 +1140,7 @@
                 gsap.from(el, {
                     scrollTrigger: {
                         trigger: el,
-                        start: "top 85%",
+                        start: "top 95%",
                         toggleActions: "play none none reverse"
                     },
                     opacity: 0,
@@ -1180,12 +1203,12 @@
                         if (i === 0) return;
                         gsap.fromTo(layer, { opacity: 0, y: 30 }, {
                             opacity: 1, y: 0, duration: 0.8,
-                            scrollTrigger: { trigger: layer, start: "top 85%", end: "top 50%", scrub: true }
+                            scrollTrigger: { trigger: layer, start: "top 95%", end: "top 60%", scrub: true }
                         });
                     });
                     gsap.fromTo("#winnerStampEvo", { scale: 2, opacity: 0 }, {
                         scale: 1, opacity: 1,
-                        scrollTrigger: { trigger: ".layer-step-3", start: "top 70%", toggleActions: "play none none none" }
+                        scrollTrigger: { trigger: ".layer-step-3", start: "top 85%", toggleActions: "play none none none" }
                     });
                 }
             });
@@ -1199,7 +1222,7 @@
                 const itemTl = gsap.timeline({
                     scrollTrigger: {
                         trigger: item,
-                        start: "top 80%",
+                        start: "top 95%",
                         toggleActions: "play none none reverse",
                         onEnter: () => image.classList.add('revealed'),
                         onLeaveBack: () => image.classList.remove('revealed')
@@ -1371,7 +1394,7 @@
 
             // 7. 창업 절차 타임라인 애니메이션
             const procedureTl = gsap.timeline({
-                scrollTrigger: { trigger: ".procedure-section", start: "top 70%", toggleActions: "play none none reverse" }
+                scrollTrigger: { trigger: ".procedure-section", start: "top 90%", toggleActions: "play none none reverse" }
             });
             document.querySelectorAll(".procedure-item").forEach((step, index) => {
                 procedureTl.fromTo(step, { opacity: 0, y: 30 }, {
@@ -1385,7 +1408,7 @@
             const trustSummaryTl = gsap.timeline({
                 scrollTrigger: {
                     trigger: ".trust-summary-section",
-                    start: "top 75%",
+                    start: "top 90%",
                     toggleActions: "play none none reverse"
                 }
             });
@@ -1414,7 +1437,7 @@
 
             // 8. 문의하기 및 모달 제어
             gsap.from(".inquiry-box", {
-                scrollTrigger: { trigger: ".inquiry-section", start: "top 65%", toggleActions: "play none none reverse" },
+                scrollTrigger: { trigger: ".inquiry-section", start: "top 85%", toggleActions: "play none none reverse" },
                 y: 50, opacity: 0, duration: 1, ease: "power3.out"
             });
 
