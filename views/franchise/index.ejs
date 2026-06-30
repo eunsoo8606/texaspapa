@@ -1,291 +1,15 @@
 <%- include('../layouts/layout', { title: '텍사스파파 | 스마트한 창업의 시작' , head: `<link rel="preload" as="image"
-    href="/images/gamang_main_img.webp" fetchpriority="high">
-    <style>
-        .premium-recommend-badge {
-            background: linear-gradient(135deg, #FFD700 0%, #FF9800 100%);
-            color: #000 !important;
-            padding: 7px 20px;
-            border-radius: 4px;
-            font-weight: 900;
-            font-size: 14px;
-            box-shadow: 0 4px 15px rgba(255, 152, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            position: relative;
-            overflow: hidden;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            letter-spacing: -0.5px;
-            z-index: 1;
-            white-space: nowrap;
-        }
-
-        .premium-recommend-badge::before {
-            content: '🔥';
-            font-size: 14px;
-        }
-
-        .premium-recommend-badge::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -100%;
-            width: 40%;
-            height: 200%;
-            background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.6) 50%, rgba(255, 255, 255, 0) 100%);
-            transform: rotate(30deg);
-            animation: shine-effect 3s infinite;
-        }
-
-        @keyframes shine-effect {
-            0% {
-                left: -100%;
-            }
-
-            20% {
-                left: 120%;
-            }
-
-            100% {
-                left: 120%;
-            }
-        }
-
-        .type-card.trans {
-            transition: transform 0.3s ease;
-        }
-
-        .type-card.trans:hover {
-            transform: translateY(-5px);
-        }
-
-        .trans-badge {
-            width: auto !important;
-            height: auto !important;
-            transform: rotate(0deg) !important;
-        }
-
-        @media screen and (max-width: 768px) {
-            .trans-badge {
-                position: static !important;
-                display: block !important;
-                width: max-content !important;
-                margin-bottom: 10px !important;
-            }
-            .type-card.trans .type-tag {
-                display: block !important;
-                width: max-content !important;
-                margin-bottom: 15px !important;
-            }
-        }
-
-        .promo-badge {
-            display: inline-block;
-            background: #ff4d4f;
-            color: #fff;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 11px;
-            font-weight: 800;
-            margin-left: 6px;
-            vertical-align: middle;
-            animation: pulse-red 2s infinite;
-        }
-
-        @keyframes pulse-red {
-            0% {
-                transform: scale(1);
-                box-shadow: 0 0 0 0 rgba(255, 77, 79, 0.7);
-            }
-
-            70% {
-                transform: scale(1.05);
-                box-shadow: 0 0 0 10px rgba(255, 77, 79, 0);
-            }
-
-            100% {
-                transform: scale(1);
-                box-shadow: 0 0 0 0 rgba(255, 77, 79, 0);
-            }
-        }
-
-        /* 창업 절차 V2 스타일 */
-        .procedure-v2-container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-
-        .phase-card {
-            background: #fff;
-            border-radius: 20px;
-            margin-bottom: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-            overflow: hidden;
-            border: 1px solid #eee;
-            transition: all 0.3s ease;
-        }
-
-        .phase-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
-            border-color: #ff9800;
-        }
-
-        .phase-header {
-            padding: 30px 40px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: pointer;
-            background: #fff;
-        }
-
-        .phase-info {
-            display: flex;
-            align-items: center;
-            gap: 25px;
-        }
-
-        .phase-num {
-            font-size: 14px;
-            font-weight: 800;
-            color: #ff9800;
-            background: #fff5e6;
-            padding: 5px 15px;
-            border-radius: 50px;
-            letter-spacing: 1px;
-        }
-
-        .phase-title {
-            font-size: 24px;
-            font-weight: 800;
-            color: #1a1a1a;
-        }
-
-        .phase-duration {
-            font-size: 15px;
-            color: #666;
-            background: #f8f8f8;
-            padding: 6px 18px;
-            border-radius: 50px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .phase-duration i {
-            color: #ff9800;
-        }
-
-        .phase-toggle-icon {
-            font-size: 20px;
-            color: #ccc;
-            transition: transform 0.3s ease;
-        }
-
-        .phase-card.active .phase-toggle-icon {
-            transform: rotate(180deg);
-            color: #ff9800;
-        }
-
-        .phase-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s cubic-bezier(0, 1, 0, 1);
-            background: #fafafa;
-        }
-
-        .phase-card.active .phase-content {
-            max-height: 1000px;
-            transition: max-height 1s ease-in-out;
-        }
-
-        .sub-steps-grid {
-            padding: 40px;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 30px;
-            border-top: 1px dashed #eee;
-        }
-
-        .sub-step-item {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .sub-step-num {
-            font-size: 12px;
-            font-weight: 700;
-            color: #999;
-        }
-
-        .sub-step-title {
-            font-size: 18px;
-            font-weight: 800;
-            color: #333;
-        }
-
-        .sub-step-desc {
-            font-size: 14px;
-            color: #777;
-            line-height: 1.5;
-        }
-
-        .sub-step-icon {
-            font-size: 24px;
-            color: #ff9800;
-            margin-bottom: 5px;
-        }
-
-        @media (max-width: 768px) {
-            .phase-header {
-                padding: 25px 20px;
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 15px;
-                position: relative;
-            }
-
-            .phase-info {
-                gap: 15px !important;
-                width: 100%;
-                padding-right: 35px;
-                box-sizing: border-box;
-            }
-
-            .phase-title {
-                font-size: 20px;
-                word-break: keep-all;
-            }
-
-            .phase-duration {
-                align-self: flex-start;
-            }
-
-            .phase-toggle-icon {
-                position: absolute;
-                right: 20px;
-                top: 30px;
-            }
-
-            .sub-steps-grid {
-                grid-template-columns: 1fr;
-                padding: 30px 20px;
-            }
-        }
-    </style>` ,
+    href="/images/gamang_main_img.webp" fetchpriority="high">` ,
     activePage: 'franchise' , body: ` <main class="sub-page">
         <!-- 창업 경쟁력 섹션 -->
 
         <section id="competence" class="franchise-competence">
             <div class="competence-container">
                 <div class="competence-text">
-                    <h2 class="competence-title fade-up">국내최초 크레페 프랜차이즈</h2>
+                    <h2 class="competence-title fade-up">국내최초 <br class="mobile-br" /> 크레페 프랜차이즈</h2>
                     <h1 class="competence-highlight fade-up delay-1">최단기간 <span class="point-color">40호점</span> 돌파!</h1>
                     <p class="competence-desc fade-up delay-2">
-                        점주추천·입소문으로 1년 6개월만에 40호점 돌파 <br />
+                        점주추천·입소문으로 <br class="mobile-br" /> 1년 6개월만에 40호점 돌파 <br />
                         <br />
                         빠른 성장에는 분명한 이유가 있습니다.
                         <br />
@@ -354,6 +78,10 @@
                     <div class="growth-axis">
                         <div class="axis-line"></div>
                         <div class="axis-glow"></div>
+                        <!-- 선 따라 미끄러지는 브랜드 로고 마커 -->
+                        <div class="axis-logo-marker">
+                            <img src="/images/logo.png" alt="Texas Papa Logo Marker">
+                        </div>
                     </div>
 
                     <!-- 스트림 노드 (관계도 데이터) -->
@@ -525,6 +253,7 @@
                         </div>
                     </div>
 
+
                     <div class="story-footer fade-up">
                         <p class="story-footer-text">*텍사스파파 크레페 브랜드 초기 기준 확장 순서입니다.</p>
                     </div>
@@ -542,7 +271,7 @@
                         <div class="evo-metrics-grid">
                             <div class="evo-metric">
                                 <span class="m-label">하루 평균 순익</span>
-                                <span class="m-value">150,000원</span>
+                                <span class="m-value"><span class="count-up" data-value="150000" data-suffix="원" data-format="comma">0</span></span>
                             </div>
                             <div class="evo-metric">
                                 <span class="m-label">노동 강도</span>
@@ -560,11 +289,11 @@
                         <div class="evo-metrics-grid">
                             <div class="evo-metric">
                                 <span class="m-label">예상 원가율</span>
-                                <span class="m-value">40% ~ 50%+</span>
+                                <span class="m-value"><span class="count-up" data-value="40" data-suffix="%">0</span> ~ <span class="count-up" data-value="50" data-suffix="%+">0</span></span>
                             </div>
                             <div class="evo-metric">
                                 <span class="m-label">창업 비용</span>
-                                <span class="m-value">8,000만원+</span>
+                                <span class="m-value"><span class="count-up" data-value="8000" data-suffix="만원+">0</span></span>
                             </div>
                         </div>
                     </div>
@@ -575,15 +304,17 @@
                     <div class="winner-stamp-evo" id="winnerStampEvo"></div>
                     <div class="eco-content-box">
                         <span class="evo-tag">텍사스파파 솔루션</span>
-                        <h2 class="evo-main-title">혁신적인 <span class="text-blue">순수익률 47%!</span><br>적게 투자하고 많이 버세요.</h2>
+                        <h2 class="evo-main-title">혁신적인<br class="mobile-br"> <span class="text-blue">순수익률 47%! <br
+                                    class="mobile-br"></span><br class="pc-br">적게 투자하고 <br class="mobile-br">많이 버세요.
+                        </h2>
                         <div class="evo-metrics-grid">
                             <div class="evo-metric">
                                 <span class="m-label">혁신적 원가율</span>
-                                <span class="m-value">20%</span>
+                                <span class="m-value"><span class="count-up" data-value="20" data-suffix="%">0</span></span>
                             </div>
                             <div class="evo-metric">
                                 <span class="m-label">소자본 창업</span>
-                                <span class="m-value">2,000만원</span>
+                                <span class="m-value"><span class="count-up" data-value="2000" data-suffix="만원" data-format="comma">0</span></span>
                             </div>
                         </div>
                     </div>
@@ -1089,510 +820,27 @@
                 </div>
             </div>
         </section>
-        <script>
 
-            // 기존 넥서스 대시보드 애니메이션
-            const startNexusAnimation = () => {
-                const counters = document.querySelectorAll('.counter');
-                const nodes = document.querySelectorAll('.nexus-node');
+        <!-- 하단 고정 문의 바 (Sticky Inquiry Bar) -->
+        <div id="sticky-inquiry-bar" class="sticky-inquiry-bar">
+            <div class="sticky-bar-container">
+                <div class="sticky-bar-text">
+                    <span class="bar-badge">50호점 한정 프로모션</span>
+                    <p class="bar-message">적게 투자하고 많이 버는 <strong>순수익률 47%</strong> 독점 솔루션!</p>
+                </div>
+                <div class="sticky-bar-actions">
+                    <a href="tel:1644-5272" class="btn-bar-phone">
+                        <i class="fas fa-phone-alt"></i> <span>전화상담</span>
+                    </a>
+                    <a href="#inquiry-form" class="btn-bar-submit">
+                        <span>간편 창업문의</span> <i class="fas fa-paper-plane"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
 
-                counters.forEach(counter => {
-                    const target = +counter.getAttribute('data-target');
-                    let count = 0;
-                    const increment = target / 50;
-                    const updateCount = () => {
-                        if (count < target) {
-                            count += increment;
-                            counter.innerText = Math.ceil(count);
-                            setTimeout(updateCount, 40);
-                        } else { counter.innerText = target; }
-                    };
-                    updateCount();
-                });
-
-                nodes.forEach((node, index) => {
-                    setTimeout(() => { node.classList.add('visible'); }, 500 + (index * 600));
-                });
-            };
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        startNexusAnimation();
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.3 });
-
-            document.querySelectorAll('.franchise-competence').forEach(el => observer.observe(el));
-
-            // 섹션 2: GSAP 스크롤 인터랙션
-            gsap.registerPlugin(ScrollTrigger);
-
-            // 1. 전역 fade-up 애니메이션 로직
-            gsap.utils.toArray('.fade-up').forEach((el) => {
-                let delay = 0;
-                if (el.classList.contains('delay-1')) delay = 0.2;
-                if (el.classList.contains('delay-2')) delay = 0.4;
-                if (el.classList.contains('delay-3')) delay = 0.6;
-
-                // 초기 상태를 CSS에서 투명도 1로 설정했으므로, gsap.from을 사용하여 0에서 1로 애니메이션
-                gsap.from(el, {
-                    scrollTrigger: {
-                        trigger: el,
-                        start: "top 95%",
-                        toggleActions: "play none none reverse"
-                    },
-                    opacity: 0,
-                    y: 30,
-                    duration: 1,
-                    delay: delay,
-                    ease: "power2.out"
-                });
-            });
-
-            /* 
-            gsap.from(".type-card", {
-                scrollTrigger: {
-                    trigger: ".startup-types-section",
-                    start: "top 70%",
-                    toggleActions: "play none none reverse"
-                },
-                y: 50,
-                opacity: 0,
-                duration: 0.8,
-                stagger: 0.2,
-                ease: "back.out(1.2)"
-            });
-            */
-
-            // 3. 수익의 진화 (Profit Evolution) 인터랙션
-            ScrollTrigger.matchMedia({
-                "(min-width: 1025px)": function () {
-                    const evoTimeline = gsap.timeline({
-                        scrollTrigger: {
-                            trigger: ".profit-evolution-section",
-                            start: "top top",
-                            end: "+=350%",
-                            scrub: 1,
-                            pin: true,
-                            anticipatePin: 1
-                        }
-                    });
-
-                    evoTimeline
-                        .to(".layer-step-2", { clipPath: "inset(0 0 0 0)", ease: "none" })
-                        .to("#evoDivider", { left: "0%", ease: "none" }, 0)
-                        .to(".layer-step-1", { x: -100, opacity: 0.5, ease: "none" }, 0)
-                        .from(".layer-step-2 .eco-content-box", { y: 30, opacity: 0, duration: 0.3 }, 0.2)
-                        .set("#evoDivider", { left: "100%" })
-                        .to(".layer-step-3", { clipPath: "inset(0 0 0 0)", ease: "none" }, "+=0.1")
-                        .to("#evoDivider", { left: "0%", ease: "none" }, "<")
-                        .to(".layer-step-2", { x: -100, opacity: 0.5, ease: "none" }, "<")
-                        .from(".layer-step-3 .eco-content-box", { y: 30, opacity: 0, duration: 0.3 }, "<0.2")
-                        .to("#winnerStampEvo", {
-                            scale: 1,
-                            opacity: 1,
-                            rotation: -15,
-                            duration: 0.5,
-                            ease: "bounce.out"
-                        }, "<0.3");
-                },
-                "(max-width: 1024px)": function () {
-                    gsap.utils.toArray(".evo-layer").forEach((layer, i) => {
-                        if (i === 0) return;
-                        gsap.fromTo(layer, { opacity: 0, y: 30 }, {
-                            opacity: 1, y: 0, duration: 0.8,
-                            scrollTrigger: { trigger: layer, start: "top 95%", end: "top 60%", scrub: true }
-                        });
-                    });
-                    gsap.fromTo("#winnerStampEvo", { scale: 2, opacity: 0 }, {
-                        scale: 1, opacity: 1,
-                        scrollTrigger: { trigger: ".layer-step-3", start: "top 85%", toggleActions: "play none none none" }
-                    });
-                }
-            });
-
-            // 4. 체크포인트 리빌 애니메이션
-            gsap.utils.toArray('.checkpoint-item').forEach((item) => {
-                const image = item.querySelector('.cp-image');
-                const content = item.querySelector('.cp-content');
-                const isReverse = item.classList.contains('reverse');
-
-                const itemTl = gsap.timeline({
-                    scrollTrigger: {
-                        trigger: item,
-                        start: "top 95%",
-                        toggleActions: "play none none reverse",
-                        onEnter: () => image.classList.add('revealed'),
-                        onLeaveBack: () => image.classList.remove('revealed')
-                    }
-                });
-
-                itemTl.from(content, {
-                    x: isReverse ? -60 : 60,
-                    opacity: 0,
-                    duration: 1.2,
-                    ease: "power3.out"
-                });
-
-                gsap.to(image, {
-                    scrollTrigger: { trigger: item, start: "top bottom", end: "bottom top", scrub: 1 },
-                    y: -30, ease: "none"
-                });
-            });
-
-            // 5. 인터랙티브 스크롤 시퀀스 (MainShrinkBox) - 데스크톱만
-            ScrollTrigger.matchMedia({
-                "(min-width: 769px)": function () {
-                    const tl = gsap.timeline({
-                        scrollTrigger: {
-                            trigger: ".scroll-sequence-section",
-                            start: "top top",
-                            end: "bottom top",
-                            scrub: 1,
-                            pin: true,
-                            anticipatePin: 1
-                        }
-                    });
-                    tl.to("#mainShrinkBox", { width: "500px", height: "700px", borderRadius: "20px", duration: 2, ease: "power2.inOut" })
-                        .from(".grid-card", { opacity: 0, scale: 0.8, stagger: 0.2, duration: 1 }, "-=1");
-                }
-            });
-
-            // 6. 창업비용 패키지 데이터 및 전환 로직
-            const packageData = {
-                trans: {
-                    total: "1,380",
-                    info: "단위 : 만 원",
-                    exclusion: "*별도사항 : 철거, 전기증설, 소방, 냉난방기, 외부 필름 시공, 어닝, 가구, 설비 공사, 지방 경비, 포스기, 키오스크 등(매장 상황에 따라 다를 수 있음)",
-                    items: [
-                        { cat: "가맹비", desc: "브랜드 사용권 / 영업지역 보장", price: "300", note: "<span class='promo-badge'>50호점 한정</span>" },
-                        { cat: "교육비", desc: "레시피 전수 / 매장 운영 교육 / 오픈바이징", price: "500", note: "<span class='promo-badge'>50호점 한정</span>" },
-                        { cat: "물류/계약이행보증금", desc: "오픈 및 영업 이행 담보 보증(계약 종료 시 환급)", price: "면제" },
-                        { cat: "인테리어(기본) & 기기설비 및 집기", desc: "간판(*기존간판 천갈이 기준), 부분 도장 / 크레페 기계, 반죽기, 커피머신 등", price: "330", note: "*일부 중고제품 기준 / 미보유 제품만 구매 가능" },
-                        { cat: "초도물품", desc: "식자재, 부자재", price: "250" },
-                        { cat: "로열티", desc: "정률제", price: "2%/월매출" }
-                    ]
-                },
-                basic: {
-                    total: "2,580",
-                    info: "단위 : 만 원(7평 기준)",
-                    exclusion: "*별도사항 : 철거, 전기증설, 소방, 냉난방기, 외부 필름 시공, 어닝, 가구, 설비 공사, 지방 경비, 목공, 포스기, 키오스크 등(매장 상황에 따라 다를 수 있음)",
-                    items: [
-                        { cat: "가맹비", desc: "브랜드 사용권 / 영업지역 보장", price: "500", note: "<span class='promo-badge'>50호점 한정</span>" },
-                        { cat: "교육비", desc: "레시피 전수 / 매장 운영 교육 / 오픈바이징", price: "500", note: "<span class='promo-badge'>50호점 한정</span>" },
-                        { cat: "물류/계약이행보증금", desc: "오픈 및 영업 이행 담보 보증(계약 종료 시 환급)", price: "면제" },
-                        { cat: "인테리어(기본) & 기기설비 및 집기", desc: "간판(*기존간판 천갈이 기준), 부분 도장, 바닥 / 크레페 기계, 반죽기, 커피머신, 제빙기, 냉장고, 냉동고 등", price: "1,280", note: "*일부 중고제품 기준 / 미보유 제품만 구매 가능" },
-                        { cat: "초도물품", desc: "식자재, 부자재", price: "300" },
-                        { cat: "로열티", desc: "정액제(한시적 프로모션)", price: "15" }
-                    ]
-                },
-                standard: {
-                    total: "3,780",
-                    info: "단위 : 만 원(10평 기준)",
-                    exclusion: "*별도사항 : 철거, 전기증설, 소방, 냉난방기, 외부 필름 시공, 어닝, 가구, 설비 공사, 지방 경비, 포스기, 키오스크 등(매장 상황에 따라 다를 수 있음)",
-                    items: [
-                        { cat: "가맹비", desc: "브랜드 사용권 / 영업지역 보장", price: "500", note: "<span class='promo-badge'>50호점 한정</span>" },
-                        { cat: "교육비", desc: "레시피 전수 / 매장 운영 교육 / 오픈바이징", price: "500", note: "<span class='promo-badge'>50호점 한정</span>" },
-                        { cat: "물류/계약이행보증금", desc: "오픈 및 영업 이행 담보 보증(계약 종료 시 환급)", price: "면제" },
-                        { cat: "인테리어(기본) & 기기설비 및 집기", desc: "플렉스 간판, 도장, 바닥, 목공 / 크레페 기계, 반죽기, 커피머신, 제빙기, 냉장고, 냉동고 등", price: "2,480", note: "*일부 중고제품 기준 / 미보유 제품만 구매 가능" },
-                        { cat: "초도물품", desc: "식자재, 부자재", price: "300" },
-                        { cat: "로열티", desc: "정액제(한시적 프로모션)", price: "15" }
-                    ]
-                },
-                premium: {
-                    total: "6,480",
-                    info: "단위 : 만 원(20평 기준)",
-                    exclusion: "*별도사항 : 철거, 전기증설, 소방, 냉난방기, 외부 필름 시공, 어닝, 가구, 설비 공사, 지방 경비, 포스기, 키오스크 등(매장 상황에 따라 다를 수 있음)",
-                    items: [
-                        { cat: "가맹비", desc: "브랜드 사용권 / 영업지역 보장", price: "500", note: "<span class='promo-badge'>50호점 한정</span>" },
-                        { cat: "교육비", desc: "레시피 전수 / 매장 운영 교육 / 오픈바이징", price: "500", note: "<span class='promo-badge'>50호점 한정</span>" },
-                        { cat: "물류/계약이행보증금", desc: "오픈 및 영업 이행 담보 보증(계약 종료 시 환급)", price: "면제" },
-                        { cat: "인테리어(기본) & 기기설비 및 집기", desc: "플렉스 간판, 도장, 바닥, 목공 / 크레페 기계, 반죽기, 커피머신, 제빙기, 냉장고, 냉동고 등", price: "5,180", note: "*일부 중고제품 기준 / 미보유 제품만 구매 가능" },
-                        { cat: "초도물품", desc: "식자재, 부자재", price: "300" },
-                        { cat: "로열티", desc: "정액제(한시적 프로모션)", price: "15" }
-                    ]
-                }
-            };
-
-            const updatePackageTable = (pkgKey) => {
-                const data = packageData[pkgKey];
-                const tbody = document.getElementById('package-table-body');
-                const totalAmount = document.getElementById('total-amount');
-                const totalInfo = document.getElementById('total-info-text');
-                const exclusionText = document.getElementById('exclusion-text');
-
-                // 창업비용 섹션이 주석 처리되어 있는 경우 스크립트가 멈추지 않도록 방어 코드 추가
-                if (!tbody || !totalAmount) return;
-
-                // 테이블 내용 초기화
-                tbody.innerHTML = '';
-
-                // 행 생성 및 삽입
-                data.items.forEach(item => {
-                    const tr = document.createElement('tr');
-                    tr.classList.add('cost-row');
-
-                    let priceHtml = '';
-                    if (item.original) {
-                        priceHtml = '<span class="original">' + item.original + '</span><span class="highlight">' + item.price + '</span>';
-                    } else {
-                        priceHtml = '<span class="highlight">' + item.price + '</span>';
-                    }
-
-                    const noteHtml = item.note ? '<span class="note">' + item.note + '</span>' : '';
-
-                    tr.innerHTML = '<td class="category-cell">' + item.cat + '</td>' +
-                        '<td class="desc-cell">' + item.desc + ' ' + noteHtml + '</td>' +
-                        '<td class="price-cell">' + priceHtml + '</td>';
-                    tbody.appendChild(tr);
-                });
-
-                // 총 금액 업데이트 (카운팅 효과)
-                const currentTotal = parseInt(totalAmount.innerText.replace(/,/g, ''));
-                const targetTotal = parseInt(data.total.replace(/,/g, ''));
-
-                gsap.to(totalAmount, {
-                    duration: 1,
-                    innerText: targetTotal,
-                    roundProps: "innerText",
-                    ease: "power2.inOut",
-                    onUpdate: function () {
-                        const self = this;
-                        totalAmount.innerText = Math.ceil(self.targets()[0].innerText).toLocaleString();
-                    }
-                });
-
-                totalInfo.innerText = data.info;
-                if (exclusionText) exclusionText.innerText = data.exclusion;
-
-                // 애니메이션
-                gsap.from("#package-table-body tr", {
-                    opacity: 0,
-                    y: 10,
-                    stagger: 0.05,
-                    duration: 0.5,
-                    ease: "power2.out"
-                });
-            };
-
-            // 탭 이벤트 리스너
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    // 활성화 클래스 전환
-                    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-
-                    // 테이블 업데이트
-                    updatePackageTable(btn.getAttribute('data-pkg'));
-                });
-            });
-
-            // 초기 로드 (trans)
-            updatePackageTable('trans');
-
-            // 7. 창업 절차 타임라인 애니메이션
-            const procedureTl = gsap.timeline({
-                scrollTrigger: { trigger: ".procedure-section", start: "top 90%", toggleActions: "play none none reverse" }
-            });
-            document.querySelectorAll(".procedure-item").forEach((step, index) => {
-                procedureTl.fromTo(step, { opacity: 0, y: 30 }, {
-                    opacity: 1, y: 0, duration: 0.8,
-                    onStart: () => step.classList.add("active"),
-                    ease: "power2.out"
-                }, index * 0.2);
-            });
-
-            // 7.5. 신뢰 요약 (Trust Summary) 애니메이션
-            const trustSummaryTl = gsap.timeline({
-                scrollTrigger: {
-                    trigger: ".trust-summary-section",
-                    start: "top 90%",
-                    toggleActions: "play none none reverse"
-                }
-            });
-
-            trustSummaryTl
-                .to(".summary-quote-item", {
-                    opacity: 1,
-                    y: 0,
-                    duration: 1,
-                    stagger: 0.25,
-                    ease: "power4.out"
-                })
-                .to(".main-hashtag-group", {
-                    opacity: 1,
-                    x: 0,
-                    duration: 1.2,
-                    ease: "back.out(1.5)"
-                }, "-=0.8")
-                .to(".sub-hash", {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.8,
-                    stagger: 0.15,
-                    ease: "power3.out"
-                }, "-=0.6");
-
-            // 8. 문의하기 및 모달 제어
-            gsap.from(".inquiry-box", {
-                scrollTrigger: { trigger: ".inquiry-section", start: "top 85%", toggleActions: "play none none reverse" },
-                y: 50, opacity: 0, duration: 1, ease: "power3.out"
-            });
-
-
-            // 9. 비하인드 스토리 (Behind Story) 스크롤 애니메이션
-            const storyObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        // 성장 축 애니메이션 시작 (펄스 도트 위치까지 정확히 계산)
-                        const axis = entry.target.querySelector('.axis-line');
-                        const backgroundAxis = entry.target.querySelector('.growth-axis');
-                        const dot = entry.target.querySelector('.pulse-dot');
-
-                        if (axis && backgroundAxis) {
-                            const updateAxisHeight = () => {
-                                const isMobile = window.innerWidth <= 768;
-                                const wrapperRect = entry.target.querySelector('.trust-stream-wrapper').getBoundingClientRect();
-                                let targetHeight = 0;
-
-                                if (isMobile) {
-                                    // 모바일에서는 도트가 숨겨지므로 마지막 카드의 중앙까지 연결
-                                    const allCards = entry.target.querySelectorAll('.story-card');
-                                    const lastCard = allCards[allCards.length - 1];
-                                    if (lastCard) {
-                                        const cardRect = lastCard.getBoundingClientRect();
-                                        targetHeight = cardRect.top - wrapperRect.top + (cardRect.height / 2);
-                                    }
-                                } else if (dot) {
-                                    const dotRect = dot.getBoundingClientRect();
-                                    targetHeight = dotRect.top - wrapperRect.top + (dotRect.height / 2);
-                                }
-
-                                if (targetHeight > 0) {
-                                    backgroundAxis.style.height = targetHeight + 'px';
-                                    axis.style.height = '100%';
-                                }
-                            };
-
-                            updateAxisHeight();
-                            window.addEventListener('resize', updateAxisHeight, { passive: true });
-                        }
-
-                        // 카드 순차 등장
-                        const cards = entry.target.querySelectorAll('.story-card');
-                        cards.forEach((card, index) => {
-                            setTimeout(() => {
-                                card.classList.add('revealed');
-                            }, index * 150);
-                        });
-
-                        storyObserver.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.1 });
-
-            const storySection = document.querySelector('.behind-story-section');
-            if (storySection) storyObserver.observe(storySection);
-
-            // 10. 강제 리프레시 (정합성 확보)
-            ScrollTrigger.refresh();
-
-
-
-            // 창업 상담 신청 폼 제출 처리
-            const inquiryForm = document.getElementById('inquiry-form');
-            if (inquiryForm) {
-                inquiryForm.addEventListener('submit', async function (e) {
-                    e.preventDefault();
-
-                    const submitBtn = this.querySelector('.submit-btn');
-                    const originalText = submitBtn.innerHTML;
-                    submitBtn.disabled = true;
-                    submitBtn.innerHTML = '<span>전송 중...</span><i class="fas fa-spinner fa-spin"></i>';
-
-                    try {
-                        // 폼 데이터 수집
-                        const formData = {
-                            name: document.getElementById('user_name').value,
-                            phone: document.getElementById('user_phone').value,
-                            email: '',
-                            region: document.getElementById('hope_area').value,
-                            budget: '',
-                            experience: '',
-                            path: '',
-                            message: ''
-                        };
-
-                        // API 호출
-                        const response = await fetch('/api/consultation', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify(formData)
-                        });
-
-                        const result = await response.json();
-
-                        if (result.success) {
-                            window.location.href = '/franchise/complete';
-                        } else {
-                            alert(result.message || '상담 신청 중 오류가 발생했습니다.');
-                        }
-                    } catch (error) {
-                        console.error('상담 신청 오류:', error);
-                        alert('상담 신청 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
-                    } finally {
-                        submitBtn.disabled = false;
-                        submitBtn.innerHTML = originalText;
-                    }
-                });
-            }
-        </script>
-
-        <!-- 맨 위로 가기 버튼 -->
-        <button id="scroll-to-top" class="scroll-to-top" aria-label="맨 위로 가기">
-            <i class="fas fa-arrow-up"></i>
-        </button>
-
-        <script>
-            // 맨 위로 가기 버튼 기능
-            const scrollToTopBtn = document.getElementById('scroll-to-top');
-
-            // 창업 절차 아코디언 기능
-            window.togglePhase = (el) => {
-                const isActive = el.classList.contains('active');
-
-                // 다른 활성 카드 닫기
-                document.querySelectorAll('.phase-card').forEach(card => {
-                    card.classList.remove('active');
-                });
-
-                // 클릭한 카드 토글
-                if (!isActive) {
-                    el.classList.add('active');
-                }
-            };
-
-            // 스크롤 이벤트 감지
-            window.addEventListener('scroll', () => {
-                if (window.pageYOffset > 300) {
-                    scrollToTopBtn.classList.add('visible');
-                } else {
-                    scrollToTopBtn.classList.remove('visible');
-                }
-            });
-
-            // 버튼 클릭 시 맨 위로 스크롤
-            scrollToTopBtn.addEventListener('click', () => {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
-            });
-        </script>
+        <!-- 프랜차이즈 페이지 전용 스크립트 분리 로드 -->
+        <script src="/js/franchise.js?v=1.0.3"></script>
     </main>
     `
     }) %>

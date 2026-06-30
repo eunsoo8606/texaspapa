@@ -6,6 +6,7 @@ import './css/comparison.css';
 import './css/location.css';
 import './css/menu.css';
 import './css/store_map.css';
+import './css/franchise.css';
 // 관리자 페이지용 CSS는 별도로 관리 (여기서는 제외)
 // import './css/admin-dashboard.css';
 // import './css/admin-login.css';

@@ -45,6 +45,37 @@ router.post('/api/upload/image', requireAuth, upload.single('image'), async (req
     }
 });
 
+// 게시판 ID 조회 및 미존재 시 자동 생성 헬퍼 함수
+async function getOrCreateBoardId(companyId, category) {
+    const boardTypes = {
+        notice: 'list',
+        event: 'photo',
+        faq: 'list',
+        voice: 'list',
+        inquiry: 'list'
+    };
+    const type = boardTypes[category] || 'list';
+
+    let [rows] = await db.query(
+        'SELECT id FROM boards WHERE company_id = ? AND category = ? LIMIT 1',
+        [companyId, category]
+    );
+
+    if (rows.length === 0) {
+        console.log(`[Auto Create] 게시판이 존재하지 않아 자동 생성합니다. company_id: ${companyId}, category: ${category}`);
+        await db.query(
+            'INSERT INTO boards (company_id, category, type) VALUES (?, ?, ?)',
+            [companyId, category, type]
+        );
+        [rows] = await db.query(
+            'SELECT id FROM boards WHERE company_id = ? AND category = ? LIMIT 1',
+            [companyId, category]
+        );
+    }
+
+    return rows[0].id;
+}
+
 // ===========================
 // 로그인 페이지
 // ===========================
@@ -351,17 +382,8 @@ router.get('/board/:type', requireAuth, async (req, res) => {
     try {
         const companyId = req.session.adminUser.companyId;
 
-        // boards 테이블에서 company_id와 category로 게시판 ID 조회
-        const [boardResult] = await db.query(
-            'SELECT id FROM boards WHERE company_id = ? AND category = ? LIMIT 1',
-            [companyId, type]
-        );
-
-        if (boardResult.length === 0) {
-            return res.status(404).send('게시판을 찾을 수 없습니다.');
-        }
-
-        const boardId = boardResult[0].id;
+        // boards 테이블에서 company_id와 category로 게시판 ID 조회 (미존재 시 자동 생성)
+        const boardId = await getOrCreateBoardId(companyId, type);
 
         // 쿼리 파라미터
         const page = parseInt(req.query.page) || 1;
@@ -489,17 +511,8 @@ router.post('/board/:type/write', requireAuth, async (req, res) => {
 
         const companyId = req.session.adminUser.companyId;
 
-        // boards 테이블에서 company_id와 category로 게시판 ID 조회
-        const [boardResult] = await db.query(
-            'SELECT id FROM boards WHERE company_id = ? AND category = ? LIMIT 1',
-            [companyId, type]
-        );
-
-        if (boardResult.length === 0) {
-            return res.status(400).send('게시판을 찾을 수 없습니다.');
-        }
-
-        const boardId = boardResult[0].id;
+        // boards 테이블에서 company_id와 category로 게시판 ID 조회 (미존재 시 자동 생성)
+        const boardId = await getOrCreateBoardId(companyId, type);
         const author = req.session.adminUser.name || req.session.adminUser.adminName;
         const topYn = top_yn === 'Y' ? 'Y' : 'N';
         const createIp = req.ip || req.connection.remoteAddress;
@@ -537,17 +550,8 @@ router.get('/board/:type/:id', requireAuth, async (req, res) => {
     try {
         const companyId = req.session.adminUser.companyId;
 
-        // boards 테이블에서 company_id와 category로 게시판 ID 조회
-        const [boardResult] = await db.query(
-            'SELECT id FROM boards WHERE company_id = ? AND category = ? LIMIT 1',
-            [companyId, type]
-        );
-
-        if (boardResult.length === 0) {
-            return res.status(404).send('게시판을 찾을 수 없습니다.');
-        }
-
-        const boardId = boardResult[0].id;
+        // boards 테이블에서 company_id와 category로 게시판 ID 조회 (미존재 시 자동 생성)
+        const boardId = await getOrCreateBoardId(companyId, type);
 
         // posts 테이블에서 게시글 조회
         const [posts] = await db.query(
@@ -620,17 +624,8 @@ router.get('/board/:type/:id/edit', requireAuth, async (req, res) => {
     try {
         const companyId = req.session.adminUser.companyId;
 
-        // boards 테이블에서 company_id와 category로 게시판 ID 조회
-        const [boardResult] = await db.query(
-            'SELECT id FROM boards WHERE company_id = ? AND category = ? LIMIT 1',
-            [companyId, type]
-        );
-
-        if (boardResult.length === 0) {
-            return res.status(404).send('게시판을 찾을 수 없습니다.');
-        }
-
-        const boardId = boardResult[0].id;
+        // boards 테이블에서 company_id와 category로 게시판 ID 조회 (미존재 시 자동 생성)
+        const boardId = await getOrCreateBoardId(companyId, type);
 
         // posts 테이블에서 게시글 조회
         const [posts] = await db.query(
@@ -682,17 +677,8 @@ router.post('/board/:type/:id/edit', requireAuth, async (req, res) => {
 
         const companyId = req.session.adminUser.companyId;
 
-        // boards 테이블에서 company_id와 category로 게시판 ID 조회
-        const [boardResult] = await db.query(
-            'SELECT id FROM boards WHERE company_id = ? AND category = ? LIMIT 1',
-            [companyId, type]
-        );
-
-        if (boardResult.length === 0) {
-            return res.status(400).send('게시판을 찾을 수 없습니다.');
-        }
-
-        const boardId = boardResult[0].id;
+        // boards 테이블에서 company_id와 category로 게시판 ID 조회 (미존재 시 자동 생성)
+        const boardId = await getOrCreateBoardId(companyId, type);
         const topYn = top_yn === 'Y' ? 'Y' : 'N';
         const updateIp = req.ip || req.connection.remoteAddress;
 
@@ -726,17 +712,8 @@ router.post('/board/:type/:id/delete', requireAuth, async (req, res) => {
     try {
         const companyId = req.session.adminUser.companyId;
 
-        // boards 테이블에서 company_id와 category로 게시판 ID 조회
-        const [boardResult] = await db.query(
-            'SELECT id FROM boards WHERE company_id = ? AND category = ? LIMIT 1',
-            [companyId, type]
-        );
-
-        if (boardResult.length === 0) {
-            return res.status(400).send('게시판을 찾을 수 없습니다.');
-        }
-
-        const boardId = boardResult[0].id;
+        // boards 테이블에서 company_id와 category로 게시판 ID 조회 (미존재 시 자동 생성)
+        const boardId = await getOrCreateBoardId(companyId, type);
 
         // posts 테이블에서 삭제
         const [result] = await db.query(

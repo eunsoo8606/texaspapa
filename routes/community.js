@@ -5,6 +5,37 @@ const bcrypt = require('bcrypt');
 const { encrypt, decrypt, stripPhone, formatPhone } = require('../utils/crypto');
 const { sendInquiryNotification } = require('../utils/email');
 
+// 게시판 ID 조회 및 미존재 시 자동 생성 헬퍼 함수
+async function getOrCreateBoardId(companyId, category) {
+    const boardTypes = {
+        notice: 'list',
+        event: 'photo',
+        faq: 'list',
+        voice: 'list',
+        inquiry: 'list'
+    };
+    const type = boardTypes[category] || 'list';
+
+    let [rows] = await db.query(
+        'SELECT id FROM boards WHERE company_id = ? AND category = ? LIMIT 1',
+        [companyId, category]
+    );
+
+    if (rows.length === 0) {
+        console.log(`[Auto Create] 커뮤니티 게시판이 존재하지 않아 자동 생성합니다. company_id: ${companyId}, category: ${category}`);
+        await db.query(
+            'INSERT INTO boards (company_id, category, type) VALUES (?, ?, ?)',
+            [companyId, category, type]
+        );
+        [rows] = await db.query(
+            'SELECT id FROM boards WHERE company_id = ? AND category = ? LIMIT 1',
+            [companyId, category]
+        );
+    }
+
+    return rows[0].id;
+}
+
 // 커뮤니티 목록 조회
 router.get('/:tab?', async (req, res) => {
     const tab = req.params.tab || 'notice';
@@ -29,37 +60,30 @@ router.get('/:tab?', async (req, res) => {
     };
 
     try {
-        // boards 테이블에서 해당 게시판 ID 조회 (company_id 2번 - Texas Papa)
-        const [boardResult] = await db.query(
-            'SELECT id FROM boards WHERE company_id = 2 AND category = ? LIMIT 1',
-            [tab]
-        );
+        // boards 테이블에서 해당 게시판 ID 조회 (company_id 2번 - Texas Papa, 미존재 시 자동 생성)
+        const boardId = await getOrCreateBoardId(2, tab);
 
         let posts = [];
         let totalPosts = 0;
         let totalPages = 1;
 
-        if (boardResult.length > 0) {
-            const boardId = boardResult[0].id;
+        // 게시글 목록 조회 (상단 고정 우선, 최신순)
+        [posts] = await db.query(
+            `SELECT post_no, title, writer, views, create_dt, top_yn
+             FROM posts
+             WHERE board_id = ?
+             ORDER BY top_yn DESC, create_dt DESC
+             LIMIT ? OFFSET ?`,
+            [boardId, limit, offset]
+        );
 
-            // 게시글 목록 조회 (상단 고정 우선, 최신순)
-            [posts] = await db.query(
-                `SELECT post_no, title, writer, views, create_dt, top_yn
-                 FROM posts
-                 WHERE board_id = ?
-                 ORDER BY top_yn DESC, create_dt DESC
-                 LIMIT ? OFFSET ?`,
-                [boardId, limit, offset]
-            );
-
-            // 총 게시글 수
-            const [countResult] = await db.query(
-                'SELECT COUNT(*) as total FROM posts WHERE board_id = ?',
-                [boardId]
-            );
-            totalPosts = countResult[0].total;
-            totalPages = Math.ceil(totalPosts / limit);
-        }
+        // 총 게시글 수
+        const [countResult] = await db.query(
+            'SELECT COUNT(*) as total FROM posts WHERE board_id = ?',
+            [boardId]
+        );
+        totalPosts = countResult[0].total;
+        totalPages = Math.ceil(totalPosts / limit);
 
         res.render('community/index', {
             title: `${titles[tab] || '커뮤니티'} | Texas Papa`,
@@ -123,16 +147,8 @@ router.post('/:tab/write', async (req, res) => {
             return res.status(400).send('모든 필수 항목을 입력해주세요.');
         }
 
-        const [boardResult] = await db.query(
-            'SELECT id FROM boards WHERE company_id = 2 AND category = ? LIMIT 1',
-            [tab]
-        );
-
-        if (boardResult.length === 0) {
-            return res.status(400).send('게시판을 찾을 수 없습니다.');
-        }
-
-        const boardId = boardResult[0].id;
+        // boards 테이블에서 해당 게시판 ID 조회 (company_id 2번 - Texas Papa, 미존재 시 자동 생성)
+        const boardId = await getOrCreateBoardId(2, tab);
         const passwordHash = await bcrypt.hash(password, 10);
         const createIp = req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 

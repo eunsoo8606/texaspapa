@@ -179,31 +179,48 @@
 
 /* Mobile Responsive */
 @media (max-width: 1024px) {
+    /* 모바일에서도 스티키 고정 및 절대배치 유지 */
     .evo-sticky-wrapper {
-        height: auto;
-        position: relative;
+        height: 100vh;
+        height: 100svh;
+        position: sticky;
+        top: 0;
+        overflow: hidden;
     }
 
     .evo-layer {
-        position: relative;
-        height: auto;
-        padding: 80px 0;
-        clip-path: none !important;
-        transform: none !important;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    .eco-content-box {
+        padding: 0 6%;
     }
 
     .evo-metrics-grid {
-        flex-direction: column;
-        gap: 30px;
+        flex-direction: row;
+        gap: 20px;
+    }
+
+    .evo-metric {
+        max-width: 50%;
     }
 
     .evo-main-title {
-        font-size: 2.8rem;
+        font-size: 2.0rem;
+        margin-bottom: 30px;
+    }
+
+    .m-value {
+        font-size: 1.8rem;
     }
 
     .winner-stamp-evo {
-        width: 150px;
-        height: 150px;
+        width: 130px;
+        height: 130px;
         top: 10px;
         right: 10px;
         transform: rotate(-10deg);

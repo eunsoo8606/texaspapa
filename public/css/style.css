@@ -684,7 +684,7 @@ body {
 /* Franchise Competence Section */
 .franchise-competence {
     position: relative;
-    padding: 230px 0 170px;
+    padding: 330px 0 270px;
     min-height: 90vh;
     display: flex;
     align-items: center;
@@ -959,12 +959,38 @@ body {
 
 @media (max-width: 768px) {
     .nexus-dashboard {
-        transform: scale(0.65);
-        margin-top: -50px;
+        transform: scale(0.8);
+        margin-top: -30px;
+        margin-bottom: -30px;
     }
 
     .nexus-node {
-        --dist: 180px !important;
+        --dist: 170px !important;
+    }
+
+    .node-content {
+        padding: 0.7rem 0.9rem !important;
+        min-width: 110px !important;
+    }
+
+    .node-title {
+        font-size: 0.8rem !important;
+    }
+
+    .node-year {
+        font-size: 0.7rem !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .nexus-dashboard {
+        transform: scale(0.73);
+        margin-top: -60px;
+        margin-bottom: -50px;
+    }
+
+    .nexus-node {
+        --dist: 160px !important;
     }
 }
 
@@ -3895,7 +3921,6 @@ body {
         inset 0 0 20px rgba(255, 255, 255, 0.5);
     opacity: 0;
     transform: translateY(40px) perspective(1000px) rotateX(10deg);
-    animation: storeAppear 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards;
     transform-style: preserve-3d;
 }
 
@@ -4771,10 +4796,9 @@ body {
         font-size: 1rem;
     }
 
-    /* 모바일에서 패럴랙스 효과 비활성화 (성능 및 호환성) */
     .franchise-competence {
         background-attachment: scroll;
-        padding: 100px 0 80px;
+        padding: 75px 0 80px;
     }
 
     .competence-container {
@@ -4783,11 +4807,33 @@ body {
         gap: 2rem;
     }
 
+    .competence-title {
+        font-size: 1.7rem;
+        margin-bottom: 0.5rem;
+        word-break: keep-all;
+    }
+
     .competence-highlight {
-        font-size: 2.5rem;
+        font-size: 2.8rem;
+        word-break: keep-all;
     }
 
     .competence-desc {
-        font-size: 1rem;
+        font-size: 1.1rem;
+        word-break: keep-all;
+    }
+}
+
+/* 모바일 전용 줄바꿈 태그 정의 */
+.mobile-br {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .mobile-br {
+        display: inline !important;
+    }
+    .pc-br {
+        display: none !important;
     }
 }
