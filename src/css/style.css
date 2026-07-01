@@ -323,6 +323,7 @@ body {
     .sub-nav .logo-main {
         margin-left: 0;
     }
+
     .sub-nav .logo-main img {
         height: 35px;
     }
@@ -484,14 +485,17 @@ body {
         background-color: #f5f5f5 !important;
         color: #333 !important;
     }
+
     .header-inquiry-btn:hover {
         background-color: #e0e0e0 !important;
         transform: none !important;
         box-shadow: none !important;
     }
+
     .header-inquiry-btn .inquiry-text {
         display: none !important;
     }
+
     .header-inquiry-btn i {
         margin: 0 !important;
         font-size: 1.1rem !important;
@@ -674,7 +678,7 @@ body {
 /* Franchise Competence Section */
 .franchise-competence {
     position: relative;
-    padding: 330px 0 270px;
+    padding: 140px 0 270px;
     min-height: 90vh;
     display: flex;
     align-items: center;
@@ -704,7 +708,7 @@ body {
 }
 
 .competence-title {
-    font-size: 2.2rem;
+    font-size: 2.5rem;
     font-weight: 700;
     margin-bottom: 1rem;
     opacity: 0.9;
@@ -712,7 +716,7 @@ body {
 }
 
 .competence-highlight {
-    font-size: 4rem;
+    font-size: 4.5rem;
     font-weight: 800;
     margin-bottom: 2.5rem;
     line-height: 1.2;
@@ -744,7 +748,7 @@ body {
 }
 
 .competence-desc {
-    font-size: 1.25rem;
+    font-size: 1.4rem;
     line-height: 1.8;
     color: rgba(255, 255, 255, 0.85);
     font-weight: 400;
@@ -826,14 +830,14 @@ body {
 }
 
 .core-label {
-    font-size: 0.8rem;
+    font-size: 0.95rem;
     font-weight: 800;
     color: #ffeb3b;
     letter-spacing: 3px;
 }
 
 .core-number {
-    font-size: 5rem;
+    font-size: 5.5rem;
     font-weight: 900;
     color: #fff;
     line-height: 1;
@@ -841,7 +845,7 @@ body {
 }
 
 .core-unit {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     font-weight: 600;
     color: rgba(255, 255, 255, 0.6);
 }
@@ -886,14 +890,14 @@ body {
 }
 
 .node-year {
-    font-size: 0.75rem;
+    font-size: 0.85rem;
     color: #ffeb3b;
     font-weight: 700;
     display: block;
 }
 
 .node-title {
-    font-size: 0.95rem;
+    font-size: 1.05rem;
     font-weight: 600;
     color: #fff;
 }
@@ -964,11 +968,11 @@ body {
     }
 
     .node-title {
-        font-size: 0.8rem !important;
+        font-size: 0.9rem !important;
     }
 
     .node-year {
-        font-size: 0.7rem !important;
+        font-size: 0.8rem !important;
     }
 }
 
@@ -4797,18 +4801,18 @@ body {
     }
 
     .competence-title {
-        font-size: 1.7rem;
+        font-size: 1.9rem;
         margin-bottom: 0.5rem;
         word-break: keep-all;
     }
 
     .competence-highlight {
-        font-size: 2.8rem;
+        font-size: 3.2rem;
         word-break: keep-all;
     }
 
     .competence-desc {
-        font-size: 1.1rem;
+        font-size: 1.2rem;
         word-break: keep-all;
     }
 }
@@ -4822,6 +4826,7 @@ body {
     .mobile-br {
         display: inline !important;
     }
+
     .pc-br {
         display: none !important;
     }

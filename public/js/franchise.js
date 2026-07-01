@@ -507,23 +507,24 @@ if (inquiryForm) {
 // 맨 위로 가기 버튼 기능
 const scrollToTopBtn = document.getElementById('scroll-to-top');
 
-
-// 스크롤 이벤트 감지
-window.addEventListener('scroll', () => {
-    if (window.pageYOffset > 300) {
-        scrollToTopBtn.classList.add('visible');
-    } else {
-        scrollToTopBtn.classList.remove('visible');
-    }
-});
-
-// 버튼 클릭 시 맨 위로 스크롤
-scrollToTopBtn.addEventListener('click', () => {
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
+if (scrollToTopBtn) {
+    // 스크롤 이벤트 감지
+    window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 300) {
+            scrollToTopBtn.classList.add('visible');
+        } else {
+            scrollToTopBtn.classList.remove('visible');
+        }
     });
-});
+
+    // 버튼 클릭 시 맨 위로 스크롤
+    scrollToTopBtn.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+}
 
 // 하단 고정 문의 바 스크롤 및 포커싱 제어 로직 (readyState 검사로 실행 보장)
 const initStickyBar = () => {
