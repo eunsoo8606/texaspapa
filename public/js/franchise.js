@@ -567,3 +567,19 @@ if (document.readyState === 'loading') {
     initStickyBar();
 }
 
+// 11. 초기 페이지 로드 시 해시(#inquiry 등) 스크롤 오차 보정
+window.addEventListener('load', () => {
+    if (window.location.hash) {
+        const hash = window.location.hash;
+        setTimeout(() => {
+            if (typeof ScrollTrigger !== 'undefined') {
+                ScrollTrigger.refresh(); // GSAP 레이아웃 정합성 리프레시
+            }
+            const target = document.querySelector(hash);
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth' });
+            }
+        }, 150);
+    }
+});
+

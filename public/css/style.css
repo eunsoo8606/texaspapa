@@ -4842,3 +4842,8 @@ body {
         display: none !important;
     }
 }
+
+/* 앵커 스크롤 이동 시 상단 고정 헤더 가림 방지 */
+#inquiry {
+    scroll-margin-top: 85px;
+}

@@ -123,6 +123,28 @@
         });
     });
 
+    // 모바일 서브메뉴 링크 및 문의하기 버튼 클릭 시 메뉴 닫기
+    document.querySelectorAll('.sub-menu li a, .header-inquiry-btn').forEach(link => {
+        link.addEventListener('click', () => {
+            if (window.innerWidth <= 1024) {
+                subNav.classList.remove('menu-active');
+                const icon = menuToggle.querySelector('i');
+                if (icon) {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+                // 서브오픈 클래스 및 회전된 화살표 초기화
+                document.querySelectorAll('.nav-item').forEach(item => {
+                    item.classList.remove('sub-open');
+                    const arrow = item.querySelector('.arrow-icon');
+                    if (arrow) {
+                        arrow.style.transform = 'rotate(0deg)';
+                    }
+                });
+            }
+        });
+    });
+
     // 화면 크기 변경 시 화살표 아이콘 추가/제거
     window.addEventListener('resize', () => {
         document.querySelectorAll('.nav-item > a').forEach(anchor => {
