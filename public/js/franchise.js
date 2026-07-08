@@ -451,7 +451,6 @@ if (revealText) {
 }
 
 const storySection = document.querySelector('.behind-story-section');
-if (storySection) storyObserver.observe(storySection);
 
 // 10. 강제 리프레시 (정합성 확보)
 ScrollTrigger.refresh();
