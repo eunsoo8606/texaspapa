@@ -482,21 +482,21 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: linear-gradient(135deg, #FFD700 0%, #FF9800 100%);
+    background: linear-gradient(135deg, #014ec2 0%, #00255e 100%);
     border: none;
-    color: #000000;
+    color: #ffffff;
     padding: 10px 24px;
     border-radius: 50px;
     font-size: 14px;
     font-weight: 800;
     text-decoration: none;
-    box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
+    box-shadow: 0 4px 15px rgba(1, 78, 194, 0.35);
     transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 .btn-bar-submit:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(255, 152, 0, 0.5);
+    box-shadow: 0 6px 20px rgba(1, 78, 194, 0.55);
 }
 
 @media (max-width: 768px) {
@@ -512,18 +512,23 @@
     }
 
     .sticky-bar-text {
+        flex-direction: column;
+        align-items: center;
         justify-content: center;
-        gap: 8px;
+        gap: 6px;
     }
 
     .bar-badge {
-        padding: 3px 6px;
-        font-size: 10px;
+        padding: 4px 10px;
+        font-size: 11px;
+        white-space: nowrap;
     }
 
     .bar-message {
         font-size: 12px;
         text-align: center;
+        word-break: keep-all;
+        line-height: 1.4;
     }
 
     .sticky-bar-actions {
